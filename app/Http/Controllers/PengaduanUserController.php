@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengaduan;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class PengaduanUserController extends Controller
@@ -34,7 +35,8 @@ class PengaduanUserController extends Controller
 
     public function create()
     {
-        return view('pages.pengaduanUser.create');
+        $categories = Category::all(); // Mengambil semua kategori dari database
+        return view('pages.pengaduanUser.create', compact('categories'));;
     }
 
     public function store(Request $request)
@@ -44,8 +46,8 @@ class PengaduanUserController extends Controller
             'name' => 'required|string|max:255',
             'user' => 'required|in:Mahasiswa,Dosen,anonim',
             'laporan' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-
+            'file' => 'nullable|file|max:2048', // Mengizinkan semua jenis file
+            'category_id' => 'required|exists:categories,id', // Validasi kategori
         ]);
 
 
@@ -55,19 +57,20 @@ class PengaduanUserController extends Controller
                 return redirect()->back()->with('error', 'Anda harus login untuk membuat pengaduan.');
             }
 
-        // Simpan gambar jika ada
-        $imagePath = null; // Default jika tidak ada gambar
-        if ($request->hasFile('image')) {
-            // Mendapatkan file yang di-upload
-            $image = $request->file('image');
+            if ($request->hasFile('file')) {
+                $file = $request->file('file');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $filePath = 'assets/files/pengaduan/' . $fileName;
 
-            // Menentukan nama file dan path penyimpanan
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $imagePath = 'assets/img/pengaduan/' . $imageName; // Path relatif
+                // Memindahkan file ke public/assets/files/pengaduan
+                if ($file->move(public_path('assets/files/pengaduan'), $fileName)) {
+                    // Jika pemindahan berhasil, filePath sudah diisi
+                } else {
+                    // Pemindahan file gagal
+                    return redirect()->back()->with('error', 'Gagal mengupload file.');
+                }
+            }
 
-            // Memindahkan file ke public/assets/pengaduan
-            $image->move(public_path('assets/img/pengaduan'), $imageName);
-        }
 
 
         // Buat pengaduan baru
@@ -75,8 +78,9 @@ class PengaduanUserController extends Controller
             'name' => $request->name,
             'user' => $request->user,
             'laporan' => $request->laporan,
-            'image' => $imagePath,
+            'file' => $filePath, // Menyimpan path file
             'user_id' => $userId, // Mengisi user_id dengan ID pengguna yang sedang login
+            'category_id' =>  $request->category_id, // Mengisi category_id dengan ID pengguna yang sedang login
         ]);
 
         return redirect()->route('pengaduanuser.index')->with('success', 'Pengaduan created successfully');

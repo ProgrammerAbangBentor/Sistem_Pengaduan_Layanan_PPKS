@@ -16,12 +16,34 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <h5>Bukti Gambar</h5>
-                                @if($pengaduan->image)
-                                    <img src="{{ asset($pengaduan->image) }}" alt="Gambar Pengaduan" class="img-fluid mb-3" style="max-height: 300px; object-fit: cover;">
+                                <h5>Bukti File</h5>
+                                @if($pengaduan->file)
+                                @php
+                                    $extension = pathinfo($pengaduan->file, PATHINFO_EXTENSION);
+                                @endphp
+
+                                @if(in_array($extension, ['jpg', 'jpeg', 'png', 'gif']))
+                                    <img src="{{ asset($pengaduan->file) }}" alt="Gambar Pengaduan" class="img-fluid mb-3" style="max-height: 300px; object-fit: cover;">
+                                @elseif(in_array($extension, ['pdf', 'doc', 'docx', 'xls', 'xlsx']))
+                                    <a href="{{ asset($pengaduan->file) }}" target="_blank" class="btn btn-primary">Unduh File</a>
+                                @elseif(in_array($extension, ['mp3', 'wav']))
+                                    <audio controls>
+                                        <source src="{{ asset($pengaduan->file) }}" type="audio/{{ $extension }}">
+                                        Your browser does not support the audio tag.
+                                    </audio>
+                                @elseif(in_array($extension, ['mp4', 'avi', 'mov']))
+                                    <video controls style="max-width: 100%; max-height: 300px;">
+                                        <source src="{{ asset($pengaduan->file) }}" type="video/{{ $extension }}">
+                                        Your browser does not support the video tag.
+                                    </video>
                                 @else
-                                    <p>Tidak ada gambar</p>
+                                    <p>File ini tidak dapat ditampilkan.</p>
                                 @endif
+                            @else
+                                <p>Tidak ada file yang diunggah.</p>
+                            @endif
+
+
                             </div>
                             <div class="col-md-6">
                                 <h5>Informasi Pengaduan</h5>

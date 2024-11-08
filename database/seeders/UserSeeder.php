@@ -16,10 +16,11 @@ class UserSeeder extends Seeder
     {
         // Membuat pengguna admin jika belum ada
         User::firstOrCreate(
-            ['email' => 'admin@gmail.com'],
+            ['email' => 'nando@gmail.com'],
             [
-                'name' => 'Admin User',
-                'password' => Hash::make('password123'), // Gantilah dengan password yang sesuai
+                'name' => 'Nando Admin',
+                'role' => 'admin',
+                'password' => Hash::make('123456789'), // Gantilah dengan password yang sesuai
             ]
         )->assignRole('admin');
 

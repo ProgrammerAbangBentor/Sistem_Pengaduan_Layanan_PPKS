@@ -8,7 +8,14 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\PengaduanController;
 use App\Http\Controllers\PengaduanUserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\HomeController;
 
+Route::get('/', function () {
+    return view('pages.dasboard.index');
+});
+
+Route::get('/login', [HomeController::class,'login'])->name('login');
 
 //Route untuk register
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
@@ -16,11 +23,9 @@ Route::post('register', [RegisterController::class, 'register']);
 
 
 // Route untuk halaman login
-Route::get('/', function () {
-    // Mengambil data pengguna dengan role
-    $users = User::with('roles')->paginate(10);
-    return view('pages.auth.auth-login');
-});
+// Route::get('/login', function () {
+//     return view('pages.auth.auth-login')->name('login');
+// });
 
 
 // Rute yang hanya bisa diakses oleh pengguna yang terautentikasi
@@ -39,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:anggota|admin'])->group(function () {
         Route::resource('pengaduan', PengaduanController::class);
         Route::post('/pengaduan/{id}/update-status', [PengaduanController::class, 'updateStatus'])->name('pengaduan.updateStatus');
+
      });
 
 
@@ -50,9 +56,15 @@ Route::middleware(['auth'])->group(function () {
       });
 
 
+      Route::middleware(['auth', 'role:admin'])->group(function () {
+        Route::get('/category', [CategoryController::class, 'index'])->name('categories.index');
+        Route::get('/category/create', [CategoryController::class, 'create'])->name('categories.create');
+        Route::post('/category/store', [CategoryController::class, 'store'])->name('categories.store');
+        Route::get('/category/{category}/edit', [CategoryController::class, 'edit'])->name('categories.edit'); // Rute untuk menampilkan form edit
+        Route::put('/category/{category}', [CategoryController::class, 'update'])->name('categories.update'); // Rute untuk memproses pembaruan kategori
+        Route::delete('/category/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy'); // Rute untuk menghapus kategori
+    });
 
-    // // Route tambahan yang hanya bisa diakses oleh pengguna dengan permission 'edit users'
-    // Route::group(['middleware' => ['permission:edit users']], function () {
-    //     Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
-    // });
-});
+
+
+    });

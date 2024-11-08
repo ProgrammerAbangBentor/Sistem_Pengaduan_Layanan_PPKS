@@ -22,7 +22,7 @@
             <li class="nav-item dropdown">
             {{-- @can('view users') <!-- Hanya tampilkan menu ini jika pengguna memiliki izin 'view users' --> --}}
             {{-- @if(auth()->user()->role === 'admin') --}}
-            @role('admin|anggota')
+            @role('admin')
             <a href="#" class="nav-link has-dropdown"><i class="fas fa-user"></i><span>Users</span></a>
                 <ul class="dropdown-menu">
                     <li>
@@ -50,6 +50,11 @@
             @role('user')
             <li class="nav-item">
                 <a href="{{ route('pengaduanuser.index') }}" class="nav-link"><i class="fas fa-user-edit"></i><span>Pengaduan Saya</span></a>
+            </li>
+            @endrole
+            @role('admin|anggota')
+            <li class="nav-item">
+                <a href="{{ route('categories.index') }}" class="nav-link"><i class="fas fa-th-large"></i><span>Categories</span></a>
             </li>
             @endrole
             {{-- <li class="nav-item dropdown">

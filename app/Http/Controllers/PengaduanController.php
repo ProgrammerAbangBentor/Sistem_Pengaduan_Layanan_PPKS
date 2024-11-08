@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengaduan;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,23 +12,31 @@ class PengaduanController extends Controller
     // Menampilkan daftar pengaduan
     public function index(Request $request)
     {
+        // Ambil semua kategori
+        $categories = Category::all();
+
         $pengaduans = Pengaduan::query()
-        ->join('users', 'pengaduans.user_id', '=', 'users.id') // Pastikan tabel pengaduans ditulis dengan benar
-        ->select('pengaduans.*', 'users.email as user_email') // Memilih semua kolom dari pengaduans dan nama pengguna
-        ->when($request->input('name'), function ($query, $name) {
-            $query->where('pengaduans.name', 'like', '%' . $name . '%')
-                  ->orWhere('pengaduans.laporan', 'like', '%' . $name . '%');
-        }) ->orderByRaw("CASE
-        WHEN status = 'pending' THEN 1
-        WHEN status = 'proses' THEN 2
-        WHEN status = 'selesai' THEN 3
-        ELSE 4
-        END") // Membuat agar usernya berurutan
-    ->paginate(10);
+            ->join('users', 'pengaduans.user_id', '=', 'users.id')
+            ->join('categories', 'pengaduans.category_id', '=', 'categories.id') // Menambahkan join untuk kategori
+            ->select('pengaduans.*', 'users.email as user_email', 'categories.name as category_name') // Menyertakan nama kategori
+            ->when($request->input('name'), function ($query, $name) {
+                $query->where('pengaduans.name', 'like', '%' . $name . '%')
+                      ->orWhere('pengaduans.laporan', 'like', '%' . $name . '%');
+            })
+            ->when($request->input('category_id'), function ($query, $categoryId) {
+                $query->where('pengaduans.category_id', $categoryId);
+            })
+            ->orderByRaw("CASE
+                WHEN status = 'pending' THEN 1
+                WHEN status = 'proses' THEN 2
+                WHEN status = 'selesai' THEN 3
+                ELSE 4
+            END")
+            ->paginate(10);
 
-
-    return view('pages.pengaduan.index', compact('pengaduans'));
+        return view('pages.pengaduan.index', compact('pengaduans', 'categories'));
     }
+
 
     // Menampilkan form untuk membuat pengaduan
     public function create()

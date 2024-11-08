@@ -28,12 +28,21 @@
                                 </select>
                             </div>
                             <div class="form-group">
+                                <label for="category_id">Kategori</label>
+                                <select class="form-control" name="category_id" required>
+                                    <option value="">Pilih Kategori</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label for="laporan">Laporan</label>
                                 <textarea class="form-control" name="laporan" rows="5" required></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="image">Image</label>
-                                <input type="file" class="form-control" name="image">
+                                <label for="image">File (Gambar, Dokumen, dll.)</label>
+                                <input type="file" class="form-control" name="file" accept="*">
                             </div>
                             <button type="submit" class="btn btn-primary">Kirim Laporan</button>
 
