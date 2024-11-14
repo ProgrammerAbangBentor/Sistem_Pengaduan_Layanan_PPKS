@@ -9,7 +9,7 @@
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="{{ asset ('template/img/logo_politeknik.jpeg') }}" rel="icon">
+    <link href="{{ asset ('template/img/logo.png') }}" rel="icon">
     {{-- <link href="{{ asset ('template/img/favicon.ico') }}" rel="icon"> --}}
 
     <!-- Google Web Fonts -->
@@ -47,34 +47,33 @@
         <div class="container-fluid nav-bar bg-transparent">
             <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
                 <a href="index.html" class="navbar-brand d-flex align-items-center text-center">
-                    <div class="icon p-2 me-2">
-                        <img class="img-fluid" src="{{ asset ('template/img/icon-deal.png') }}" alt="Icon" style="width: 30px; height: 30px;">
+                    <div>
+                        <img class="img-fluid" src="{{ asset ('template/img/logo.png') }}" alt="Icon" style="width: 45px; height: 45px;">
                     </div>
-                    <h1 class="m-0 text-basic">SATGAS PPKS POLTEKGO</h1>
+                    <h1 class="m-0 text-basic">&nbsp; SATGAS PPKS POLTEKGO</h1>
                 </a>
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto">
-                        <a href="index.html" class="nav-item nav-link active">Home</a>
-                        <a href="about.html" class="nav-item nav-link">About</a>
+                        <a href="#" class="nav-item nav-link active">Beranda</a>
                         <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Property</a>
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Profile</a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a href="property-list.html" class="dropdown-item">Property List</a>
-                                <a href="property-type.html" class="dropdown-item">Property Type</a>
-                                <a href="property-agent.html" class="dropdown-item">Property Agent</a>
+                                <a href="property-agent.html" class="dropdown-item">Pengantar</a>
+                                <a href="property-type.html" class="dropdown-item">Visi Dan Misi</a>
+                                <a href="{{ route('struktur') }}" class="dropdown-item">Struktrur Organisasi</a>
                             </div>
                         </div>
                         <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Kekerasan Seksual</a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                                <a href="404.html" class="dropdown-item">404 Error</a>
+                                <a href="testimonial.html" class="dropdown-item">Pencegahan</a>
+                                <a href="404.html" class="dropdown-item">Penanganan</a>
                             </div>
                         </div>
-                        <a href="#lapor-form" class="nav-item nav-link">Lapor</a>
+                        <a href="{{ route('artikel') }}" class="nav-item nav-link">Artikel</a>
                     </div>
                     <a href="{{ route('login') }}" class="btn btn-dark px-3 d-none d-lg-flex"><b>Masuk</b></a> <!-- Perhatikan href di sini -->
                 </div>
@@ -93,10 +92,10 @@
                 <div class="col-md-6 animated fadeIn">
                     <div class="owl-carousel header-carousel">
                         <div class="owl-carousel-item">
-                            <img class="img-fluid" src="{{ asset ('template/img/bg_2.jpeg')}}" alt="">
+                            <img class="img-fluid" src="{{ asset ('template/img/bg1.jpg')}}" style="height: 600px" alt="">
                         </div>
                         <div class="owl-carousel-item">
-                            <img class="img-fluid" src="{{ asset ('template/img/bg_2.jpeg')}}" alt="">
+                            <img class="img-fluid" src="{{ asset ('template/img/bg2.jpg')}}" style="height: 600px" alt="">
                         </div>
                     </div>
                 </div>

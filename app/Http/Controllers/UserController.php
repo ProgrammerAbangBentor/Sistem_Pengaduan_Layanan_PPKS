@@ -56,10 +56,43 @@ class UserController extends Controller
         return redirect()->route('user.index')->with('success', 'User created successfully');
     }
 
-    public function show($id)
+    public function profil($id)
     {
-        return view('pages.users.show');
+        $user = User::findOrFail($id);
+
+        return view('pages.users.profile', compact('user'));
     }
+
+    public function updateProfile(Request $request, $id)
+    {
+        // Validasi input data
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required',
+        ]);
+
+        // Cari user berdasarkan ID
+        $user = User::findOrFail($id);
+
+        // Perbarui data jika ada perubahan
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+
+        // Jika password diisi, hash dan update password
+        if ($request->input('password')) {
+           $data['password'] = Hash::make($request->input('password'));
+        } else {
+            //if password is empty, then use the old password
+            $data['password'] = $user->password;
+        }
+
+        // Simpan perubahan ke database
+        $user->save();
+
+        // Redirect ke profil dengan pesan sukses
+        return redirect()->route('home', $id)->with('success', 'Profile updated successfully');
+   }
+
 
     public function edit($id)
     {

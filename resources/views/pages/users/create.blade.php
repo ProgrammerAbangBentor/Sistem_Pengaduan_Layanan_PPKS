@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Advanced Forms')
+@section('title', 'Create User')
 
 @push('style')
     <!-- CSS Libraries -->
