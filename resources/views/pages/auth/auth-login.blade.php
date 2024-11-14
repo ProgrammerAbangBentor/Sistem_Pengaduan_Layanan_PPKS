@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title', 'Login Dapur-Kampoeng')
+@section('title', 'Login Poltekgo')
 
 @push('style')
     <!-- CSS Libraries -->
@@ -8,7 +8,7 @@
 @endpush
 
 @section('main')
-    <div class="card card-primary">
+    <div class="card card-purple">
         <div class="card-header">
             <h4>Login</h4>
         </div>
@@ -50,7 +50,7 @@
 
 
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
+                        <button type="submit" class="btn btn-purple btn-lg btn-block" tabindex="4">
                             Login
                         </button>
                     </div>
@@ -60,7 +60,7 @@
         </div>
     </div>
     <div class="text-muted mt-5 text-center">
-        Don't have an account? <a href="{{ route('register') }}">Create One</a>
+        Don't have an account? <a href="{{ route('register') }}">Registrasi</a>
     </div>
 @endsection
 

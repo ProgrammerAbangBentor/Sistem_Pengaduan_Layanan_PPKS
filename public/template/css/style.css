@@ -36,6 +36,35 @@
     margin: 20px;
 }
 
+.container1 {
+    display: grid;
+    grid-template-columns: 1fr 2px 1fr 2px 1fr;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    width: 100%;
+    margin: auto;
+    height: 300px; /* Tinggi container */
+    border-radius: 10px;
+}
+
+/* Bagian kiri dan kanan kosong */
+.empaty-section1 {
+    display: flex;
+    flex-direction: column; /* Mengatur arah ke kolom */
+    align-items: center; /* Menengahkan konten secara horizontal */
+    justify-content: center; /* Menengahkan konten secara vertikal (jika diperlukan) */
+    text-align: center; /* Menengahkan teks */
+    height: auto; /* Opsional: membuat container memenuhi tinggi viewport */
+}
+
+/* Garis vertikal */
+.divider1 {
+    width: 2px;
+    height: 100%;
+    background-color:purple;
+}
+
 
 /*** Button ***/
 .btn {
@@ -220,6 +249,73 @@
 }
 
 
+/* Article style */
+.container-article {
+    max-width: auto;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+}
+.title-article {
+    font-size: 2em;
+    font-weight: bold;
+    color: purple;
+    margin-bottom: 10px;
+}
+.title-article::before {
+    /* content: "ARSIP:"; */
+    font-size: 0.8em;
+    color: #888;
+    margin-right: 5px;
+}
+.title-underline-article {
+    width: 50px;
+    height: 3px;
+    background-color: purple;
+    margin-bottom: 20px;
+}
+.article {
+    display: flex;
+    gap: 20px;
+}
+.article-image {
+    flex: 1;
+}
+.article-image img {
+    width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+}
+.article-content {
+    flex: 2;
+}
+.article-meta {
+    font-size: 0.9em;
+    color: #888;
+    margin-bottom: 10px;
+}
+.article-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+.article-description {
+    font-size: 1em;
+    color: #555;
+    text-align: justify;
+    margin-bottom: 20px;
+}
+.read-more {
+    font-size: 1em;
+    font-weight: bold;
+    color: #007bff;
+    text-decoration: none;
+}
+.read-more:hover {
+    text-decoration: underline;
+}
+
 /*** Icon ***/
 .icon {
     padding: 15px;
@@ -305,14 +401,14 @@
 
 /*** Team ***/
 .team-item {
-    box-shadow: 0 0 30px rgba(0, 0, 0, .08);
+    box-shadow: 1px 1px 4px 1px rgba(128, 0, 128, 0.5);
     transition: .5s;
 }
 
 .team-item .btn {
     color: var(--primary);
     background: #FFFFFF;
-    box-shadow: 0 0 30px rgba(0, 0, 0, .15);
+    /* box-shadow: 0 0 30px rgba(169, 14, 197, 0.075); */
 }
 
 .team-item .btn:hover {

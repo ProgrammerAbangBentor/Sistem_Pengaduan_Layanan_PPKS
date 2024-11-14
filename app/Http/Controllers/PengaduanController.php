@@ -32,7 +32,7 @@ class PengaduanController extends Controller
                 WHEN status = 'selesai' THEN 3
                 ELSE 4
             END")
-            ->paginate(10);
+            ->paginate(1);
 
         return view('pages.pengaduan.index', compact('pengaduans', 'categories'));
     }

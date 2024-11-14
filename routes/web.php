@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
@@ -10,12 +10,15 @@ use App\Http\Controllers\PengaduanUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\KeanggotaanController;
 
 Route::get('/', function () {
     return view('pages.dasboard.index');
-});
+})->name('dashboard');
 
 Route::get('/login', [HomeController::class,'login'])->name('login');
+Route::get('/struktur', [HomeController::class,'struktur'])->name('struktur');
+Route::get('/artikel', [HomeController::class,'artikel'])->name('artikel');
 
 //Route untuk register
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
@@ -34,6 +37,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Dashboard route
     Route::get('home', [DashboardController::class, 'index'])->name('home');
+    Route::get('user/profil/{id}', [UserController::class, 'profil'])->name('user.profil');
+    Route::put('user/updateProfile/{id}', [UserController::class, 'updateProfile'])->name('user.updateProfile');
 
     // Route manajemen user, hanya bisa diakses oleh admin
     Route::middleware(['role:admin|anggota'])->group(function () {
@@ -42,6 +47,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Route manajemen pengaduan, bisa diakses oleh admin dan anggota
     Route::middleware(['role:anggota|admin'])->group(function () {
+        Route::resource('anggota',KeanggotaanController::class);
+        Route::resource('article', ArticleController::class);
         Route::resource('pengaduan', PengaduanController::class);
         Route::post('/pengaduan/{id}/update-status', [PengaduanController::class, 'updateStatus'])->name('pengaduan.updateStatus');
 
