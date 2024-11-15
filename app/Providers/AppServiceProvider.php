@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator; 
 use App\Http\Responses\RegisterViewResponse;
 use Laravel\Fortify\Contracts\RegisterViewResponse as RegisterViewResponseContract;
 class AppServiceProvider extends ServiceProvider
@@ -20,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Mengonfigurasi pagination untuk menggunakan Bootstrap 4
+        Paginator::useBootstrapFour();
     }
 }

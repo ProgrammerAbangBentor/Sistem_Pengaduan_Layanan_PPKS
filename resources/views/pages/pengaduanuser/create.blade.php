@@ -40,9 +40,21 @@
                                 <label for="laporan">Laporan</label>
                                 <textarea class="form-control" name="laporan" rows="5" required></textarea>
                             </div>
-                            <div class="form-group">
-                                <label for="image">File (Gambar, Dokumen, dll.)</label>
-                                <input type="file" class="form-control" name="file" accept="*">
+                              <!-- Field File -->
+                              <div class="form-group">
+                                <label for="file">File</label>
+                                <input type="file" class="form-control" name="file">
+                                <small class="form-text text-muted">
+                                    Supported file types: image (jpeg, png, jpg, gif), audio (mp3), video (mp4, avi), documents (pdf, doc, docx).
+                                    <br>
+                                    Maksimal ukuran file: 10MB
+                                </small>
+                                <!-- Menampilkan pesan error jika ada -->
+                                @if ($errors->has('file'))
+                                    <div class="alert alert-danger mt-2">
+                                        {{ $errors->first('file') }}
+                                    </div>
+                                @endif
                             </div>
                             <button type="submit" class="btn btn-primary">Kirim Laporan</button>
 

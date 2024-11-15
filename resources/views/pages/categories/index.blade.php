@@ -21,6 +21,18 @@
                     <div class="breadcrumb-item">All Categories</div>
                 </div>
             </div>
+
+            <!-- Menampilkan Pesan Alert -->
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @elseif (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
             <div class="section-body">
                 <h2 class="section-title">Categories</h2>
                 <p class="section-lead">
@@ -60,9 +72,6 @@
 
                                                 <td>
                                                     <div class="d-flex justify-content-left">
-                                                        {{-- <a href='{{ route('categories.show', $category->id) }}' class="btn btn-sm btn-success btn-icon" style="margin-right: 10px;">
-                                                            <i class="fas fa-eye"></i> Detail
-                                                        </a> --}}
                                                         <a href='{{ route('categories.edit', $category->id) }}' class="btn btn-sm btn-info btn-icon" style="margin-right: 10px;">
                                                             <i class="fas fa-edit"></i> Edit
                                                         </a>
