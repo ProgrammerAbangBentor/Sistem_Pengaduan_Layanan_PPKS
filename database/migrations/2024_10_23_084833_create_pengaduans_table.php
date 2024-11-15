@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('laporan'); // Laporan yang dibuat
             $table->string('image')->nullable(); // Path gambar, boleh kosong
             $table->timestamps(); // Created_at dan updated_at otomatis
-          
+
 
         });
     }

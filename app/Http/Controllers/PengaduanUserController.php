@@ -46,7 +46,7 @@ class PengaduanUserController extends Controller
             'name' => 'required|string|max:255',
             'user' => 'required|in:Mahasiswa,Dosen,anonim',
             'laporan' => 'required|string',
-            'file' => 'nullable|file|max:2048', // Mengizinkan semua jenis file
+            'file' => 'nullable|file|max:100048', // Mengizinkan semua jenis file
             'category_id' => 'required|exists:categories,id', // Validasi kategori
         ]);
 

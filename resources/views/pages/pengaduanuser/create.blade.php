@@ -47,7 +47,7 @@
                                 <small class="form-text text-muted">
                                     Supported file types: image (jpeg, png, jpg, gif), audio (mp3), video (mp4, avi), documents (pdf, doc, docx).
                                     <br>
-                                    Maksimal ukuran file: 10MB
+                                    Maksimal ukuran file: 100MB
                                 </small>
                                 <!-- Menampilkan pesan error jika ada -->
                                 @if ($errors->has('file'))

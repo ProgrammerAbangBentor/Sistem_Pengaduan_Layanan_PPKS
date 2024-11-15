@@ -30,7 +30,7 @@ class PengaduanController extends Controller
                 WHEN status = 'selesai' THEN 3
                 ELSE 4
             END")
-            ->paginate(1);
+            ->paginate(10);
 
         return view('pages.pengaduan.index', compact('pengaduans', 'categories'));
     }
@@ -48,7 +48,7 @@ class PengaduanController extends Controller
             'name' => 'required|string|max:255',
             'user' => 'required|in:Mahasiswa,Dosen,anonim',
             'laporan' => 'required|string',
-            'file' => 'nullable|mimes:jpeg,png,jpg,gif,mp3,mp4,avi,pdf,doc,docx|max:10240', // Validasi berbagai jenis file
+            'file' => 'nullable|mimes:jpeg,png,jpg,gif,mp3,mp4,avi,pdf,doc,docx|max:100240', // Validasi berbagai jenis file
         ]);
 
         $userId = auth()->id();
@@ -75,6 +75,12 @@ class PengaduanController extends Controller
         ]);
 
         return redirect()->route('pengaduan.index')->with('success', 'Pengaduan created successfully');
+    }
+
+    public function show($id)
+    {
+        $pengaduan = Pengaduan::findOrFail($id);
+        return view('pages.pengaduan.detail', compact('pengaduan'));
     }
 
     // Mengupdate pengaduan di database
