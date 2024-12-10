@@ -6,6 +6,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"
         name="viewport">
     <title>@yield('title') &mdash; Poltekgo</title>
+    <link href="{{ asset ('template/img/logo.png') }}" rel="icon">
 
     <!-- General CSS Files -->
     <link rel="stylesheet"

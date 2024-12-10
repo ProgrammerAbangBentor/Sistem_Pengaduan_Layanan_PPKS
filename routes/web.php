@@ -33,7 +33,7 @@ Route::post('register', [RegisterController::class, 'register']);
 
 // Rute yang hanya bisa diakses oleh pengguna yang terautentikasi
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'active'])->group(function () {
 
     // Dashboard route
     Route::get('home', [DashboardController::class, 'index'])->name('home');
@@ -43,6 +43,8 @@ Route::middleware(['auth'])->group(function () {
     // Route manajemen user, hanya bisa diakses oleh admin
     Route::middleware(['role:admin|anggota'])->group(function () {
         Route::resource('user', UserController::class);
+        Route::post('/user/{id}/toggle-active', [UserController::class, 'toggleActive'])->name('user.toggle-active');
+
     });
 
     // Route manajemen pengaduan, bisa diakses oleh admin dan anggota

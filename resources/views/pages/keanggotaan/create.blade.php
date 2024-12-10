@@ -7,6 +7,27 @@
     <link rel="stylesheet" href="{{ asset('library/selectric/public/selectric.css') }}">
 @endpush
 
+<style>
+    .image-preview {
+        width: 200px; /* Lebar gambar */
+        height: 200px; /* Tinggi gambar */
+        border: 2px dashed #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+        border-radius: 10px; /* Opsional: Buat gambar berbentuk lingkaran */
+        background-color: #f8f9fa;
+    }
+
+    .image-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Menjaga gambar agar sesuai tanpa melar */
+    }
+    </style>
+
 @section('main')
     <div class="main-content">
         <section class="section">
@@ -14,7 +35,7 @@
                 <h1>Create Anggota</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></div>
-                    <div class="breadcrumb-item"><a href="{{ route('artikel.index') }}">Anggota</a></div>
+                    <div class="breadcrumb-item"><a href="">Anggota</a></div>
                     <div class="breadcrumb-item active">Create Anggota</div>
                 </div>
             </div>
@@ -50,10 +71,16 @@
                                         <label for="no_telp">No Telp</label>
                                         <input type="text" class="form-control" name="no_telp" required>
                                     </div>
+
                                     <div class="form-group">
                                         <label for="image">Image</label>
-                                        <input type="file" class="form-control" name="image">
+                                        <input type="file" class="form-control" name="image" id="image" onchange="previewImage(event)">
                                     </div>
+                                    <div class="form-group mt-3">
+                                        <label>Preview</label>
+                                        <div class="image-preview" id="image-preview"></div>
+                                    </div>
+
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Save Anggota</button>
@@ -69,6 +96,22 @@
         </section>
     </div>
 @endsection
+<script>
+    function previewImage(event) {
+        const imagePreview = document.getElementById('image-preview');
+        const file = event.target.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imagePreview.innerHTML = `<img src="${e.target.result}" alt="Preview Image">`;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            imagePreview.innerHTML = ''; // Kosongkan jika tidak ada file
+        }
+    }
+    </script>
 
 @push('scripts')
     <!-- JS Libraries -->

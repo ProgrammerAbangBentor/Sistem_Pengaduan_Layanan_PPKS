@@ -24,6 +24,10 @@ class HomeController extends Controller
         $sekretaris = Keanggotaan::where('jabatan', 'Sekretaris')->first();
         $anggota = Keanggotaan::where('jabatan', 'Anggota')->get();
 
+        $ketua = $ketua ?? 'Data Ketua belum diisi';
+        $sekretaris = $sekretaris ?? 'Data Sekretaris belum diisi';
+        $anggota = $anggota->isEmpty() ? ['Data Anggota belum diisi'] : $anggota;
+
 
         return view('pages.dasboard.struktur', compact('ketua' , 'sekretaris' , 'anggota'));
     }

@@ -14,7 +14,7 @@
                 <h1>Create Category</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></div>
-                    <div class="breadcrumb-item"><a href="{{ route('artikel.index') }}">Categories</a></div>
+                    <div class="breadcrumb-item"><a href="">Categories</a></div>
                     <div class="breadcrumb-item active">Create Artikel</div>
                 </div>
             </div>
@@ -32,7 +32,7 @@
                                 <h4>Artikel Form</h4>
                             </div>
                             <div class="card-body">
-                                <form action="{{ route('artikel.store') }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('article.store') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group">
                                         <label for="title">Title</label>
@@ -49,7 +49,7 @@
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Save Category</button>
-                                        <a href="{{ route('artikel.index') }}" class="btn btn-secondary">Kembali</a>
+                                        <a href="{{ route('article.index') }}" class="btn btn-secondary">Kembali</a>
                                     </div>
                                 </form>
                             </div>

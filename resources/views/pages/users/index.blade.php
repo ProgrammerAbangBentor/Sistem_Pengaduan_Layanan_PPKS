@@ -113,6 +113,15 @@
                                                                 <i class="fas fa-times"></i> Delete
                                                             </button>
                                                         </form>
+
+                                                         <!-- Tombol Aktif/Nonaktifkan -->
+                                                        <form action="{{ route('user.toggle-active', $user->id) }}" method="POST" class="ml-2">
+                                                            @csrf
+                                                            <button class="btn btn-sm btn-warning btn-icon">
+                                                                <i class="fas fa-user-{{ $user->is_active ? 'check' : 'times' }}"></i>
+                                                                {{ $user->is_active ? 'Deactivate' : 'Activate' }}
+                                                            </button>
+                                                        </form>
                                                     </div>
                                                 </td>
                                             </tr>

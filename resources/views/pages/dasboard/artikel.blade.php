@@ -81,60 +81,35 @@
         <!-- Navbar End -->
 
         <!-- Artikel Start -->
-        @foreach ($artikel as $art)
-        <div class="container-article">
-            <div class="title-article">Artikel</div>
-            <div class="title-underline-article"></div>
+        @if($artikel->isEmpty())
+            <div class="alert alert-warning text-center">
+                Data Artikel Belum Ada
+            </div>
+        @else
+            @foreach ($artikel as $art)
+            <div class="container-article">
+                <div class="title-article">Artikel</div>
+                <div class="title-underline-article"></div>
 
-            <div class="article">
-                <div class="article-image">
-                    <img src="{{ asset('storage/' . $art->image) }}" alt="Artikel Image">
-                </div>
-
-                <div class="article-content">
-                    <div class="article-title">{{ $art->title }}</div>
-                    <div class="article-meta">ARTIKEL | {{ $art->created_at }}</div>
-                    <div class="article-description">
-                        {{ $art->content }}
+                <div class="article">
+                    <div class="article-image">
+                        <img src="{{ asset('storage/' . $art->image) }}" alt="Artikel Image">
                     </div>
-                    <a href="#" class=" ">READ MORE ></a>
+
+                    <div class="article-content">
+                        <div class="article-title">{{ $art->title }}</div>
+                        <div class="article-meta">ARTIKEL | {{ $art->created_at }}</div>
+                        <div class="article-description">
+                            {{ $art->content }}
+                        </div>
+                        <a href="#" class=" ">READ MORE ></a>
+                    </div>
                 </div>
             </div>
-        </div>
-        @endforeach
+            @endforeach
+        @endif
 
         <!-- About End -->
-
-        <!-- Team Start -->
-        {{-- <div class="container-xxl py-5">
-            <div class="container">
-                <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-                    <h1 class="mb-3">Anggota</h1>
-                </div>
-                <div class="row g-4">
-                    @foreach($anggota as $item)
-                        <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                            <div class="team-item rounded overflow-hidden">
-                                <div class="position-relative">
-                                    <img class="img-fluid" src="{{ asset('storage/' . $item->image) }}" alt="">
-                                    <div class="position-absolute start-50 top-100 translate-middle d-flex align-items-center">
-                                        <a class="btn btn-square mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                                        <a class="btn btn-square mx-1" href=""><i class="fab fa-twitter"></i></a>
-                                        <a class="btn btn-square mx-1" href=""><i class="fab fa-instagram"></i></a>
-                                    </div>
-                                </div>
-                                <div class="text-center p-4 mt-3">
-                                    <h5 class="fw-bold mb-0">{{ $item->name }}</h5>
-                                    <small>{{ $item->status }}</small>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </div> --}}
-        <!-- Team End -->
-
 
         <!-- Footer Start -->
         <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">

@@ -83,10 +83,7 @@
                                     </div>
                                 @enderror
                             </div>
-                            <div class="form-group">
-                                <label>Phone</label>
-                                <input type="number" class="form-control" name="phone" value="{{ $user->phone }}">
-                            </div>
+
                             <div class="form-group">
                                 <label class="form-label">Role</label>
                                 <div class="selectgroup w-100">

@@ -41,19 +41,20 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
-            'role' => 'required|exists:roles,name', // Memastikan role ada di tabel roles
+            'role' => 'required|in:admin,anggota,user',
         ]);
 
-        $user = new User;
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->save();
+         // Create user
+         $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => $request->role,
+        ]);
+         // Assign role
+         $user->assignRole($request->role);
 
-        // Menetapkan role setelah menyimpan pengguna
-        $user->assignRole($request->role);
-
-        return redirect()->route('user.index')->with('success', 'User created successfully');
+         return redirect()->route('user.index')->with('success', 'User created successfully.');
     }
 
     public function profil($id)
@@ -79,18 +80,15 @@ class UserController extends Controller
         $user->email = $request->input('email');
 
         // Jika password diisi, hash dan update password
-        if ($request->input('password')) {
-           $data['password'] = Hash::make($request->input('password'));
-        } else {
-            //if password is empty, then use the old password
-            $data['password'] = $user->password;
+        if ($request->filled('password')) { // Mengecek apakah password diisi
+            $user->password = Hash::make($request->input('password'));
         }
 
         // Simpan perubahan ke database
         $user->save();
 
         // Redirect ke profil dengan pesan sukses
-        return redirect()->route('home', $id)->with('success', 'Profile updated successfully');
+        return redirect()->route('user.profil', $id)->with('success', 'Profile updated successfully');
    }
 
 
@@ -102,29 +100,24 @@ class UserController extends Controller
         return view('pages.users.edit', compact('user', 'roles'));
     }
 
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required',
-            'role' => 'required|exists:roles,name', // Memastikan role ada di tabel roles
-        ]);
-
+        //update
+        public function update(Request $request, $id)
+        {
+        $data = $request->all();
         $user = User::findOrFail($id);
-        $user->name = $request->name;
-        $user->email = $request->email;
 
-        // Mengupdate role
-        $user->syncRoles($request->role); // Sync role
-
-        if ($request->filled('password')) {
-            $user->password = Hash::make($request->password);
+        //check if password is not empty
+        if ($request->input('password')) {
+            $data['password'] = Hash::make($request->input('password'));
+        } else {
+            //if password is empty, then use the old password
+            $data['password'] = $user->password;
         }
+        $user->update($data);
+        $user->assignRole($request->role);
+        return redirect()->route('user.index') ->with('success', 'User updated successfully');
 
-        $user->save();
-
-        return redirect()->route('user.index')->with('success', 'User updated successfully');
-    }
+        }
 
     public function destroy($id)
     {
@@ -133,4 +126,15 @@ class UserController extends Controller
 
         return redirect()->route('user.index')->with('success', 'User deleted successfully');
     }
+
+    // app/Http/Controllers/UserController.php
+public function toggleActive($id)
+{
+    $user = User::findOrFail($id);
+    $user->is_active = !$user->is_active;  // Membalik status aktif
+    $user->save();
+
+    return redirect()->route('user.index')->with('success', 'Akun berhasil diperbarui.');
+}
+
 }
