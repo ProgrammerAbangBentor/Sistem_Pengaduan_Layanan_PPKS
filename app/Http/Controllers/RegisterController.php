@@ -29,6 +29,7 @@ class RegisterController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'is_active' => false, // Status akun tidak aktif secara default
         ]);
 
         // Berikan role "user" secara otomatis
@@ -38,6 +39,6 @@ class RegisterController extends Controller
         Auth::login($user);
 
         // Redirect ke halaman dashboard atau halaman lain yang kamu inginkan
-        return redirect()->route('home');
+        return redirect()->route('login');
     }
 }

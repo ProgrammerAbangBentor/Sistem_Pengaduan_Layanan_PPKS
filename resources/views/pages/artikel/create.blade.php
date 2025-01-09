@@ -11,10 +11,10 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Create Category</h1>
+                <h1>Create Artikel</h1>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></div>
-                    <div class="breadcrumb-item"><a href="">Categories</a></div>
+                    <div class="breadcrumb-item"><a href="">Artikel</a></div>
                     <div class="breadcrumb-item active">Create Artikel</div>
                 </div>
             </div>
@@ -48,7 +48,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-primary">Save Category</button>
+                                        <button type="submit" class="btn btn-primary">Save Artikel</button>
                                         <a href="{{ route('article.index') }}" class="btn btn-secondary">Kembali</a>
                                     </div>
                                 </form>

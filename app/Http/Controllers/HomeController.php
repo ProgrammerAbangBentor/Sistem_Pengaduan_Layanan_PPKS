@@ -34,7 +34,13 @@ class HomeController extends Controller
 
     public function artikel()
     {
-        $artikel = Artikel::all();
-        return view('pages.dasboard.artikel', compact('artikel'));
-    }
+         // Ambil artikel terbaru dengan relasi user (pembuat artikel)
+    $artikels = Artikel::with('user')
+    ->orderBy('created_at', 'desc') // Urutkan berdasarkan artikel terbaru
+    ->get();
+
+// Jika tidak ada artikel, beri pesan default
+$artikels = $artikels->isEmpty() ? null : $artikels;
+
+return view('pages.dasboard.artikel', compact('artikels'));   }
 }

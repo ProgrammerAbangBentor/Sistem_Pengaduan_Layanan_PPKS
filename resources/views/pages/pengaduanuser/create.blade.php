@@ -6,7 +6,7 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header">
-                <h1>Create Pengaduan</h1>
+                <h1>Buat Pengaduan</h1>
             </div>
             @include('layouts.alert')
             <div class="section-body">

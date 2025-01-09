@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Artikel - Satgas PPKS Poltekgo</title>
+    <title>Artikels - Satgas PPKS Poltekgo</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -72,7 +72,7 @@
                                 <a href="404.html" class="dropdown-item">Penanganan</a>
                             </div>
                         </div>
-                        <a href="about.html" class="nav-item nav-link active">Artikel</a>
+                        <a href="about.html" class="nav-item nav-link active">Artikels</a>
                     </div>
                     <a href="{{ route('login') }}" class="btn btn-dark px-3 d-none d-lg-flex"><b>Masuk</b></a> <!-- Perhatikan href di sini -->
                 </div>
@@ -80,34 +80,37 @@
         </div>
         <!-- Navbar End -->
 
-        <!-- Artikel Start -->
-        @if($artikel->isEmpty())
-            <div class="alert alert-warning text-center">
-                Data Artikel Belum Ada
+        <!-- Artikels Start -->
+        @if($artikels->isEmpty())
+    <div class="alert alert-warning text-center">
+        Data Artikels Belum Ada
+    </div>
+@else
+    @foreach ($artikels as $art)
+    <div class="container-article">
+        <div class="title-article">Artikels</div>
+        <div class="title-underline-article"></div>
+
+        <div class="article">
+            <div class="article-image">
+                <img src="{{ asset('storage/' . $art->image) }}" alt="Artikel Image">
             </div>
-        @else
-            @foreach ($artikel as $art)
-            <div class="container-article">
-                <div class="title-article">Artikel</div>
-                <div class="title-underline-article"></div>
 
-                <div class="article">
-                    <div class="article-image">
-                        <img src="{{ asset('storage/' . $art->image) }}" alt="Artikel Image">
-                    </div>
-
-                    <div class="article-content">
-                        <div class="article-title">{{ $art->title }}</div>
-                        <div class="article-meta">ARTIKEL | {{ $art->created_at }}</div>
-                        <div class="article-description">
-                            {{ $art->content }}
-                        </div>
-                        <a href="#" class=" ">READ MORE ></a>
-                    </div>
+            <div class="article-content">
+                <div class="article-title">{{ $art->title }}</div>
+                <div class="article-meta">
+                    ARTIKEL | {{ $art->created_at->format('d M Y') }} | Di Buat Oleh: {{ $art->user->name ?? 'Tidak Diketahui' }}
                 </div>
+                <div class="article-description">
+                    {{ Str::limit($art->content, 150) }}
+                </div>
+                <a href="#" class=" ">READ MORE ></a>
             </div>
-            @endforeach
-        @endif
+        </div>
+    </div>
+    @endforeach
+@endif
+
 
         <!-- About End -->
 
