@@ -69,6 +69,7 @@
                                             <th>No</th>
                                             <th>Judul Laporan</th>
                                             <th>Tanggal</th>
+                                            <th>Keterangan Proses Laporan</th>
                                             <th>Status</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -77,6 +78,7 @@
                                                 <th>{{ $loop->iteration }}</th>
                                                 <td>{{ $pengaduan->laporan }}</td>
                                                 <td>{{ $pengaduan->created_at->format('d-m-Y') }}</td>
+                                                <td>{{ $pengaduan->keterangan ?? 'Tidak ada keterangan' }}</td>
                                                 <td>
                                                     <span class="badge
                                                         @if($pengaduan->status == 'pending') bg-danger

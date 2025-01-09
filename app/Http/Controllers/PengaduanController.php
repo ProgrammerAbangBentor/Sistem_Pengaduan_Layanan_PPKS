@@ -79,7 +79,7 @@ class PengaduanController extends Controller
 
     public function show($id)
     {
-        $pengaduan = Pengaduan::findOrFail($id);
+       $pengaduan = Pengaduan::with('user')->findOrFail($id);
         return view('pages.pengaduan.detail', compact('pengaduan'));
     }
 
@@ -136,14 +136,27 @@ class PengaduanController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
+        // Validasi input
         $request->validate([
             'status' => 'required|string|in:pending,proses,selesai',
+            'keterangan' => 'required|string|max:255', // Validasi keterangan
         ]);
 
+        // Cari pengaduan berdasarkan ID
         $pengaduan = Pengaduan::findOrFail($id);
-        $pengaduan->status = $request->status;
-        $pengaduan->save();
 
-        return response()->json(['success' => true, 'message' => 'Status pengaduan berhasil diperbarui.']);
+        // Perbarui status, keterangan, dan updated_by
+        $pengaduan->status = $request->status;
+        $pengaduan->keterangan = $request->keterangan;
+        $pengaduan->updated_by = auth()->id(); // Simpan ID pengguna yang mengubah
+        $pengaduan->save(); // Simpan perubahan ke database
+
+        // Kembalikan respons JSON
+        return response()->json([
+            'success' => true,
+            'message' => 'Status pengaduan berhasil diperbarui dengan keterangan.',
+        ]);
     }
+
+
 }

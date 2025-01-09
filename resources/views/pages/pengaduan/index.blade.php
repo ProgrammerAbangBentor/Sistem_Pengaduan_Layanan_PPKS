@@ -76,6 +76,7 @@
                                             <th>Kategori</th>
                                             <th>Tanggal Pengaduan</th>
                                             <th>Status Laporan</th>
+                                            <th>Keterangan</th>
                                             <th>Action</th>
                                         </tr>
                                         @foreach ($pengaduans as $pengaduan)
@@ -86,6 +87,7 @@
                                                 <td>{{ $pengaduan->user }}</td>
                                                 <td>{{ $pengaduan->category_name }}</td>
                                                 <td>{{ $pengaduan->created_at }}</td>
+
                                                 <td>
                                                     <span class="badge
                                                         @if($pengaduan->status == 'pending') bg-danger
@@ -95,6 +97,7 @@
                                                         {{ ucfirst($pengaduan->status) }}
                                                     </span>
                                                 </td>
+                                                <td>{{ $pengaduan->keterangan ?? 'Tidak ada keterangan' }}</td>
                                                 <td>
                                                  <div class="d-flex justify-content-center">
                                                         <a href='{{ route('pengaduan.show', $pengaduan->id) }}' class="btn btn-sm btn-success btn-icon" style="margin-right: 10px;">
@@ -194,14 +197,22 @@
     <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
 
     <script>
-        function updateStatus(pengaduanId, status) {
+         function updateStatus(pengaduanId, status) {
             // Konfirmasi sebelum mengupdate status
             if (confirm('Apakah Anda yakin ingin mengubah status pengaduan ini menjadi ' + status + '?')) {
+                // Meminta keterangan dari pengguna
+                var keterangan = prompt('Masukkan keterangan untuk perubahan status:');
+                if (!keterangan || keterangan.trim() === '') {
+                    alert('Keterangan diperlukan untuk memperbarui status.');
+                    return;
+                }
+
                 $.ajax({
                     url: '{{ url('/pengaduan') }}/' + pengaduanId + '/update-status',
                     type: 'POST',
                     data: {
                         status: status,
+                        keterangan: keterangan, // Kirim keterangan ke server
                         _token: '{{ csrf_token() }}' // Token CSRF untuk keamanan
                     },
                     success: function(response) {

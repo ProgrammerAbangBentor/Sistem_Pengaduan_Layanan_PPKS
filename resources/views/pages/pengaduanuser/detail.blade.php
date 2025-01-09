@@ -66,6 +66,13 @@
                                                 </span>
                                             </td>
                                         </tr>
+                                        <p><strong>Status Terakhir Diubah Oleh:</strong>
+                                            {{ $pengaduan->updatedBy ? $pengaduan->updatedBy->name : 'Tidak diketahui' }}
+                                        </p>
+                                          <tr>
+                                            <th>Keterangan Perubahan Status</th>
+                                            <td>{{ $pengaduan->status_keterangan ?? 'Tidak ada keterangan' }}</td>
+                                        </tr>
                                         <tr>
                                             <th>Laporan</th>
                                             <td>{{ $pengaduan->laporan }}</td>
@@ -92,35 +99,100 @@
         </section>
     </div>
 @endsection
-
 @push('style')
 <style>
-    .table th, .table td {
-        font-size: 1.1em; /* Membuat font lebih besar */
-        color: #333; /* Warna teks yang lebih gelap */
-    }
-
+    /* Tabel */
     .table {
-        border: 2px solid #007bff; /* Mengatur warna dan ketebalan border tabel */
+        border: 1px solid #dee2e6; /* Warna border tabel yang lembut */
+        border-radius: 5px; /* Sudut melengkung */
+        overflow: hidden;
+        background-color: #ffffff; /* Warna latar belakang tabel */
     }
 
     .table th {
-        background-color: #f8f9fa; /* Warna latar belakang untuk header tabel */
-        font-weight: bold; /* Membuat teks header lebih tebal */
+        background-color: #f1f3f5; /* Warna header tabel yang lebih lembut */
+        color: #212529; /* Warna teks header */
+        font-weight: bold;
+        text-align: left; /* Teks rata kiri */
+        padding: 12px; /* Padding untuk ruang ekstra */
     }
 
-    .table-bordered {
-        border: 2px solid #007bff; /* Mengatur border tabel */
+    .table td {
+        padding: 10px; /* Padding untuk konten */
+        vertical-align: middle; /* Konten rata tengah secara vertikal */
+        color: #495057; /* Warna teks */
     }
 
-    .table-bordered th, .table-bordered td {
-        border: 2px solid #007bff; /* Mengatur border sel tabel */
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f8f9fa; /* Warna striping */
     }
 
-    /* Menjamin responsivitas gambar */
+    /* Kartu */
+    .card {
+        border: 1px solid #dee2e6; /* Warna border */
+        border-radius: 8px; /* Sudut melengkung */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow lembut */
+    }
+
+    .card-header {
+        background-color: #007bff; /* Warna biru untuk header */
+        color: #ffffff; /* Teks putih untuk header */
+        font-size: 1.2em; /* Ukuran teks */
+        font-weight: bold;
+        padding: 15px; /* Padding header */
+    }
+
+    .card-body {
+        padding: 20px; /* Padding body */
+    }
+
+    .card-footer {
+        background-color: #f8f9fa; /* Latar belakang footer */
+        border-top: 1px solid #dee2e6;
+        padding: 15px; /* Padding footer */
+    }
+
+    /* Gambar */
     .img-fluid {
-        max-width: 100%; /* Pastikan gambar tidak melebihi lebar kolom */
-        height: auto; /* Pertahankan rasio aspek gambar */
+        max-width: 100%; /* Gambar tidak melebihi lebar kolom */
+        height: auto; /* Pertahankan rasio aspek */
+        border-radius: 5px; /* Sudut melengkung gambar */
+        border: 1px solid #dee2e6; /* Border lembut */
+    }
+
+    /* Badge Status */
+    .badge {
+        font-size: 1em; /* Ukuran teks badge */
+        padding: 0.5em 0.8em; /* Padding untuk badge */
+        border-radius: 15px; /* Membulatkan badge */
+    }
+
+    .bg-danger {
+        background-color: #e74c3c !important; /* Warna merah terang */
+    }
+
+    .bg-info {
+        background-color: #3498db !important; /* Warna biru terang */
+    }
+
+    .bg-success {
+        background-color: #2ecc71 !important; /* Warna hijau terang */
+    }
+
+    /* Responsivitas */
+    @media (max-width: 768px) {
+        .card-body {
+            padding: 15px;
+        }
+
+        .table th, .table td {
+            font-size: 0.9em; /* Ukuran font lebih kecil di perangkat kecil */
+        }
+
+        .img-fluid {
+            max-height: 200px; /* Batas tinggi gambar di perangkat kecil */
+        }
     }
 </style>
 @endpush
+
