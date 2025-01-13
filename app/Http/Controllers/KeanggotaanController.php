@@ -14,6 +14,7 @@ class KeanggotaanController extends Controller
     public function index()
     {
         $anggota = Keanggotaan::all();
+        
         return view('pages.keanggotaan.index', compact('anggota'));
     }
 

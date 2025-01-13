@@ -53,6 +53,7 @@
                                         </div>
                                     </form>
                                 </div>
+
                                 <div class="float-right">
                                     <form method="GET" action="{{ route('pengaduan.index') }}">
                                         <div class="input-group">
@@ -67,6 +68,10 @@
                                 <div class="clearfix mb-3"></div>
 
                                 <div class="table-responsive">
+                                    <a href="{{ route('print') }}" target="_blank" class="btn btn-sm btn-primary btn-icon">
+                                        <i class="fas fa-print"></i> Print
+                                    </a>
+
                                     <table class="table-striped table">
                                         <tr>
                                             <th>No</th>
@@ -145,45 +150,49 @@
     </div>
 @endsection
 @push('style')
-    <style>
-        /* Gaya untuk form inline */
-        .form-inline {
-            display: flex;
-            align-items: center; /* Mengatur agar label dan dropdown sejajar secara vertikal */
-        }
+<style>
+    /* Gaya untuk form inline */
+    .form-inline {
+        display: flex;
+        align-items: center; /* Menyelaraskan label dan dropdown secara vertikal */
+    }
 
-        /* Gaya untuk label */
-        .form-inline label {
-            font-weight: bold; /* Menebalkan teks label */
-            margin-right: 5px; /* Mengurangi jarak antara label dan dropdown */
-            font-size: 14px; /* Ukuran font label */
-            color: #333; /* Warna teks label */
-        }
+    /* Gaya untuk label */
+    .form-inline label {
+        font-weight: bold;
+        margin-right: 5px;
+        font-size: 14px;
+        color: #333;
+    }
 
-        /* Gaya untuk dropdown */
-        .selectric {
-            border-radius: 4px; /* Sudut yang lebih bulat */
-            border: 1px solid #ced4da; /* Warna border */
-            padding: 0.25rem 0.5rem; /* Mengurangi padding untuk ukuran lebih kecil */
-            font-size: 12px; /* Ukuran font dalam dropdown */
-            width: 180px; /* Lebar dropdown yang sedikit lebih kecil */
-            transition: border-color 0.15s ease-in-out; /* Transisi border */
-        }
+    /* Gaya untuk dropdown */
+    .selectric {
+        border-radius: 4px;
+        border: 1px solid #ced4da;
+        padding: 0.25rem 0.5rem;
+        font-size: 12px;
+        width: 180px;
+        transition: border-color 0.15s ease-in-out;
+    }
 
-        /* Gaya saat dropdown aktif */
-        .selectric:focus {
-            border-color: #80bdff; /* Warna border saat fokus */
-            outline: none; /* Menghilangkan outline default */
-            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25); /* Memberikan bayangan saat fokus */
-        }
+    /* Gaya saat dropdown aktif */
+    .selectric:focus {
+        border-color: #80bdff;
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
 
-        /* Gaya untuk button (jika diperlukan) */
-        .btn-primary {
-            margin-left: 5px; /* Mengurangi jarak antara dropdown dan button */
-            padding: 0.25rem 0.5rem; /* Mengurangi padding button untuk ukuran lebih kecil */
-            font-size: 12px; /* Ukuran font button */
-        }
-    </style>
+    /* Gaya untuk button */
+    .btn-primary {
+        margin-left: 5px;
+        padding: 0.25rem 0.5rem;
+        font-size: 12px;
+    }
+
+
+
+</style>
+
 @endpush
 
 

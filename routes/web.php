@@ -13,12 +13,13 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KeanggotaanController;
 
 Route::get('/', function () {
-    return view('pages.dasboard.index');
+    return view('pages.dasboard.landing');
 })->name('dashboard');
 
 Route::get('/login', [HomeController::class,'login'])->name('login');
 Route::get('/struktur', [HomeController::class,'struktur'])->name('struktur');
 Route::get('/artikel', [HomeController::class,'artikel'])->name('artikel');
+Route::get('/print', [HomeController::class, 'print'])->name('print');
 
 //Route untuk register
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');

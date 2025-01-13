@@ -2,205 +2,362 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>Artikels - Satgas PPKS Poltekgo</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- Favicon -->
-    <link href="{{ asset ('template/img/logo.png') }}" rel="icon">
+  <title>Layanan Pengaduan Dan Penanganan Kekerasan seksual</title>
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap" rel="stylesheet">
+  <!-- Bootstrap core CSS -->
+  <link href="{{ asset('templatemo/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
 
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="{{ asset('templatemo/assets/css/fontawesome.css')}}">
+  <link rel="stylesheet" href="{{ asset('templatemo/assets/css/templatemo-scholar.css')}}">
+  <link rel="stylesheet" href="{{ asset('templatemo/assets/css/owl.css')}}">
+  <link rel="stylesheet" href="{{ asset('templatemo/assets/css/animate.css')}}">
+  <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
 
-    <!-- Libraries Stylesheet -->
-    <link href="{{ asset('template/lib/animate/animate.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('template/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+  <style>
+    /* Menambahkan fixed positioning pada header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background-color: #9a1fff;
+      padding: 10px 0;
+    }
 
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="{{ asset('template/css/bootstrap.min.css') }}" rel="stylesheet">
+    body {
+      background-color: #9a1fff;
+      color: white;
+      margin-top: 120px;
+    }
 
-    <!-- Template Stylesheet -->
-    <link href="{{ asset('template/css/style.css') }}" rel="stylesheet">
+    /* Menghilangkan list bullet dan padding default */
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* Styling untuk item dropdown */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      left: 0;
+      top: 100%;
+      background-color: #9a1fff;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+
+    .dropdown:hover .dropdown-menu {
+      display: block;
+    }
+
+    .dropdown-menu li {
+      padding: 8px 16px;
+    }
+
+    .dropdown-menu a {
+      text-decoration: none;
+      color: #333;
+    }
+
+    .dropdown-menu a:hover {
+      background-color: #5d0171;
+    }
+
+    /* Styling artikel untuk kotak */
+    .container-article {
+      margin-bottom: 30px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    .article {
+      display: flex;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .article-image {
+      flex: 1;
+      max-width: 150px;
+      margin-right: 20px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .article-image img {
+      width: 100%;
+      height: auto;
+    }
+
+    .article-content {
+      flex: 3;
+    }
+
+    .article-title {
+      font-size: 22px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .article-meta {
+      font-size: 14px;
+      color: #777;
+      margin: 10px 0;
+    }
+
+    .article-description {
+      font-size: 16px;
+      color: #555;
+    }
+
+    .container-article a {
+      color: #9a1fff;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .container-article a:hover {
+      color: #5d0171;
+    }
+
+    /* Contact Form Section */
+    .contact-us {
+      background-color: #fff;
+      padding: 50px 0;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-us .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .contact-us h6 {
+      font-size: 18px;
+      font-weight: bold;
+      color: #9a1fff;
+    }
+
+    .contact-us h2 {
+      font-size: 32px;
+      color: #333;
+    }
+
+    .contact-us p {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    .contact-us .special-offer {
+      background-color: #f7f7f7;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .contact-us .special-offer h4 {
+      font-size: 22px;
+      color: #333;
+    }
+
+    .contact-us .special-offer span.offer {
+      font-size: 36px;
+      color: #9a1fff;
+      font-weight: bold;
+    }
+
+    .contact-us .special-offer h6 {
+      font-size: 14px;
+      color: #777;
+    }
+
+    .contact-us .special-offer a {
+      color: #9a1fff;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    /* Button Scroll to Top */
+    .scroll-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #9a1fff;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 50%;
+      display: none;
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    .scroll-to-top:hover {
+      background-color: #5d0171;
+    }
+
+        .title-article1 {
+        background-color: #9a1fff; /* Warna ungu */
+        color: white; /* Warna tulisan putih */
+        padding: 20px;
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        }
+  </style>
 </head>
 
 <body>
-    <div class="container-xxl bg-white p-0">
-        <!-- Spinner Start -->
-        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
+  <!-- Preloader Start -->
+  <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  <!-- Preloader End -->
+
+  <!-- Header Area Start -->
+  <header class="header-area header-sticky">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <!-- Logo -->
+              <a href="index.html" class="logo" style="display: flex; align-items: center;">
+                <img src="{{ asset('templatemo/assets/images/logo4.png') }}" style="height: 50px; width: auto;">
+              </a>
+              <div class="search-input">
+                <form id="search" action="#" style="margin: 0;">
+                  <h1 style="font-size: 16px; color: white; margin: 0;">Pelayanan & Penanganan Kekerasan Seksual</h1>
+                </form>
+              </div>
             </div>
+            <ul class="nav">
+              <li class="scroll-to-section"><a href="{{ route('dashboard') }}" class="active">Home</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle">Profile</a>
+                <ul class="dropdown-menu">
+                  <li><a href="{{ route('artikel') }}">Artikel</a></li>
+                  <li><a href="{{ route('struktur') }}">Struktur</a></li>
+                  <li><a href="#visimisi">VisiMisi</a></li>
+                </ul>
+              </li>
+              <li class="scroll-to-section"><a href="#services">Services</a></li>
+              <li class="scroll-to-section"><a href="#courses">Courses</a></li>
+              <li class="scroll-to-section"><a href="#team">Team</a></li>
+              <li class="scroll-to-section"><a href="#team">Galeri</a></li>
+              <li class="scroll-to-section"><a href="#events">Events</a></li>
+              <li class="scroll-to-section"><a href="#contact">Register Now!</a></li>
+            </ul>
+            <a class="menu-trigger"><span>Menu</span></a>
+          </nav>
         </div>
-        <!-- Spinner End -->
+      </div>
+    </div>
+  </header>
+  <!-- Header Area End -->
 
+  <!-- Artikel Section -->
+  <div class="container-article">
+    <h1 class="title-article1">ARTIKEL</h1>
+    <div class="title-article">Artikel</div>
+    <div class="title-underline-article"></div>
 
-        <!-- Navbar Start -->
-        <div class="container-fluid nav-bar bg-transparent">
-            <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
-                <a href="index.html" class="navbar-brand d-flex align-items-center text-center">
-                    <div>
-                        <img class="img-fluid" src="{{ asset ('template/img/logo.png') }}" alt="Icon" style="width: 45px; height: 45px;">
-                    </div>
-                    <h1 class="m-0 text-basic">&nbsp; SATGAS PPKS POLTEKGO</h1>
-                </a>
-                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <div class="navbar-nav ms-auto">
-                        <a href="{{ route('dashboard') }}" class="nav-item  nav-link ">Beranda</a>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Profile</a>
-                            <div class="dropdown-menu rounded-0 m-0">
-                                <a href="property-agent.html" class="dropdown-item">Pengantar</a>
-                                <a href="property-type.html" class="dropdown-item">Visi Dan Misi</a>
-                                <a href="{{ route('struktur') }}" class="dropdown-item ">Struktrur Organisasi</a>
-                            </div>
-                        </div>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Kekerasan Seksual</a>
-                            <div class="dropdown-menu rounded-0 m-0">
-                                <a href="testimonial.html" class="dropdown-item">Pencegahan</a>
-                                <a href="404.html" class="dropdown-item">Penanganan</a>
-                            </div>
-                        </div>
-                        <a href="about.html" class="nav-item nav-link active">Artikels</a>
-                    </div>
-                    <a href="{{ route('login') }}" class="btn btn-dark px-3 d-none d-lg-flex"><b>Masuk</b></a> <!-- Perhatikan href di sini -->
-                </div>
-            </nav>
-        </div>
-        <!-- Navbar End -->
-
-        <!-- Artikels Start -->
-        @if($artikels->isEmpty())
+    @if($artikels->isEmpty())
     <div class="alert alert-warning text-center">
-        Data Artikels Belum Ada
+      Data Artikel Belum Ada
     </div>
-@else
-    @foreach ($artikels as $art)
-    <div class="container-article">
-        <div class="title-article">Artikels</div>
-        <div class="title-underline-article"></div>
-
-        <div class="article">
-            <div class="article-image">
-                <img src="{{ asset('storage/' . $art->image) }}" alt="Artikel Image">
-            </div>
-
-            <div class="article-content">
-                <div class="article-title">{{ $art->title }}</div>
-                <div class="article-meta">
-                    ARTIKEL | {{ $art->created_at->format('d M Y') }} | Di Buat Oleh: {{ $art->user->name ?? 'Tidak Diketahui' }}
-                </div>
-                <div class="article-description">
-                    {{ Str::limit($art->content, 150) }}
-                </div>
-                <a href="#" class=" ">READ MORE ></a>
-            </div>
+    @else
+      @foreach ($artikels as $art)
+      <div class="article">
+        <div class="article-image">
+          <img src="{{ asset('storage/' . $art->image) }}" alt="Artikel Image">
         </div>
-    </div>
-    @endforeach
-@endif
-
-
-        <!-- About End -->
-
-        <!-- Footer Start -->
-        <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
-            <div class="container py-5">
-                <div class="row g-5">
-                    <div class="col-lg-3 col-md-6">
-                        <h5 class="text-white mb-4">Get In Touch</h5>
-                        <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>G4F6+H8R, Desa Panggulo, Jl. Muchlis Rahim, West Panggulo, Botupingge, Bone Bolango Regency, Gorontalo 96112</p>
-                        <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>(0435) 8702646</p>
-                        <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@poligon.ac.id </p>
-                        <div class="d-flex pt-2">
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h5 class="text-white mb-4">Quick Links</h5>
-                        <a class="btn btn-link text-white-50" href="">About Us</a>
-                        <a class="btn btn-link text-white-50" href="">Contact Us</a>
-                        <a class="btn btn-link text-white-50" href="">Our Services</a>
-                        <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
-                        <a class="btn btn-link text-white-50" href="">Terms & Condition</a>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h5 class="text-white mb-4">Photo Gallery</h5>
-                        <div class="row g-2 pt-2">
-                            <div class="col-4">
-                                <img class="img-fluid rounded bg-light p-1" src="img/property-1.jpg" alt="">
-                            </div>
-                            <div class="col-4">
-                                <img class="img-fluid rounded bg-light p-1" src="img/property-2.jpg" alt="">
-                            </div>x
-                            <div class="col-4">
-                                <img class="img-fluid rounded bg-light p-1" src="img/property-3.jpg" alt="">
-                            </div>
-                            <div class="col-4">
-                                <img class="img-fluid rounded bg-light p-1" src="img/property-4.jpg" alt="">
-                            </div>
-                            <div class="col-4">
-                                <img class="img-fluid rounded bg-light p-1" src="img/property-5.jpg" alt="">
-                            </div>
-                            <div class="col-4">
-                                <img class="img-fluid rounded bg-light p-1" src="img/property-6.jpg" alt="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <h5 class="text-white mb-4">Newsletter</h5>
-                        <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                        <div class="position-relative mx-auto" style="max-width: 400px;">
-                            <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                            <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="copyright">
-                    <div class="row">
-                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                            &copy; <a class="border-bottom" href="http://poligon.ac.id/ ">PPKS Poltekgo</a>, All Right Reserved.
-
-							<!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-							Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="article-content">
+          <div class="article-title">{{ $art->title }}</div>
+          <div class="article-meta">
+            ARTIKEL | {{ $art->created_at->format('d M Y') }} | Dibuat Oleh: {{ $art->user->name ?? 'Tidak Diketahui' }}
+          </div>
+          <div class="article-description">
+            {{ $art->content}}
+          </div>
+          <a href="#" class="">READ MORE ></a>
         </div>
-        <!-- Footer End -->
+      </div>
+      @endforeach
+    @endif
+  </div>
 
-
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+  <!-- Footer Start -->
+  <footer>
+    <div class="container">
+      <div class="col-lg-12">
+        <p>Copyright © 2036 Scholar Organization. All rights reserved. &nbsp;&nbsp;&nbsp; Design: <a href="https://templatemo.com" rel="nofollow" target="_blank">TemplateMo</a></p>
+      </div>
     </div>
+  </footer>
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('template/lib/wow/wow.min.js') }}"></script>
-    <script src="{{ asset('template/lib/easing/easing.min.js') }}"></script>
-    <script src="{{ asset('template/lib/waypoints/waypoints.min.js') }}"></script>
-    <script src="{{ asset('template/lib/owlcarousel/owl.carousel.min.js') }}"></script>
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" id="scrollToTopBtn" onclick="scrollToTop()">↑</button>
 
-    <!-- Template Javascript -->
-    <script src="{{ asset('template/js/main.js') }}"></script>
+  <!-- Scripts -->
+  <script src="{{ asset('templatemo/vendor/jquery/jquery.min.js')}}"></script>
+  <script src="{{ asset('templatemo/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+  <script src="{{ asset('templatemo/assets/js/isotope.min.js')}}"></script>
+  <script src="{{ asset('templatemo/assets/js/owl-carousel.js')}}"></script>
+  <script src="{{ asset('templatemo/assets/js/counter.js')}}"></script>
+  <script src="{{ asset('templatemo/assets/js/custom.js')}}"></script>
+
+  <!-- JavaScript for Scroll to Top Button -->
+  <script>
+    // Get the button
+    var mybutton = document.getElementById("scrollToTopBtn");
+
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function() {
+      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        mybutton.style.display = "block";
+      } else {
+        mybutton.style.display = "none";
+      }
+    };
+
+    // When the user clicks on the button, scroll to the top of the document
+    function scrollToTop() {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    }
+  </script>
 </body>
 
 </html>
