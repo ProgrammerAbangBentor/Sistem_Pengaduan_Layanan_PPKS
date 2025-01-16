@@ -8,12 +8,18 @@
             <div class="section-header">
                 <h1>Detail Pengaduan</h1>
             </div>
+
             <div class="section-body">
                 <div class="card mt-3">
                     <div class="card-header">
-                        <h4>Detail Pengaduan</h4>
+                        <h3>Nomor pengaduan : {{ $pengaduan->nomor_pengaduan }} | Status: {{ $pengaduan->status }} </h3>
                     </div>
                     <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                @include('layouts.alert')
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <h5>Identitas Pelapor</h5>
@@ -21,45 +27,41 @@
                                     <thead class="thead-light">
                                         <tr>
                                             <th>Nama</th>
-                                            <td>{{ $pengaduan->name }}</td>
+                                            <td>{{ $pengaduan->pelapor == 'Anonim' ? 'Anonim' : $pengaduan->pelapor }}</p></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Tanggal Laporan </th>
+                                            <td>{{ \Carbon\Carbon::parse($pengaduan->created_at)->format('d F Y') }}</p></td>
                                         </tr>
                                         <tr>
                                             <th>Jenis Identitas</th>
                                             <td>{{ $pengaduan->jenis_identitas }}</td>
                                         </tr>
                                         <tr>
-                                            <th>Alamat</th>
-                                            <td>{{ $pengaduan->alamat }}</td>
+                                            <th>No Identitas</th>
+                                            <td>{{ $pengaduan->no_identitas }}</td>
                                         </tr>
                                         <tr>
-                                            <th>No Telepon</th>
-                                            <td>{{ $pengaduan->no_tlp }}</td>
+                                            <th>Ketegori Pelapor</th>
+                                            <td>{{ $pengaduan->kategori_pelapor }}</td>
                                         </tr>
-                                        @if($pengaduan->image_identitas)
-                                        <tr>
-                                            <th>Gambar Identitas Pelapor</th>
-                                            <td>
-                                                <img src="{{ asset($pengaduan->image_identitas) }}" alt="Gambar Identitas Pelapor" class="img-fluid mb-3" style="max-width: 100%; height: auto; object-fit: contain;">
-                                            </td>
-                                        </tr>
-                                        @endif
                                     </thead>
                                 </table>
 
-                                <h5>Identitas Terlapor</h5>
+                                <h5>Identitas Tersangka</h5>
                                 <table class="table table-striped table-hover table-bordered table-purple">
                                     <thead class="thead-light">
                                         <tr>
-                                            <th>Nama Terlapor</th>
-                                            <td>{{ $pengaduan->nama_terlapor }}</td>
+                                            <th>Nama Tersangka</th>
+                                            <td>{{ $pengaduan->nama_tersangka }}</td>
                                         </tr>
                                         <tr>
-                                            <th>Status Terlapor</th>
-                                            <td>{{ $pengaduan->status_terlapor }}</td>
+                                            <th>Status Tersangka</th>
+                                            <td>{{ $pengaduan->status_tersangka }}</td>
                                         </tr>
                                         <tr>
-                                            <th>No HP Terlapor</th>
-                                            <td>{{ $pengaduan->no_hp_pelapor }}</td>
+                                            <th>No Telfon Tersangka</th>
+                                            <td>{{ $pengaduan->no_telfon_tersangka }}</td>
                                         </tr>
                                     </thead>
                                 </table>
@@ -69,11 +71,11 @@
                                     <thead class="thead-light">
                                         <tr>
                                             <th>Kategori</th>
-                                            <td>{{ $pengaduan->category->name ?? 'Tidak tersedia' }}</td>
+                                            <td>{{ $pengaduan->kategori_pengaduan->name ?? 'Tidak tersedia' }}</td>
                                         </tr>
                                         <tr>
                                             <th>Tanggal Peristiwa</th>
-                                            <td>{{ \Carbon\Carbon::parse($pengaduan->tanggal_peristiwa)->format('d M Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($pengaduan->tanggal_peristiwa)->format('d F Y') }}</td>
                                         </tr>
                                         <tr>
                                             <th>Lokasi Peristiwa</th>
@@ -105,17 +107,82 @@
                                                     <p>File ini tidak dapat ditampilkan.</p>
                                                 @endif
                                                 @else
-                                                    <p>Tidak ada file yang diunggah.</p>
+                                                <p>Tidak ada file yang diunggah.</p>
                                                 @endif
                                             </td>
                                         </tr>
                                     </thead>
                                 </table>
+                                <br>
+                                <hr style="border: 0; height: 2px; background-color: gray;">
+                                <h5>Update Status Laporan</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover table-bordered table-white">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>Status Saat ini</th>
+                                                    <td>{{ $pengaduan->status ?? 'Tidak tersedia' }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Catatan Saat ini</th>
+                                                    <td>
+                                                        @forelse ($pengaduan->timelines as $timelines)
+                                                            {{ $timelines->catatan }}
+                                                        @empty
+                                                            Tidak ada catatan untuk status ini.
+                                                        @endforelse
+                                                    </td>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                            </div>
+                                    <hr style="border: 0; height: 2px; background-color: gray;">
+                                    <form action="{{ route('pengaduan.update', $pengaduan) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover table-bordered table-white">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>Update Status Baru</th>
+                                                    <td>
+                                                        <select name="status" id="status" class="form-control">
+                                                            <option value="" disabled selected>-- Pilih Status Baru --</option>
+                                                            @if($pengaduan->status == 'Laporan Diterima')
+                                                                <option value="Sedang diverifikasi" {{ old('status', $pengaduan->status) == 'Sedang diverifikasi' ? 'selected' : '' }}>Sedang Diverifikasi</option>
+                                                            @elseif($pengaduan->status == 'Sedang diverifikasi')
+                                                                <option value="Sedang Diselidiki" {{ old('status', $pengaduan->status) == 'Sedang Diselidiki' ? 'selected' : '' }}>Sedang Diselidiki</option>
+                                                            @elseif($pengaduan->status == 'Sedang Diselidiki')
+                                                                <option value="Dalam Proses Hukum" {{ old('status', $pengaduan->status) == 'Dalam Proses Hukum' ? 'selected' : '' }}>Dalam Proses Hukum</option>
+                                                            @elseif($pengaduan->status == 'Dalam Proses Hukum')
+                                                                <option value="Kasus Selesai" {{ old('status', $pengaduan->status) == 'Kasus Selesai' ? 'selected' : '' }}>Kasus Selesai</option>
+                                                            @endif
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Tambah Catatan Baru</th>
+                                                    <td>
+                                                        <textarea name="catatan" id="catatan" class="form-control" rows="3" placeholder="Tambahkan catatan terkait pengaduan">{{ old('catatan') }}</textarea>
+                                                    </td>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between mt-3">
+                                        <button type="submit" class="btn btn-danger">Simpan Updatean Status Laporan</button>
+                                    </div>
+                                </form>
+                                <br>
+
+                                <hr style="border: 0; height: 2px; background-color: gray;">
                             </div>
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a href="{{ route('pengaduan.index') }}" class="btn btn-secondary">Kembali</a>
+                        <a href="{{ route('pengaduan.index') }}" class="btn btn-primary">Kembali</a>
                     </div>
                 </div>
             </div>

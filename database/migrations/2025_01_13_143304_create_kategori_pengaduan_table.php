@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('artikels', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id')->nullable(); // Tambahkan kolom user_id
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        Schema::create('kategori_pengaduan', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->text('keterangan');
+            $table->timestamps();
         });
     }
 
@@ -22,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('artikels', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('kategori_pengaduan');
     }
 };

@@ -9,57 +9,63 @@ class Pengaduan extends Model
 {
     use HasFactory;
 
-    /**
-     * Tabel yang digunakan oleh model ini.
-     */
-    protected $table = 'pengaduans';
-
-    /**
-     * Atribut yang dapat diisi secara massal.
-     */
+    protected $table = 'pengaduan';
     protected $fillable = [
-        'name',
-        'user',
+        'nomor_pengaduan',
+        'pelapor',
         'jenis_identitas',
-        'image_identitas',
-        'alamat',
-        'no_tlp',
-        'nama_terlapor',
-        'status_terlapor',
-        'no_hp_pelapor',
-        'laporan',
-        'category_id',
+        'no_identitas',
+        'kategori_pengaduan_id',
         'tanggal_peristiwa',
-        'lokasi_peristiwa',
-        'file',
-        'user_id',
-        'updated_by',
+        'kronologi_peristiwa',
+        'latitude',
+        'longitude',
+        'file_bukti',
+        'kategori_pelapor',
+        'nama_tersangka',
+        'status_tersangka',
+        'no_telfon_tersangka',
+        'status',
+        'satgas_id',
     ];
 
-    /**
-     * Atribut yang harus diperlakukan sebagai tipe tanggal.
-     */
-    protected $dates = ['tanggal_peristiwa'];
-
-    /**
-     * Relasi dengan model User.
-     * Pengaduan milik seorang pengguna.
-     */
-    public function user()
+    // Relasi dengan tabel KategoriPengaduan
+    public function kategori_pengaduan()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(Kategori_pengaduan::class, 'kategori_pengaduan_id');
     }
 
-    public function updatedBy()
+    public function satgas()
     {
-        return $this->belongsTo(User::class, 'updated_by');
+        return $this->belongsTo(Keanggotaan::class, 'satgas_id');
     }
-    /**
-     * Relasi dengan model Category.
-     * Pengaduan memiliki satu kategori.
-     */
-    public function category()
+
+    public function no_identitas()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(User::class, 'no_identitas','no_identitas');
+    }
+
+    public function timelines()
+    {
+        return $this->hasMany(Timeline::class, 'pengaduan_id');
+    }
+
+    // Aksesors untuk mengambil file (jika dibutuhkan)
+    public function getFileBuktiUrlAttribute()
+    {
+        return asset('storage/' . $this->file_bukti);
+    }
+
+    // Mutators jika diperlukan, misalnya untuk memformat tanggal
+    public function getTanggalPeristiwaFormattedAttribute()
+    {
+        return \Carbon\Carbon::parse($this->tanggal_peristiwa)->format('d-m-Y');
+    }
+
+    public static function generateNomorPengaduan()
+    {
+        $lastPengaduan = self::latest('id')->first();
+        $nextNumber = $lastPengaduan ? (int) substr($lastPengaduan->nomor_pengaduan, 1) + 1 : 1;
+        return 'P' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
     }
 }

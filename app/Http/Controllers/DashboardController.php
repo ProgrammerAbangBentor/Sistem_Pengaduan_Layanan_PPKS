@@ -29,8 +29,8 @@ class DashboardController extends Controller
         ->color('rgba(0, 123, 255, 1)');
 
         // Query untuk menghitung jumlah laporan berdasarkan jenis user
-        $userReports = Pengaduan::selectRaw('user, count(*) as count')
-        ->groupBy('user')
+        $userReports = Pengaduan::selectRaw('pelapor, count(*) as count')
+        ->groupBy('pelapor')
         ->get();
 
         // Membuat pie chart berdasarkan jenis user
@@ -49,9 +49,9 @@ class DashboardController extends Controller
             ]);
 
         // Ambil jumlah pengaduan berdasarkan kategori
-        $dataMahasiswa = Pengaduan::where('user', 'mahasiswa')->count(); // Menghitung pengaduan dari mahasiswa
-        $dataDosen = Pengaduan::where('user', 'dosen')->count(); // Menghitung pengaduan dari dosen
-        $dataAnonim = Pengaduan::where('user', 'anonim')->count(); // Menghitung pengaduan dari anonim
+        $dataMahasiswa = Pengaduan::where('pelapor', 'mahasiswa')->count(); // Menghitung pengaduan dari mahasiswa
+        $dataDosen = Pengaduan::where('pelapor', 'dosen')->count(); // Menghitung pengaduan dari dosen
+        $dataAnonim = Pengaduan::where('pelapor', 'anonim')->count(); // Menghitung pengaduan dari anonim
 
         // Kirim data ke view
         return view('pages.dashboard', compact('totalUser', 'totalPengaduan', 'dataMahasiswa', 'dataDosen', 'dataAnonim','chart','chart_pie'));

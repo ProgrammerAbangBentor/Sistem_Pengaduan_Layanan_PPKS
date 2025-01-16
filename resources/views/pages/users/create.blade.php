@@ -39,9 +39,7 @@
                             <div class="form-group">
                                 <label>Name</label>
                                 <input type="text"
-                                    class="form-control @error('name')
-                                is-invalid
-                            @enderror"
+                                    class="form-control @error('name')is-invalid @enderror"
                                     name="name">
                                 @error('name')
                                     <div class="invalid-feedback">
@@ -49,6 +47,20 @@
                                     </div>
                                 @enderror
                             </div>
+                            <div class="form-group">
+                                <label>No Identitas</label>
+                                <input type="text"
+                                    class="form-control @error('no_identitas')
+                                is-invalid
+                            @enderror"
+                                    name="no_identitas">
+                                @error('no_identitas')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
                             <div class="form-group">
                                 <label>Email</label>
                                 <input type="email"
@@ -71,10 +83,8 @@
                                         </div>
                                     </div>
                                     <input type="password"
-                                        class="form-control @error('password')
-                                is-invalid
-                            @enderror"
-                                        name="password">
+                                        class="form-control @error('password') is-invalid @enderror"
+                                        name="password" placeholder="Leave empty if not changing password">
                                 </div>
                                 @error('password')
                                     <div class="invalid-feedback">
@@ -87,8 +97,7 @@
                                 <label class="form-label">Role</label>
                                 <div class="selectgroup w-100">
                                     <label class="selectgroup-item">
-                                        <input type="radio" name="role" value="admin" class="selectgroup-input"
-                                            checked="">
+                                        <input type="radio" name="role" value="admin" class="selectgroup-input      ">
                                         <span class="selectgroup-button">Admin</span>
                                     </label>
                                     <label class="selectgroup-item">
@@ -96,7 +105,8 @@
                                         <span class="selectgroup-button">Anggota</span>
                                     </label>
                                     <label class="selectgroup-item">
-                                        <input type="radio" name="role" value="user" class="selectgroup-input">
+                                        <input type="radio" name="role" value="user" class="selectgroup-input"
+                                        checked="">
                                         <span class="selectgroup-button">User</span>
                                     </label>
 

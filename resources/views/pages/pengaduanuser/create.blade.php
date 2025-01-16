@@ -17,112 +17,158 @@
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <form id="pengaduan-form" action="{{ route('pengaduanuser.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('pengaduanuser.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <!-- Step 1 -->
-                            <div id="step-1" class="step">
-                                <h4 class="text-center text-primary font-weight-bold text-shadow">IDENTITAS PELAPOR</h4>
-                                <div class="form-group">
-                                    <label for="name">Nama</label>
-                                    <input type="text" class="form-control" name="name" required>
+
+                            <div class="mb-3">
+                                <label class="form-label">Pelapor</label>
+                                <div class="selectgroup w-100">
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="pelapor" value="Mahasiswa" class="selectgroup-input"
+                                            checked="">
+                                        <span class="selectgroup-button">Mahasiswa</span>
+                                    </label>
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="pelapor" value="Dosen" class="selectgroup-input"
+                                            checked="">
+                                        <span class="selectgroup-button">Dosen</span>
+                                    </label>
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="pelapor" value="Anonim" class="selectgroup-input"
+                                            checked="">
+                                        <span class="selectgroup-button">Anonim</span>
+                                    </label>
                                 </div>
-                                <div class="form-group">
-                                    <label for="user">Akun</label>
-                                    <select class="form-control" name="user" required>
-                                        <option value="Mahasiswa">Mahasiswa</option>
-                                        <option value="Dosen">Dosen</option>
-                                        <option value="anonim">Anonim</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="jenis_identitas">Jenis Identitas</label>
-                                    <select class="form-control" name="jenis_identitas" required>
-                                        <option value="">Pilih Jenis Identitas</option>
-                                        <option value="KTP">KTP</option>
-                                        <option value="KTM">KTM</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="image_identitas">Unggah Identitas</label>
-                                    <input type="file" class="form-control" name="image_identitas" required>
-                                    <small class="form-text text-muted">
-                                        Supported file types: jpeg, png, jpg. Maksimal ukuran file: 5MB.
-                                    </small>
-                                    @error('image_identitas')
-                                        <div class="alert alert-danger mt-2">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <label for="alamat">Alamat</label>
-                                    <textarea class="form-control" name="alamat" rows="2" required></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="no_tlp">No Telepon</label>
-                                    <input type="text" class="form-control" name="no_tlp" required>
-                                </div>
-                                <button type="button" class="btn btn-primary float-right" onclick="nextStep(2)">Next</button>
                             </div>
 
-                            <!-- Step 2 -->
-                            <div id="step-2" class="step d-none">
-                                <h4 class="text-center text-primary font-weight-bold text-shadow">IDENTITAS TERLAPOR</h4>
-                                <div class="form-group">
-                                    <label for="nama_terlapor">Nama Lengkap Terlapor</label>
-                                    <input type="text" class="form-control" name="nama_terlapor" required>
+                            <div class="mb-3">
+                                <label class="form-label">Jenis Identitas</label>
+                                <div class="selectgroup w-100">
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="jenis_identitas" value="KTM" class="selectgroup-input"
+                                            checked="">
+                                        <span class="selectgroup-button">KTM</span>
+                                    </label>
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="jenis_identitas" value="NIDN" class="selectgroup-input">
+                                        <span class="selectgroup-button">NIDN</span>
+                                    </label>
                                 </div>
-                                <div class="form-group">
-                                    <label for="status_terlapor">Status Terlapor</label>
-                                    <select class="form-control" name="status_terlapor" required>
-                                        <option value="Mahasiswa">Mahasiswa</option>
-                                        <option value="Dosen">Dosen</option>
-                                        <option value="anonim">Anonim</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="no_hp_pelapor">No HP Pelapor</label>
-                                    <input type="text" class="form-control" name="no_hp_pelapor" required>
-                                </div>
-                                <button type="button" class="btn btn-secondary" onclick="prevStep(1)">Back</button>
-                                <button type="button" class="btn btn-primary float-right" onclick="nextStep(3)">Next</button>
                             </div>
 
-                            <!-- Step 3 -->
-                            <div id="step-3" class="step d-none">
-                                <h4 class="text-center text-primary font-weight-bold text-shadow">PERISTIWA</h4>
-                                <div class="form-group">
-                                    <label for="laporan">Laporan</label>
-                                    <textarea class="form-control" name="laporan" rows="5" required></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="category_id">Kategori</label>
-                                    <select class="form-control" name="category_id" required>
-                                        <option value="">Pilih Kategori</option>
-                                        @foreach($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="tanggal_peristiwa">Tanggal Peristiwa</label>
-                                    <input type="date" class="form-control" name="tanggal_peristiwa" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="lokasi_peristiwa">Lokasi Peristiwa</label>
-                                    <textarea class="form-control" name="lokasi_peristiwa" rows="2" required></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="file">File</label>
-                                    <input type="file" class="form-control" name="file">
-                                    <small class="form-text text-muted">
-                                        Supported file types: jpeg, png, jpg, gif, mp3, mp4, avi, pdf, doc, docx. Maksimal ukuran file: 100MB.
-                                    </small>
-                                    @error('file')
-                                        <div class="alert alert-danger mt-2">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <button type="button" class="btn btn-secondary" onclick="prevStep(2)">Back</button>
-                                <button type="submit" class="btn btn-primary float-right">Kirim Laporan</button>
+                            <div class="mb-3">
+                                <label for="no_identitas" class="form-label">No Identitas (KTM / NIDN)</label>
+                                <input type="text" name="no_identitas" id="no_identitas" class="form-control" value="{{ old('no_identitas') }}">
                             </div>
+
+                            <div class="mb-3">
+                                <label for="kategori_pengaduan_id" class="form-label">Kategori Pengaduan</label>
+                                <select name="kategori_pengaduan_id" id="kategori_pengaduan_id" class="form-control" required>
+                                    <option value="">Pilih Kategori</option>
+                                    @foreach(  $categories as $kategori)
+                                        <option value="{{ $kategori->id }}" {{ old('kategori_pengaduan_id') == $kategori->id ? 'selected' : '' }}>
+                                            {{ $kategori->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('kategori_pengaduan_id')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="tanggal_peristiwa" class="form-label">Tanggal Peristiwa</label>
+                                <input type="date" name="tanggal_peristiwa" id="tanggal_peristiwa" class="form-control" value="{{ old('tanggal_peristiwa') }}" required>
+                                @error('tanggal_peristiwa')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="kronologi_peristiwa" class="form-label">Kronologi Peristiwa</label>
+                                <textarea name="kronologi_peristiwa" id="kronologi_peristiwa" class="form-control" rows="4" required>{{ old('kronologi_peristiwa') }}</textarea>
+                                @error('kronologi_peristiwa')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            {{-- <div class="mb-3">
+                                <label for="latitude" class="form-label">Latitude</label>
+                                <input type="number" name="latitude" id="latitude" class="form-control" step="any" value="{{ old('latitude') }}" required>
+                                @error('latitude')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="longitude" class="form-label">Longitude</label>
+                                <input type="number" name="longitude" id="longitude" class="form-control" step="any" value="{{ old('longitude') }}" required>
+                                @error('longitude')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div> --}}
+
+                            <div class="mb-3">
+                                <label for="file_bukti" class="form-label">File Bukti</label>
+                                <input type="file" name="file_bukti" id="file_bukti" class="form-control">
+                                @error('file_bukti')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Kategori Pelapor</label>
+                                <div class="selectgroup w-100">
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="kategori_pelapor" value="Korban" class="selectgroup-input"
+                                            checked="">
+                                        <span class="selectgroup-button">Korban</span>
+                                    </label>
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="kategori_pelapor" value="Pelapor/Saksi" class="selectgroup-input">
+                                        <span class="selectgroup-button">Pelapor/Saksi</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="nama_tersangka" class="form-label">Nama Tersangka (Wajib)</label>
+                                <input type="text" name="nama_tersangka" id="nama_tersangka" class="form-control" value="{{ old('nama_tersangka') }}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Sttatus Tersangka</label>
+                                <div class="selectgroup w-100">
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="status_tersangka" value="Mahasiswa" class="selectgroup-input"
+                                            checked="">
+                                        <span class="selectgroup-button">Mahasiswa</span>
+                                    </label>
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="status_tersangka" value="Dosen" class="selectgroup-input">
+                                        <span class="selectgroup-button">Dosen</span>
+                                    </label>
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="status_tersangka" value="Staff Kampus" class="selectgroup-input">
+                                        <span class="selectgroup-button">Staff Kampus</span>
+                                    </label>
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="status_tersangka" value="Masyarakat Umum" class="selectgroup-input">
+                                        <span class="selectgroup-button">Masyarakat Umum</span>
+                                    </label>
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="status_tersangka" value="Mahasiswa Kampus Lain" class="selectgroup-input">
+                                        <span class="selectgroup-button">Mahasiswa Kampus Lain</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="no_telfon_tersangka" class="form-label">Nomor Telepon Tersangka (Wajib)</label>
+                                <input type="text" name="no_telfon_tersangka" id="no_telfon_tersangka" class="form-control" value="{{ old('no_telfon_tersangka') }}">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Simpan Pengaduan</button>
                         </form>
                     </div>
                 </div>

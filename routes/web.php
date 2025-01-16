@@ -24,6 +24,8 @@ Route::get('/print', [HomeController::class, 'print'])->name('print');
 //Route untuk register
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('register', [RegisterController::class, 'register']);
+Route::get('/register-success', [RegisterController::class, 'registrationSuccess'])->name('register.success');
+
 
 
 // Route untuk halaman login
@@ -49,11 +51,12 @@ Route::middleware(['auth', 'active'])->group(function () {
     });
 
     // Route manajemen pengaduan, bisa diakses oleh admin dan anggota
-    Route::middleware(['role:anggota|admin'])->group(function () {
+    Route::middleware(['web','role:anggota|admin'])->group(function () {
         Route::resource('anggota',KeanggotaanController::class);
         Route::resource('article', ArticleController::class);
         Route::resource('pengaduan', PengaduanController::class);
-        Route::post('/pengaduan/{id}/update-status', [PengaduanController::class, 'updateStatus'])->name('pengaduan.updateStatus');
+
+
 
      });
 

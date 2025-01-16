@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AccountActivationMail;
+use Illuminate\Support\Str;
+
 
 class RegisterController extends Controller
 {
@@ -17,28 +18,50 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
-        // Validasi input pengguna baru
-        $this->validate($request, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+        $validated = $request->validate([
+            'no_identitas' => 'required|exists:users,no_identitas',
+            'email' => 'required|email',
         ]);
 
-        // Membuat user baru
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'is_active' => false, // Status akun tidak aktif secara default
-        ]);
+        $user = User::where('no_identitas', $request->no_identitas)->first();
+        if (!$user) {
+            return back()->withErrors(['error' => 'Akun tidak ditemukan dengan nomor identitas tersebut.']);
+        }
 
-        // Berikan role "user" secara otomatis
-        $user->assignRole('user'); // Jika menggunakan Spatie Laravel Permission
+        if ($user->is_active) {
+            return redirect()->route('login')->with('info', 'Akun Anda sudah aktif.');
+        }
 
-        // Otomatis login setelah registrasi
-        Auth::login($user);
+        //jika belum aktif
+        $user->is_active = true;
 
-        // Redirect ke halaman dashboard atau halaman lain yang kamu inginkan
-        return redirect()->route('login');
+        $randomPassword = $user->generateSimplePassword();
+        if (!$user->password) {
+            $user->password = Hash::make($randomPassword);
+        }
+        $user->save();
+
+         Mail::to($request->email)->send(new AccountActivationMail($user, $randomPassword));
+
+         return redirect()->back()->with('success', '<b>Pendaftaran berhasil.</b><br> Cek email Anda untuk detail login.');
     }
+
+    public function activateAccount($token)
+    {
+        $user = User::where('email', $token)->first();
+        if ($user) {
+            $user->is_active = true;
+            $user->save();
+
+            return redirect('/login')->with('success', 'Akun berhasil diaktifkan.');
+        }
+
+        return redirect('/login')->with('error', 'Token aktivasi tidak valid.');
+    }
+
+    public function registrationSuccess()
+    {
+        return view('pages.auth.registrasi-success');
+    }
+
 }

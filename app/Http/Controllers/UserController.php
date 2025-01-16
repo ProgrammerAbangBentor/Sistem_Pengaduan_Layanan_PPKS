@@ -39,14 +39,16 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required',
+            'no_identitas' => 'required|string|unique:users,no_identitas',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:8',
+            'password' => 'nullable|min:8',
             'role' => 'required|in:admin,anggota,user',
         ]);
 
          // Create user
          $user = User::create([
             'name' => $request->name,
+            'no_identitas' => $request->no_identitas,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,

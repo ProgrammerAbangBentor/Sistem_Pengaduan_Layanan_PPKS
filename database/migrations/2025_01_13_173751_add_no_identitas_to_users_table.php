@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('pengaduans', function (Blueprint $table) {
-            $table->string('keterangan', 255)->nullable()->after('status');
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('no_identitas')->nullable()->unique();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('pengaduans', function (Blueprint $table) {
-            $table->dropColumn('keterangan');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('no_identitas')->after('name');;
         });
     }
 };

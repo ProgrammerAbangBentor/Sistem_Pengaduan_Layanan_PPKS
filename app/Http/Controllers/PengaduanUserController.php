@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengaduan;
-use App\Models\Category;
+use App\Models\Kategori_pengaduan;
 use Illuminate\Http\Request;
 
 class PengaduanUserController extends Controller
@@ -11,23 +11,37 @@ class PengaduanUserController extends Controller
     // Menampilkan daftar pengaduan
     public function index(Request $request)
     {
-        $userId = auth()->id(); // Mendapatkan ID pengguna yang sedang login
-        $pengaduans = Pengaduan::where('user_id', $userId)
-            ->when($request->input('name'), function ($query, $name) {
-                $query->where('name', 'like', '%' . $name . '%')
-                    ->orWhere('laporan', 'like', '%' . $name . '%');
-            })
-            ->paginate(10); // Menggunakan pagination
+        $kategori = Kategori_pengaduan::all();
 
-        return view('pages.pengaduanUser.index', compact('pengaduans'));
+        $pengaduan = Pengaduan::with('kategori_pengaduan')
+            ->when($request->input('no_identitas'), function ($query, $no_identitas) {
+                $query->where('no_identitas', 'like', '%' . $no_identitas . '%');
+            })
+            ->when($request->input('tanggal_peristiwa'), function ($query, $tanggal_peristiwa) {
+                $query->whereDate('tanggal_peristiwa', $tanggal_peristiwa);
+            })
+            ->when($request->input('kategori_id'), function ($query, $kategori_id) {
+                $query->where('kategori_pengaduan_id', $kategori_id);
+            })
+            ->orderByRaw("CASE
+                WHEN status = 'pending' THEN 1
+                WHEN status = 'proses' THEN 2
+                WHEN status = 'selesai' THEN 3
+                ELSE 4
+            END")
+            ->paginate(10);
+            $pengaduan->withQueryString();
+
+        return view('pages.pengaduanuser.index', compact('pengaduan', 'kategori'));
     }
 
     public function show($id)
     {
-        $pengaduan = Pengaduan::where('user_id', auth()->id())
-            ->where('id', $id)
-            ->with('updatedBy') // Memuat relasi updatedBy
-            ->firstOrFail(); // Menghasilkan 404 jika tidak ditemukan
+        $pengaduan = Pengaduan::findorfail($id);
+        // $pengaduan = Pengaduan::where('user_id', auth()->id())
+        //     ->where('id', $id)
+        //     ->with('updatedBy') // Memuat relasi updatedBy
+        //     ->firstOrFail(); // Menghasilkan 404 jika tidak ditemukan
 
         return view('pages.pengaduanUser.detail', compact('pengaduan'));
     }
@@ -35,72 +49,38 @@ class PengaduanUserController extends Controller
 
     public function create()
     {
-        $categories = Category::all(); // Mengambil semua kategori dari database
+        $categories = Kategori_pengaduan::all(); // Mengambil semua kategori dari database
         return view('pages.pengaduanUser.create', compact('categories'));
     }
 
     public function store(Request $request)
     {
-        // Validasi input
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'user' => 'required|in:Mahasiswa,Dosen,anonim',
-            'jenis_identitas' => 'required|in:KTP,KTM',
-            'image_identitas' => 'required|image|mimes:jpeg,png,jpg|max:5120',
-            'alamat' => 'required|string|max:500',
-            'no_tlp' => 'required|string|max:20',
-            'nama_terlapor' => 'required|string|max:255',
-            'status_terlapor' => 'required|in:Mahasiswa,Dosen,anonim',
-            'no_hp_pelapor' => 'required|string|max:20',
-            'laporan' => 'required|string',
-            'category_id' => 'required|exists:categories,id',
+        $validate = $request->validate([
+            'pelapor' => 'required|in:Mahasiswa,Dosen,Anonim',
+            'jenis_identitas' => 'required|in:KTM,NIDN',
+            'no_identitas' => 'required|string|exists:users,no_identitas',
+            'kategori_pengaduan_id' => 'required|exists:kategori_pengaduan,id',
             'tanggal_peristiwa' => 'required|date',
-            'lokasi_peristiwa' => 'required|string|max:500',
-            'file' => 'nullable|file|max:100048', // Mengizinkan semua jenis file
+            'kronologi_peristiwa' => 'required|string',
+            // 'latitude' => 'required|numeric',
+            // 'longitude' => 'required|numeric',
+            'file_bukti' => 'nullable|file|mimes:jpg,png,pdf',
+            'kategori_pelapor' => 'required|in:Korban,Pelapor/Saksi',
+            'nama_tersangka' => 'nullable|string',
+            'status_tersangka' => 'nullable|in:Mahasiswa,Dosen,Staff Kampus,Masyarakat Umum,Masyarakat Kampus Lain',
+            'no_telfon_tersangka' => 'nullable|string',
         ]);
 
-        $userId = auth()->id();
-        if (!$userId) {
-            return redirect()->back()->with('error', 'Anda harus login untuk membuat pengaduan.');
+
+        $pengaduan = new Pengaduan($validate);
+        $pengaduan->nomor_pengaduan = Pengaduan::generateNomorPengaduan();
+
+        if ($request->hasFile('file_bukti')) {
+            $pengaduan->file_bukti = $request->file('file_bukti')->store('bukti', 'public');
         }
 
-        // Proses upload file identitas
-        $imageIdentitasPath = null;
-        if ($request->hasFile('image_identitas')) {
-            $image = $request->file('image_identitas');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $imageIdentitasPath = 'assets/images/identitas/' . $imageName;
-            $image->move(public_path('assets/images/identitas'), $imageName);
-        }
-
-        // Proses upload file laporan jika ada
-        $filePath = null;
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $filePath = 'assets/files/pengaduan/' . $fileName;
-            $file->move(public_path('assets/files/pengaduan'), $fileName);
-        }
-
-        // Buat pengaduan baru
-        Pengaduan::create([
-            'name' => $request->name,
-            'user' => $request->user,
-            'jenis_identitas' => $request->jenis_identitas,
-            'image_identitas' => $imageIdentitasPath,
-            'alamat' => $request->alamat,
-            'no_tlp' => $request->no_tlp,
-            'nama_terlapor' => $request->nama_terlapor,
-            'status_terlapor' => $request->status_terlapor,
-            'no_hp_pelapor' => $request->no_hp_pelapor,
-            'laporan' => $request->laporan,
-            'category_id' => $request->category_id,
-            'tanggal_peristiwa' => $request->tanggal_peristiwa,
-            'lokasi_peristiwa' => $request->lokasi_peristiwa,
-            'file' => $filePath,
-            'user_id' => $userId,
-        ]);
-
+        $pengaduan->save();
         return redirect()->route('pengaduanuser.index')->with('success', 'Pengaduan berhasil dibuat.');
     }
+
 }

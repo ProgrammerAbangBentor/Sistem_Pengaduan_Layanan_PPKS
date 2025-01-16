@@ -5,10 +5,12 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"
         name="viewport">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') &mdash; Poltekgo</title>
     <link href="{{ asset ('template/img/logo.png') }}" rel="icon">
 
     <!-- General CSS Files -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet"
         href="{{ asset('library/bootstrap/dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet"
@@ -41,6 +43,7 @@
     {{-- script untuk diagram batang --}}
      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
      <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
 
     <!-- END GA -->
@@ -52,6 +55,7 @@
         <div class="main-wrapper">
             <!-- Header -->
             @include('components.header')
+
 
             <!-- Sidebar -->
             @include('components.sidebar')
@@ -72,6 +76,8 @@
     <script src="{{ asset('library/jquery.nicescroll/dist/jquery.nicescroll.min.js') }}"></script>
     <script src="{{ asset('library/moment/min/moment.min.js') }}"></script>
     <script src="{{ asset('js/stisla.js') }}"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script> --}}
+
 
     @stack('scripts')
 

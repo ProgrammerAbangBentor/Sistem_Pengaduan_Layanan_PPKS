@@ -63,12 +63,14 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Name</th>
+                                            <th>Keterangan</th>
                                             <th>Action</th>
                                         </tr>
                                         @foreach ($categories as $category)
                                             <tr>
                                                 <th>{{ $loop->iteration }}</th>
                                                 <td>{{ $category->name }}</td>
+                                                <td>{{ $category->keterangan }}</td>
 
                                                 <td>
                                                     <div class="d-flex justify-content-left">

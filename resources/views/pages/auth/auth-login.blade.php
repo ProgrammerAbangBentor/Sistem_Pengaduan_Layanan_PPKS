@@ -8,6 +8,7 @@
 @endpush
 
 @section('main')
+@include('layouts.alert')
     <div class="card card-purple">
         <div class="card-header">
             <h4>Login</h4>
@@ -66,6 +67,13 @@
 
 @push('scripts')
     <!-- JS Libraies -->
-
+    <script>
+        @if (session('success'))
+            $(document).ready(function() {
+                var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                successModal.show();
+            });
+        @endif
+    </script>
     <!-- Page Specific JS File -->
 @endpush

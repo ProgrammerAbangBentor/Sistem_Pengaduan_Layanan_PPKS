@@ -20,6 +20,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'no_identitas',
         'email',
         'password',
         'role',
@@ -56,6 +57,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(\Spatie\Permission\Models\Role::class, 'model_has_roles', 'model_id', 'role_id');
     }
+    public function pengaduan()
+    {
+        return $this->hasMany(Pengaduan::class, 'no_identitas','no_identitas');
+    }
 
     /**
      * Cek apakah pengguna aktif.
@@ -66,4 +71,15 @@ class User extends Authenticatable
     {
         return $this->is_active;
     }
+
+    public function generateSimplePassword()
+{
+    $prefix = 'User';
+    $year = date('Y');
+    $symbol = '!';
+
+    $password = $prefix . $year . $symbol;
+
+    return $password;
+}
 }

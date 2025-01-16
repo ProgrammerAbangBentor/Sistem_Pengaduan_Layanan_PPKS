@@ -42,13 +42,13 @@
                                         @enderror
                                     </div>
 
-                                    {{-- <div class="form-group">
-                                        <label for="description">Description</label>
-                                        <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
-                                        @error('description')
+                                    <div class="form-group">
+                                        <label for="keterangan">Keterangan</label>
+                                        <textarea name="keterangan" id="keterangan" class="form-control @error('keterangan') is-invalid @enderror">{{ old('keterangan') }}</textarea>
+                                        @error('keterangan')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
-                                    </div> --}}
+                                    </div>
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Save Category</button>

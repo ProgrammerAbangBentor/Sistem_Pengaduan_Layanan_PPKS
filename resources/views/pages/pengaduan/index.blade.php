@@ -46,8 +46,8 @@
                                             <label for="category" class="mr-2">Pilih Kategori:</label>
                                             <select name="category_id" id="category" class="form-control selectric" onchange="this.form.submit()" style="width: 200px;">
                                                 <option value="">Semua Kategori</option>
-                                                @foreach($categories as $category)
-                                                    <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                                @foreach($kategori as $category)
+                                                    <option value="{{ $category->id }}" {{ request('kategori_pengaduan_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -75,72 +75,47 @@
                                     <table class="table-striped table">
                                         <tr>
                                             <th>No</th>
-                                            <th>Name</th>
-                                            <th>Akun</th>
-                                            <th>Pekerjaan</th>
+                                            <th>Nomor Pengaduan</th>
+                                            <th>Pelapor</th>
+                                            <th>Jenis Identitas</th>
+                                            <th>No Identitas</th>
+                                            <th>Tanggal Peristiwa</th>
                                             <th>Kategori</th>
-                                            <th>Tanggal Pengaduan</th>
                                             <th>Status Laporan</th>
-                                            <th>Keterangan</th>
                                             <th>Action</th>
                                         </tr>
-                                        @foreach ($pengaduans as $pengaduan)
+                                        @foreach ($pengaduan as $pengaduan)
                                             <tr>
                                                 <th>{{ $loop->iteration }}</th>
-                                                <td>{{ $pengaduan->name }}</td>
-                                                <td>{{ $pengaduan->user_email ?? 'Unknown' }}</td>
-                                                <td>{{ $pengaduan->user }}</td>
-                                                <td>{{ $pengaduan->category_name }}</td>
-                                                <td>{{ $pengaduan->created_at }}</td>
+                                                <td>{{ $pengaduan->nomor_pengaduan }}</td>
+                                                <td>{{ $pengaduan->pelapor }}</td>
+                                                <td>{{ $pengaduan->jenis_identitas }}</td>
+                                                <td>{{ $pengaduan->no_identitas }}</td>
+                                                <td>{{ $pengaduan->tanggal_peristiwa }}</td>
+                                                <td>{{ $pengaduan->kategori_pengaduan->name }}</td>
+                                                <td>{{ $pengaduan->status }}</td>
 
                                                 <td>
-                                                    <span class="badge
-                                                        @if($pengaduan->status == 'pending') bg-danger
-                                                        @elseif($pengaduan->status == 'proses') bg-info
-                                                        @elseif($pengaduan->status == 'selesai') bg-success
-                                                        @endif text-white">
-                                                        {{ ucfirst($pengaduan->status) }}
-                                                    </span>
-                                                </td>
-                                                <td>{{ $pengaduan->keterangan ?? 'Tidak ada keterangan' }}</td>
-                                                <td>
-                                                 <div class="d-flex justify-content-center">
+                                                    <div class="d-flex justify-content-center">
                                                         <a href='{{ route('pengaduan.show', $pengaduan->id) }}' class="btn btn-sm btn-success btn-icon" style="margin-right: 10px;">
-                                                            <i class="fas fa-eye"></i> Detail
+                                                            <i class="fas fa-eye"></i> Detail Pengaduan
                                                         </a>
-
-                                                        {{-- <a href='{{ route('pengaduan.edit', $pengaduan->id) }}' class="btn btn-sm btn-info btn-icon"">
-                                                            <i class="fas fa-edit"></i>
-                                                            Edit
-                                                        </a> --}}
-                                                        <!-- Tombol Edit untuk memperbarui status pengaduan -->
-                                                         <!-- Tombol untuk memperbarui status -->
-                                                         @if ($pengaduan->status == 'pending')
-                                                         <button class="btn btn-sm btn-info btn-icon" onclick="updateStatus('{{ $pengaduan->id }}', 'proses')">
-                                                             <i class="fas fa-edit"></i> Proses
-                                                         </button>
-                                                        @elseif ($pengaduan->status == 'proses')
-                                                            <button class="btn btn-sm btn-success btn-icon" onclick="updateStatus('{{ $pengaduan->id }}', 'selesai')">
-                                                                <i class="fas fa-check"></i> Selesai
-                                                            </button>
-                                                        @endif
-
-                                                        <form action="{{ route('pengaduan.destroy', $pengaduan->id) }}" method="POST" class="ml-2">
+                                                        {{-- <form action="{{ route('pengaduan.destroy', $pengaduan->id) }}" method="POST" class="ml-2">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button class="btn btn-sm btn-danger btn-icon confirm-delete ">
                                                                 <i class="fas fa-times"></i> Delete
                                                             </button>
-                                                        </form>
+                                                        </form> --}}
                                                     </div>
                                                 </td>
                                             </tr>
                                         @endforeach
                                     </table>
                                 </div>
-                                <div class="float-right">
-                                    {{ $pengaduans->withQueryString()->links() }}
-                                </div>
+                                {{-- <div class="float-right">
+                                    {{ $pengaduan->links() }}
+                                </div> --}}
                             </div>
                         </div>
                     </div>
