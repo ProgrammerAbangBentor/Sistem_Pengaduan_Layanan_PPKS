@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
 
   <style>
-   <style>
+
   /* Menambahkan fixed positioning pada header */
   header {
     position: fixed;
@@ -244,18 +244,23 @@
   }
 
   .card-body {
-    padding: 15px;
-  }
+    padding: 20px;
+    background: linear-gradient(135deg, #9a1fff, #6a00cc);
+    color: #fff; /* Agar teks terlihat jelas di atas background */
+    border-radius: 8px; /* Tambahkan sudut melengkung */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Tambahkan efek bayangan */
+    font-family: 'Arial', sans-serif; /* Gunakan font yang bersih */
+}
 
   .card-title {
     font-size: 18px;
     font-weight: bold;
-    color: #333;
+    color: #ffffff;
   }
 
   .card-text {
     font-size: 14px;
-    color: #777;
+    color: #ffffff;
   }
    .profile-card {
     background-color: #fff; /* Warna putih */
@@ -295,7 +300,7 @@
   .profile-name {
     font-size: 18px;
     font-weight: bold;
-    color: #333;
+    color: #ffffff;
     margin-bottom: 10px;
   }
 
@@ -321,6 +326,28 @@
   gap: 20px; /* Memberikan jarak antar kolom dan baris */
   justify-content: center; /* Untuk merapikan isi secara horizontal */
 }
+@media (max-width: 768px) {
+  .profile-image {
+    height: 120px; /* Sesuaikan tinggi untuk perangkat kecil */
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-image {
+    height: 100px; /* Sesuaikan lebih kecil untuk layar ponsel */
+  }
+}
+
+.scroll-box {
+    max-height: 700px; /* Tinggi maksimal box */
+    overflow-y: auto; /* Tambahkan scrollbar vertikal */
+    padding: 20px; /* Padding di dalam box */
+    border: 1px solid #ddd; /* Border untuk pembatas */
+    border-radius: 10px; /* Sudut membulat */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bayangan untuk tampilan lebih menarik */
+    background-color: #fff; /* Latar belakang putih */
+    margin-bottom: 30px; /* Margin bawah */
+  }
 
 </style>
 
@@ -384,42 +411,79 @@
   <!-- Header Area End -->
 
   <!-- STUKTUR Section -->
+ <!-- STUKTUR Section -->
 <section class="container">
     <h2 class="title-article1">Struktur Organisasi</h2>
-    <div class="row">
-      @foreach($anggota as $item)
-        <div class="col-lg-3 col-md-6 col-sm-12">
-          <div class="profile-card">
-            <div class="profile-image">
-              <img src="{{ asset('storage/' . $item->image) }}" alt="Image">
-            </div>
-            <div class="profile-card-body">
-              <!-- Menambahkan label khusus untuk Ketua -->
-              @if($item->jabatan == 'Ketua')
-                <span class="badge bg-primary">Ketua</span>
-              @endif
-              <h5 class="profile-role">{{ $item->jabatan }}</h5>
-              <h3 class="profile-name">{{ $item->name }}</h3>
 
-              <!-- Menambahkan deskripsi atau informasi tambahan -->
-              <p class="profile-description">{{ $item->description ?? 'Deskripsi belum diisi.' }}</p>
-
-              <!-- Menambahkan informasi kontak -->
-              @if($item->email)
-                <p class="profile-contact">Email: <a href="mailto:{{ $item->email }}">{{ $item->email }}</a></p>
-              @endif
-
-              <div class="social-icons">
-                <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+    <div class="scroll-box">
+      <!-- Ketua Section -->
+      <div class="row justify-content-center mb-4">
+        <div class="col-md-6 text-center">
+          <div class="card shadow">
+            <div class="card-body">
+              <div class="profile-image mb-3">
+                @if($ketua->image)
+                  <img src="{{ asset('storage/' . $ketua->image) }}" alt="Foto Ketua" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                @else
+                  <img src="https://via.placeholder.com/150" alt="Foto Ketua" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                @endif
               </div>
+              <h3 class="profile-name">{{ $ketua->name }}</h3>
+              <span class="badge bg-primary">{{ $ketua->jabatan }}</span>
+
             </div>
           </div>
         </div>
-      @endforeach
+      </div>
+
+      <!-- Sekretaris Section -->
+      <div class="row justify-content-center mb-4">
+        <div class="col-md-6 text-center">
+          <div class="card shadow">
+            <div class="card-body">
+              <div class="profile-image mb-3">
+                @if($sekretaris->image)
+                  <img src="{{ asset('storage/' . $sekretaris->image) }}" alt="Foto Sekretaris" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                @else
+                  <img src="https://via.placeholder.com/150" alt="Foto Sekretaris" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                @endif
+              </div>
+              <h3 class="profile-name">{{ $sekretaris->name }}</h3>
+              <span class="badge bg-secondary">{{ $sekretaris->jabatan }}</span>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Anggota Section -->
+      <div class="row">
+        @foreach($anggota as $item)
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+          <div class="card shadow">
+            <div class="card-body text-center">
+              <div class="profile-image mb-3">
+                @if($item->image)
+                  <img src="{{ asset('storage/' . $item->image) }}" alt="Foto Anggota" class="img-fluid rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
+                @else
+                  <img src="https://via.placeholder.com/100" alt="Foto Anggota" class="img-fluid rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
+                @endif
+              </div>
+              <h5 class="profile-name">{{ $item->name }}</h5>
+              <span class="badge bg-success">{{ $item->jabatan }}</span>
+
+            </div>
+          </div>
+        </div>
+        @endforeach
+      </div>
     </div>
   </section>
+
+
+
+
+
 
 
 

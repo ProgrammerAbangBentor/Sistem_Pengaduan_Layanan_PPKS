@@ -75,7 +75,20 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label>Password</label>
+                                <label>email_penerima_akun</label>
+                                <input type="email_penerima_akun"
+                                    class="form-control @error('email_penerima_akun')
+                                is-invalid
+                            @enderror"
+                                    name="email_penerima_akun">
+                                @error('email_penerima_akun')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                {{-- <label>Password</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
@@ -90,7 +103,7 @@
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
-                                @enderror
+                                @enderror --}}
                             </div>
 
                             <div class="form-group">

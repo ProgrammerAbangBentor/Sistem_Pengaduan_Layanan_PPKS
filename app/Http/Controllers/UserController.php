@@ -41,7 +41,8 @@ class UserController extends Controller
             'name' => 'required',
             'no_identitas' => 'required|string|unique:users,no_identitas',
             'email' => 'required|email|unique:users',
-            'password' => 'nullable|min:8',
+            'email_penerima_akun' => 'required|email|unique:users',
+            // 'password' => 'nullable|min:8',
             'role' => 'required|in:admin,anggota,user',
         ]);
 
@@ -50,7 +51,8 @@ class UserController extends Controller
             'name' => $request->name,
             'no_identitas' => $request->no_identitas,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'email_penerima_akun' => $request->email_penerima_akun,
+            // 'password' => Hash::make($request->password),
             'role' => $request->role,
         ]);
          // Assign role
@@ -138,5 +140,31 @@ public function toggleActive($id)
 
     return redirect()->route('user.index')->with('success', 'Akun berhasil diperbarui.');
 }
+
+
+ // Method untuk mengambil email berdasarkan no_identitas
+ public function getEmailByNoIdentitas(Request $request)
+ {
+     // Validasi input no_identitas
+     $request->validate([
+         'no_identitas' => 'required|string',
+     ]);
+
+     // Cari user berdasarkan no_identitas
+     $user = User::where('no_identitas', $request->no_identitas)->first();
+
+     // Jika user ditemukan, kirimkan email_penerima_akun
+     if ($user) {
+         return response()->json([
+             'email_penerima_akun' => $user->email_penerima_akun,
+         ]);
+     }
+
+     // Jika tidak ditemukan, kirimkan response kosong
+     return response()->json([
+         'email_penerima_akun' => null,
+     ]);
+ }
+
 
 }

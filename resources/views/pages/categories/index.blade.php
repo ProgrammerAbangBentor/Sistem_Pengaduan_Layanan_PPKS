@@ -91,7 +91,7 @@
                                     </table>
                                 </div>
                                 <div class="float-right">
-                                    {{-- {{ $categories->withQueryString()->links() }} --}}
+                                    {{ $categories->withQueryString()->links() }}
                                 </div>
                             </div>
                         </div>

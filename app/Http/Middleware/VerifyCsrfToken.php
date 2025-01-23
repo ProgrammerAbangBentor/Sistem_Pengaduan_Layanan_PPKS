@@ -9,6 +9,6 @@ class VerifyCsrfToken extends Middleware
 {
 
     protected $except = [
-
+        'activate-account/*',  // Menambahkan route ini ke dalam pengecualian
     ];
 }

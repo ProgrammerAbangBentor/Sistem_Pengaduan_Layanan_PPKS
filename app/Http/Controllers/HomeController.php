@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Artikel;
 use App\Models\Pengaduan;
 use App\Models\Keanggotaan;
-use App\Models\Category;
-
+use App\Models\Kategori_pengaduan;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -15,28 +14,33 @@ class HomeController extends Controller
     {
         return view('pages.dasboard.index');
     }
+
     public function print(Request $request)
     {
-        $categories = Category::all();
-        $pengaduans = Pengaduan::query()
-            ->join('users', 'pengaduans.user_id', '=', 'users.id')
-            ->join('categories', 'pengaduans.category_id', '=', 'categories.id')
-            ->select('pengaduans.*', 'users.email as user_email', 'categories.name as category_name')
+        // Ambil semua kategori pengaduan untuk filter
+        $categories = Kategori_pengaduan::all();
+
+        // Query pengaduan dengan filter
+        $pengaduans = Pengaduan::with(['user', 'kategoriPengaduan']) // Menggunakan relasi Eloquent
             ->when($request->input('name'), function ($query, $name) {
-                $query->where('pengaduans.name', 'like', '%' . $name . '%')
-                      ->orWhere('pengaduans.laporan', 'like', '%' . $name . '%');
+                $query->where('name', 'like', '%' . $name . '%')
+                      ->orWhere('laporan', 'like', '%' . $name . '%');
             })
-            ->when($request->input('category_id'), function ($query, $categoryId) {
-                $query->where('pengaduans.category_id', $categoryId);
-            })->orderByRaw("CASE
-            WHEN status = 'pending' THEN 1
-            WHEN status = 'proses' THEN 2
-            WHEN status = 'selesai' THEN 3
-            ELSE 4
-        END")
-        ->paginate(10);
+            ->when($request->input('kategori_pengaduan_id'), function ($query, $categoryId) {
+                $query->where('kategori_pengaduan_id', $categoryId);
+            })
+            ->orderByRaw("CASE
+                WHEN status = 'pending' THEN 1
+                WHEN status = 'proses' THEN 2
+                WHEN status = 'selesai' THEN 3
+                ELSE 4
+            END")
+            ->get();
+
+        // Kirim data ke view
         return view('pages.dasboard.print', compact('pengaduans', 'categories'));
     }
+
 
     public function login()
     {
@@ -45,32 +49,43 @@ class HomeController extends Controller
 
     public function struktur()
     {
-        // Mengambil data anggota dengan jabatan tertentu
-        $ketua = Keanggotaan::where('jabatan', 'Ketua')->first();
-        $sekretaris = Keanggotaan::where('jabatan', 'Sekretaris')->first();
+        $ketua = Keanggotaan::where('jabatan', 'Ketua')->first() ?? (object) [
+            'name' => 'Data Ketua belum diisi',
+            'jabatan' => 'Ketua',
+            'image' => null,
+
+        ];
+
+        $sekretaris = Keanggotaan::where('jabatan', 'Sekretaris')->first() ?? (object) [
+            'name' => 'Data Sekretaris belum diisi',
+            'jabatan' => 'Sekretaris',
+            'image' => null,
+
+        ];
+
         $anggota = Keanggotaan::where('jabatan', 'Anggota')->get();
+        if ($anggota->isEmpty()) {
+            $anggota = collect([(object) [
+                'name' => 'Data Anggota belum diisi',
+                'jabatan' => 'Anggota',
+                'image' => null,
 
-        // Menggunakan nilai default jika data tidak ditemukan
-        $ketua = $ketua ?? (object) ['name' => 'Data Ketua belum diisi', 'image' => null, 'description' => ''];
-        $sekretaris = $sekretaris ?? (object) ['name' => 'Data Sekretaris belum diisi', 'image' => null, 'description' => ''];
-        $anggota = $anggota->isEmpty() ? [(object) ['name' => 'Data Anggota belum diisi', 'image' => null, 'description' => '']] : $anggota;
+            ]]);
+        }
 
-        // Mengirimkan data ke view
         return view('pages.dasboard.struktur', compact('ketua', 'sekretaris', 'anggota'));
     }
 
+
+
     public function artikel()
     {
-         // Ambil artikel terbaru dengan relasi user (pembuat artikel)
-    $artikels = Artikel::with('user')
-    ->orderBy('created_at', 'desc') // Urutkan berdasarkan artikel terbaru
-    ->get();
+        // Ambil artikel terbaru dengan relasi user (pembuat artikel)
+        $artikels = Artikel::with('user')
+            ->orderBy('created_at', 'desc') // Urutkan berdasarkan artikel terbaru
+            ->get();
 
-// Jika tidak ada artikel, beri pesan default
-$artikels = $artikels->isEmpty() ? null : $artikels;
-
-return view('pages.dasboard.artikel', compact('artikels'));
-}
-
-
+        // Kirim data ke view
+        return view('pages.dasboard.artikel', compact('artikels'));
+    }
 }

@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -22,9 +23,12 @@ class User extends Authenticatable
         'name',
         'no_identitas',
         'email',
+        'email_penerima_akun',
         'password',
         'role',
-        'is_active', // Pastikan 'is_active' ada dalam $fillable
+        'is_active',
+        'activation_token',
+        'activation_token_expires_at',  // Menambahkan kolom activation_token_expires_at
     ];
 
     /**
@@ -35,6 +39,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'activation_token',  // Menambahkan activation_token agar tidak disertakan dalam response
     ];
 
     /**
@@ -45,7 +50,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'is_active' => 'boolean', // Pastikan 'is_active' di-cast ke boolean
+        'is_active' => 'boolean',
+        'activation_token' => 'string',
+        'activation_token_expires_at' => 'datetime',  // Meng-cast activation_token_expires_at sebagai datetime
     ];
 
     /**
@@ -57,9 +64,15 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(\Spatie\Permission\Models\Role::class, 'model_has_roles', 'model_id', 'role_id');
     }
+
+    /**
+     * Relasi one-to-many dengan Pengaduan
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function pengaduan()
     {
-        return $this->hasMany(Pengaduan::class, 'no_identitas','no_identitas');
+        return $this->hasMany(Pengaduan::class, 'no_identitas', 'no_identitas');
     }
 
     /**
@@ -72,14 +85,41 @@ class User extends Authenticatable
         return $this->is_active;
     }
 
+    /**
+     * Generate password sederhana.
+     *
+     * @return string
+     */
     public function generateSimplePassword()
-{
-    $prefix = 'User';
-    $year = date('Y');
-    $symbol = '!';
+    {
+        $prefix = 'User';
+        $year = date('Y');
+        $symbol = '!';
 
-    $password = $prefix . $year . $symbol;
+        $password = $prefix . $year . $symbol;
 
-    return $password;
-}
+        return $password;
+    }
+
+    /**
+     * Mutator untuk set waktu kadaluarsa token aktivasi.
+     * Token akan kadaluarsa 24 jam setelah dibuat.
+     *
+     * @return void
+     */
+    public function setActivationTokenExpiresAtAttribute($value)
+    {
+        // Set waktu kadaluarsa token selama 24 jam setelah token dibuat
+        $this->attributes['activation_token_expires_at'] = now()->addHours(24);
+    }
+
+    /**
+     * Cek apakah token aktivasi sudah kadaluarsa.
+     *
+     * @return bool
+     */
+    public function isActivationTokenExpired(): bool
+    {
+        return $this->activation_token_expires_at && $this->activation_token_expires_at < now();
+    }
 }

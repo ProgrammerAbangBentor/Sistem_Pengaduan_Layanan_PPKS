@@ -26,6 +26,13 @@ Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->na
 Route::post('register', [RegisterController::class, 'register']);
 Route::get('/register-success', [RegisterController::class, 'registrationSuccess'])->name('register.success');
 
+// Menambahkan route untuk mengambil email berdasarkan no_identitas
+Route::get('/get-email-by-no-identitas', [UserController::class, 'getEmailByNoIdentitas']);
+
+Route::get('/activate-account/{token}', [RegisterController::class, 'showActivationForm'])->name('user.activate.form');
+
+// Route untuk memproses aktivasi akun
+Route::post('/activate-account/{token}', [RegisterController::class, 'activateAccount'])->name('user.activate');
 
 
 // Route untuk halaman login

@@ -8,8 +8,16 @@
 @endpush
 
 @section('main')
-
-    <div class="card card-purple">
+<div class="card card-purple">
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         <div class="card-header">
             <h4>Registrasi</h4>
         </div>
@@ -20,13 +28,13 @@
                     @include('layouts.alert')
                 </div>
             </div>
-
+        </div>
 
         <div class="card-body">
             <form method="POST" action="{{ route('register') }}">
                 @csrf
 
-                <!-- Input for Name -->
+                <!-- Input for No Identitas -->
                 <div class="form-group">
                     <label for="no_identitas">No Identitas</label>
                     <input id="no_identitas" type="text"
@@ -41,11 +49,13 @@
 
                 <!-- Input for Email -->
                 <div class="form-group">
-                    <label for="email">Email Aktif</label>
-                    <input id="email" type="email"
-                        class="form-control @error('email') is-invalid @enderror"
-                        name="email" placeholder="Masukan Email Aktif Anda" value="{{ old('email') }}" required>
-                    @error('email')
+                    <label for="email_penerima_akun">Email Penerima Akun Aktif</label>
+                    <!-- Tampilkan email_penerima_akun dari user jika ada, dan beri readonly agar tidak bisa diubah -->
+                    <input id="email_penerima_akun" type="email"
+                        class="form-control @error('email_penerima_akun') is-invalid @enderror"
+                        name="email_penerima_akun"
+                        value="{{ old('email_penerima_akun') }}" required readonly>
+                    @error('email_penerima_akun')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
@@ -70,8 +80,8 @@
             });
         </script>
     @endif
-@endsection
 
+@endsection
 
 @push('scripts')
     <!-- modal JS Libraries -->
@@ -89,4 +99,41 @@
 
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/auth-register.js') }}"></script>
+
+    <!-- Custom Script to Auto-fill Email Penerima Akun -->
+    <script>
+       $(document).ready(function () {
+    // Ketika No Identitas diubah
+    $('#no_identitas').on('input', function () {
+        var noIdentitas = $(this).val();
+
+        // Jika no_identitas ada, lakukan request ke server untuk mengambil email
+        if (noIdentitas) {
+            $.ajax({
+                url: '/get-email-by-no-identitas',  // Endpoint untuk mengambil email berdasarkan no_identitas
+                method: 'GET',
+                data: { no_identitas: noIdentitas },
+                success: function(response) {
+                    // Jika email ditemukan, isi email_penerima_akun
+                    if (response.email_penerima_akun) {
+                        $('#email_penerima_akun').val(response.email_penerima_akun).prop('readonly', true);
+                    } else {
+                        // Jika email tidak ditemukan, biarkan field kosong dan aktifkan agar bisa diubah
+                        $('#email_penerima_akun').val('').prop('readonly', false);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log("Error:", error);
+                    alert("Terjadi kesalahan. Silakan coba lagi.");
+                    $('#email_penerima_akun').val('').prop('readonly', false); // Reset jika terjadi error
+                }
+            });
+        } else {
+            // Jika no_identitas kosong, kosongkan email_penerima_akun dan buat editable
+            $('#email_penerima_akun').val('').prop('readonly', false);
+        }
+    });
+});
+
+    </script>
 @endpush

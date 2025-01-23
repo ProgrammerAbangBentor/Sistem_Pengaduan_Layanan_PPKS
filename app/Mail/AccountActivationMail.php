@@ -1,14 +1,10 @@
 <?php
-
 namespace App\Mail;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Queue\SerializesModels;
 use App\Models\User;
+use Illuminate\Bus\Queueable;
+use Illuminate\Mail\Mailable;
+use Illuminate\Queue\SerializesModels;
 
 class AccountActivationMail extends Mailable
 {
@@ -16,20 +12,25 @@ class AccountActivationMail extends Mailable
 
     public $user;
     public $password;
+    public $activationToken;
 
-    public function __construct($user, $password)
+    // Konstruktor untuk mengirimkan user dan token
+    public function __construct(User $user,$password, $activationToken)
     {
         $this->user = $user;
         $this->password = $password;
+        $this->activationToken = $activationToken;
     }
 
+    // Pengaturan tampilan email
     public function build()
     {
-        return $this->subject('Aktivasi Akun Anda')
-                    ->view('pages.auth.account_activation')
+        return $this->view('pages.auth.account_activation')
                     ->with([
+                        'name' => $this->user->name,
                         'user' => $this->user,
                         'password' => $this->password,
+                        'activationUrl' => route('user.activate', $this->activationToken)
                     ]);
     }
 }

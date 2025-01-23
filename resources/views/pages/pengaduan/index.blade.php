@@ -113,9 +113,9 @@
                                         @endforeach
                                     </table>
                                 </div>
-                                {{-- <div class="float-right">
+                                <div class="float-right">
                                     {{ $pengaduan->links() }}
-                                </div> --}}
+                                </div>
                             </div>
                         </div>
                     </div>

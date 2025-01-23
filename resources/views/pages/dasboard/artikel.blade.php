@@ -295,27 +295,24 @@
 
     @if($artikels->isEmpty())
     <div class="alert alert-warning text-center">
-      Data Artikel Belum Ada
+        Data Artikel Belum Ada
     </div>
-    @else
-      @foreach ($artikels as $art)
-      <div class="article">
-        <div class="article-image">
-          <img src="{{ asset('storage/' . $art->image) }}" alt="Artikel Image">
+@else
+    @foreach ($artikels as $art)
+        <div class="article">
+            <div class="article-image">
+                <img src="{{ asset('storage/' . $art->image) }}" alt="Artikel Image">
+            </div>
+            <div class="article-content">
+                <div class="article-title">{{ $art->title }}</div>
+                <div class="article-meta">
+                    ARTIKEL | {{ $art->created_at->format('d M Y') }} | Dibuat Oleh: {{ $art->user->name ?? 'Tidak Diketahui' }}
+                </div>
+            </div>
         </div>
-        <div class="article-content">
-          <div class="article-title">{{ $art->title }}</div>
-          <div class="article-meta">
-            ARTIKEL | {{ $art->created_at->format('d M Y') }} | Dibuat Oleh: {{ $art->user->name ?? 'Tidak Diketahui' }}
-          </div>
-          <div class="article-description">
-            {{ $art->content}}
-          </div>
-          <a href="#" class="">READ MORE ></a>
-        </div>
-      </div>
-      @endforeach
-    @endif
+    @endforeach
+@endif
+
   </div>
 
   <!-- Footer Start -->
