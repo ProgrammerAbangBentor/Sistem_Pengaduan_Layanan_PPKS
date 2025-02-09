@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -46,9 +48,18 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::loginView(function(){
             return view('pages.auth.auth-login');
         });
-        // Fortify::RegisterView(function(){
-        //     return view('pages.auth.auth-register');
-        // });
+        Fortify::authenticateUsing(function ($request) {
+            $user = User::where('email', $request->email)->first();
+
+            if ($user && Hash::check($request->password, $user->password)) {
+                if (!$user->is_active) {
+                    return null; // Akun belum aktif
+                }
+                return $user; // Jika login berhasil
+            }
+
+            return null; // Jika login gagal
+        });
 
     }
 }

@@ -3,15 +3,12 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
+// use App\Http\Middleware\Closure;
 
 class VerifyCsrfToken extends Middleware
 {
-    /**
-     * The URIs that should be excluded from CSRF verification.
-     *
-     * @var array<int, string>
-     */
+
     protected $except = [
-        //
+        'activate-account/*',  // Menambahkan route ini ke dalam pengecualian
     ];
 }

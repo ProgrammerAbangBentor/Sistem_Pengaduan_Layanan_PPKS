@@ -46,13 +46,14 @@
                                             <label for="category" class="mr-2">Pilih Kategori:</label>
                                             <select name="category_id" id="category" class="form-control selectric" onchange="this.form.submit()" style="width: 200px;">
                                                 <option value="">Semua Kategori</option>
-                                                @foreach($categories as $category)
-                                                    <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                                @foreach($kategori as $category)
+                                                    <option value="{{ $category->id }}" {{ request('kategori_pengaduan_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </form>
                                 </div>
+
                                 <div class="float-right">
                                     <form method="GET" action="{{ route('pengaduan.index') }}">
                                         <div class="input-group">
@@ -67,63 +68,50 @@
                                 <div class="clearfix mb-3"></div>
 
                                 <div class="table-responsive">
+                                    <a href="{{ route('print') }}" target="_blank" class="btn btn-sm btn-primary btn-icon">
+                                        <i class="fas fa-print"></i> Print
+                                    </a>
+
                                     <table class="table-striped table">
                                         <tr>
                                             <th>No</th>
-                                            <th>Name</th>
-                                            <th>Akun</th>
-                                            <th>Pekerjaan</th>
+                                            <th>Nomor Pengaduan</th>
+                                            <th>Pelapor</th>
+                                            <th>Jenis Identitas</th>
+                                            <th>No Identitas</th>
+                                            <th>Tanggal Peristiwa</th>
                                             <th>Kategori</th>
-                                            <th>Tanggal Pengaduan</th>
                                             <th>Status Laporan</th>
                                             <th>Action</th>
                                         </tr>
-                                        @foreach ($pengaduans as $pengaduan)
+                                        @foreach ($pengaduan as $p)
                                             <tr>
                                                 <th>{{ $loop->iteration }}</th>
-                                                <td>{{ $pengaduan->name }}</td>
-                                                <td>{{ $pengaduan->user_email ?? 'Unknown' }}</td>
-                                                <td>{{ $pengaduan->user }}</td>
-                                                <td>{{ $pengaduan->category_name }}</td>
-                                                <td>{{ $pengaduan->created_at }}</td>
+                                                <td>{{ $p->nomor_pengaduan }}</td>
+                                                <td>{{ $p->pelapor }}</td>
+                                                <td>{{ $p->jenis_identitas }}</td>
+                                                <td>{{ $p->no_identitas }}</td>
+                                                <td>{{ $p->tanggal_peristiwa }}</td>
+                                                <td>{{ $p->kategori_pengaduan->name }}</td>
+                                                <td>{{ $p->status }}</td>
+
                                                 <td>
-                                                    <span class="badge
-                                                        @if($pengaduan->status == 'pending') bg-danger
-                                                        @elseif($pengaduan->status == 'proses') bg-info
-                                                        @elseif($pengaduan->status == 'selesai') bg-success
-                                                        @endif text-white">
-                                                        {{ ucfirst($pengaduan->status) }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                 <div class="d-flex justify-content-center">
-                                                        <a href='{{ route('pengaduan.show', $pengaduan->id) }}' class="btn btn-sm btn-success btn-icon" style="margin-right: 10px;">
-                                                            <i class="fas fa-eye"></i> Detail
+                                                    <div class="d-flex justify-content-center">
+                                                        <a href="{{ route('pengaduan.show', $p->id) }}" class="btn btn-sm btn-icon
+                                                            @if ($p->status == 'Sedang diverifikasi')
+                                                                btn-info
+                                                            @elseif($p->status == 'Sedang Diselidiki')
+                                                                btn-warning
+                                                            @elseif($p->status == 'Dalam Proses Hukum')
+                                                                btn-danger
+                                                            @elseif($p->status == 'Kasus Selesai')
+                                                                btn-success
+                                                            @else
+                                                                btn-secondary
+                                                            @endif
+                                                            " style="margin-right: 10px;">
+                                                            <i class="fas fa-eye"></i> Detail Pengaduan
                                                         </a>
-
-                                                        {{-- <a href='{{ route('pengaduan.edit', $pengaduan->id) }}' class="btn btn-sm btn-info btn-icon"">
-                                                            <i class="fas fa-edit"></i>
-                                                            Edit
-                                                        </a> --}}
-                                                        <!-- Tombol Edit untuk memperbarui status pengaduan -->
-                                                         <!-- Tombol untuk memperbarui status -->
-                                                         @if ($pengaduan->status == 'pending')
-                                                         <button class="btn btn-sm btn-info btn-icon" onclick="updateStatus('{{ $pengaduan->id }}', 'proses')">
-                                                             <i class="fas fa-edit"></i> Proses
-                                                         </button>
-                                                        @elseif ($pengaduan->status == 'proses')
-                                                            <button class="btn btn-sm btn-success btn-icon" onclick="updateStatus('{{ $pengaduan->id }}', 'selesai')">
-                                                                <i class="fas fa-check"></i> Selesai
-                                                            </button>
-                                                        @endif
-
-                                                        <form action="{{ route('pengaduan.destroy', $pengaduan->id) }}" method="POST" class="ml-2">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button class="btn btn-sm btn-danger btn-icon confirm-delete ">
-                                                                <i class="fas fa-times"></i> Delete
-                                                            </button>
-                                                        </form>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -131,7 +119,7 @@
                                     </table>
                                 </div>
                                 <div class="float-right">
-                                    {{ $pengaduans->withQueryString()->links() }}
+                                    {{ $pengaduan->links() }}
                                 </div>
                             </div>
                         </div>
@@ -142,45 +130,49 @@
     </div>
 @endsection
 @push('style')
-    <style>
-        /* Gaya untuk form inline */
-        .form-inline {
-            display: flex;
-            align-items: center; /* Mengatur agar label dan dropdown sejajar secara vertikal */
-        }
+<style>
+    /* Gaya untuk form inline */
+    .form-inline {
+        display: flex;
+        align-items: center; /* Menyelaraskan label dan dropdown secara vertikal */
+    }
 
-        /* Gaya untuk label */
-        .form-inline label {
-            font-weight: bold; /* Menebalkan teks label */
-            margin-right: 5px; /* Mengurangi jarak antara label dan dropdown */
-            font-size: 14px; /* Ukuran font label */
-            color: #333; /* Warna teks label */
-        }
+    /* Gaya untuk label */
+    .form-inline label {
+        font-weight: bold;
+        margin-right: 5px;
+        font-size: 14px;
+        color: #333;
+    }
 
-        /* Gaya untuk dropdown */
-        .selectric {
-            border-radius: 4px; /* Sudut yang lebih bulat */
-            border: 1px solid #ced4da; /* Warna border */
-            padding: 0.25rem 0.5rem; /* Mengurangi padding untuk ukuran lebih kecil */
-            font-size: 12px; /* Ukuran font dalam dropdown */
-            width: 180px; /* Lebar dropdown yang sedikit lebih kecil */
-            transition: border-color 0.15s ease-in-out; /* Transisi border */
-        }
+    /* Gaya untuk dropdown */
+    .selectric {
+        border-radius: 4px;
+        border: 1px solid #ced4da;
+        padding: 0.25rem 0.5rem;
+        font-size: 12px;
+        width: 180px;
+        transition: border-color 0.15s ease-in-out;
+    }
 
-        /* Gaya saat dropdown aktif */
-        .selectric:focus {
-            border-color: #80bdff; /* Warna border saat fokus */
-            outline: none; /* Menghilangkan outline default */
-            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25); /* Memberikan bayangan saat fokus */
-        }
+    /* Gaya saat dropdown aktif */
+    .selectric:focus {
+        border-color: #80bdff;
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
 
-        /* Gaya untuk button (jika diperlukan) */
-        .btn-primary {
-            margin-left: 5px; /* Mengurangi jarak antara dropdown dan button */
-            padding: 0.25rem 0.5rem; /* Mengurangi padding button untuk ukuran lebih kecil */
-            font-size: 12px; /* Ukuran font button */
-        }
-    </style>
+    /* Gaya untuk button */
+    .btn-primary {
+        margin-left: 5px;
+        padding: 0.25rem 0.5rem;
+        font-size: 12px;
+    }
+
+
+
+</style>
+
 @endpush
 
 
@@ -194,14 +186,22 @@
     <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
 
     <script>
-        function updateStatus(pengaduanId, status) {
+         function updateStatus(pengaduanId, status) {
             // Konfirmasi sebelum mengupdate status
             if (confirm('Apakah Anda yakin ingin mengubah status pengaduan ini menjadi ' + status + '?')) {
+                // Meminta keterangan dari pengguna
+                var keterangan = prompt('Masukkan keterangan untuk perubahan status:');
+                if (!keterangan || keterangan.trim() === '') {
+                    alert('Keterangan diperlukan untuk memperbarui status.');
+                    return;
+                }
+
                 $.ajax({
                     url: '{{ url('/pengaduan') }}/' + pengaduanId + '/update-status',
                     type: 'POST',
                     data: {
                         status: status,
+                        keterangan: keterangan, // Kirim keterangan ke server
                         _token: '{{ csrf_token() }}' // Token CSRF untuk keamanan
                     },
                     success: function(response) {

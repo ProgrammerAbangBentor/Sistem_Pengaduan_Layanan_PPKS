@@ -67,25 +67,19 @@
                                     <table class="table-striped table">
                                         <tr>
                                             <th>No</th>
-                                            <th>Judul Laporan</th>
-                                            <th>Tanggal</th>
+                                            <th>No_pengaduan</th>
+                                            <th>Tanggal Peristiwa</th>
+                                            <th>Tanggal Pembuatan Pengaduan</th>
                                             <th>Status</th>
                                             <th>Aksi</th>
                                         </tr>
-                                        @foreach($pengaduans as $pengaduan)
+                                        @foreach($pengaduan as $pengaduan)
                                             <tr>
                                                 <th>{{ $loop->iteration }}</th>
-                                                <td>{{ $pengaduan->laporan }}</td>
-                                                <td>{{ $pengaduan->created_at->format('d-m-Y') }}</td>
-                                                <td>
-                                                    <span class="badge
-                                                        @if($pengaduan->status == 'pending') bg-danger
-                                                        @elseif($pengaduan->status == 'proses') bg-info
-                                                        @elseif($pengaduan->status == 'selesai') bg-success
-                                                        @endif text-white">
-                                                        {{ ucfirst($pengaduan->status) }}
-                                                    </span>
-                                                </td>
+                                                <td>{{ $pengaduan->nomor_pengaduan }}</td>
+                                                <td>Pengaduan ini dibuat pada {{ $pengaduan->created_at->format('d-m-Y') }}</td>
+                                                <td>{{ $pengaduan->tanggal_peristiwa}}</td>
+                                                <td>{{ $pengaduan->status}}</td>
                                                 <td>
                                                     <a href="{{ route('pengaduanuser.show', $pengaduan->id) }}" class="btn btn-info">Lihat</a>
                                                 </td>
@@ -93,9 +87,9 @@
                                         @endforeach
                                     </table>
                                 </div>
-                                <div class="float-right">
-                                    {{ $pengaduans->withQueryString()->links() }}
-                                </div>
+                                {{-- <div class="float-right">
+                                    {{ $pengaduan->withQueryString()->links() }}
+                                </div> --}}
                             </div>
                         </div>
                     </div>

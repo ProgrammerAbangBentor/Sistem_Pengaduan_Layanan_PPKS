@@ -10,6 +10,12 @@ class Artikel extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title', 'content', 'image'
+        'title', 'content', 'image','user_id'
     ];
+
+     // Relasi ke tabel users
+     public function user()
+     {
+         return $this->belongsTo(User::class, 'user_id');
+     }
 }

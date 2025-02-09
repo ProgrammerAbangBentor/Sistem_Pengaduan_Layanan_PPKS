@@ -1,342 +1,536 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>Artikel - Satgas PPKS Poltekgo</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-     <!-- Favicon -->
-     <link href="{{ asset ('template/img/logo.png') }}" rel="icon">
+  <title>Layanan Pengaduan Dan Penanganan Kekerasan seksual</title>
 
-     <!-- Google Web Fonts -->
-     <link rel="preconnect" href="https://fonts.googleapis.com">
-     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap" rel="stylesheet">
+  <!-- Bootstrap core CSS -->
+  <link href="{{ asset('templatemo/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
 
-     <!-- Icon Font Stylesheet -->
-     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="{{ asset('templatemo/assets/css/fontawesome.css')}}">
+  <link rel="stylesheet" href="{{ asset('templatemo/assets/css/templatemo-scholar.css')}}">
+  <link rel="stylesheet" href="{{ asset('templatemo/assets/css/owl.css')}}">
+  <link rel="stylesheet" href="{{ asset('templatemo/assets/css/animate.css')}}">
+  <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
 
-     <!-- Libraries Stylesheet -->
-     <link href="{{ asset('template/lib/animate/animate.min.css') }}" rel="stylesheet">
-     <link href="{{ asset('template/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+  <style>
 
-     <!-- Customized Bootstrap Stylesheet -->
-     <link href="{{ asset('template/css/bootstrap.min.css') }}" rel="stylesheet">
+  /* Menambahkan fixed positioning pada header */
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #9a1fff;
+    padding: 10px 0;
+  }
 
-     <!-- Template Stylesheet -->
-     <link href="{{ asset('template/css/style.css') }}" rel="stylesheet">
+  body {
+    background-color: #9a1fff;
+    color: white;
+    margin-top: 120px;
+  }
 
-    <style>
-        /* Global styles for purple theme */
-        body {
-            background-color: #f4f4f9;
-        }
+  /* Menghilangkan list bullet dan padding default */
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
 
-        h2 {
-            margin-bottom: 30px;
-            font-weight: bold;
-            color: #6a1b9a; /* Purple color for heading */
-        }
+  /* Styling untuk item dropdown */
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
 
-        /* Profile image styling */
-        .profile-image {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #6a1b9a; /* Purple border around the image */
-        }
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background-color: #9a1fff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
 
-        /* Card container and individual card styles */
-        .card {
-            margin-bottom: 20px;
-            border-radius: 15px;
-            border: 1px solid #6a1b9a; /* Purple border around cards */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            background-color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 100%; /* Ensures cards have the same height */
-        }
+  .dropdown:hover .dropdown-menu {
+    display: block;
+  }
 
-        .card-body {
-            text-align: center;
-            padding: 20px;
-            flex-grow: 1; /* Makes the card body take up available space */
-        }
+  .dropdown-menu li {
+    padding: 8px 16px;
+  }
 
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: #6a1b9a; /* Purple color for titles */
-        }
+  .dropdown-menu a {
+    text-decoration: none;
+    color: #333;
+  }
 
-        .card-text {
-            font-size: 1rem;
-            color: #777;
-        }
+  .dropdown-menu a:hover {
+    background-color: #5d0171;
+  }
 
-        .card-body p {
-            margin-top: 10px;
-            color: #6a1b9a; /* Purple color for the paragraph text */
-        }
+  /* Styling artikel untuk kotak */
+  .container-article {
+    margin-bottom: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
 
-        /* Profile container styling */
-        .profile-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+  .article {
+    display: flex;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
 
-        /* Container and row styling */
-        .container {
-            padding: 40px;
-        }
+  .article-image {
+    flex: 1;
+    max-width: 150px;
+    margin-right: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
 
-        .row {
-            margin-top: 20px;
-        }
+  .article-image img {
+    width: 100%;
+    height: auto;
+  }
 
-        .col-md-4, .col-lg-3 {
-            margin-bottom: 20px;
-        }
+  .article-content {
+    flex: 3;
+  }
 
-        /* Purple button style */
-        .btn-purple {
-            background-color: #6a1b9a;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            text-align: center;
-            cursor: pointer;
-        }
+  .article-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+  }
 
-        .btn-purple:hover {
-            background-color: #9c4dcc; /* Lighter purple on hover */
-        }
-    </style>
+  .article-meta {
+    font-size: 14px;
+    color: #777;
+    margin: 10px 0;
+  }
+
+  .article-description {
+    font-size: 16px;
+    color: #555;
+  }
+
+  .container-article a {
+    color: #9a1fff;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  .container-article a:hover {
+    color: #5d0171;
+  }
+
+  /* Contact Form Section */
+  .contact-us {
+    background-color: #fff;
+    padding: 50px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .contact-us .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .contact-us h6 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #9a1fff;
+  }
+
+  .contact-us h2 {
+    font-size: 32px;
+    color: #333;
+  }
+
+  .contact-us p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+  }
+
+  .contact-us .special-offer {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .contact-us .special-offer h4 {
+    font-size: 22px;
+    color: #333;
+  }
+
+  .contact-us .special-offer span.offer {
+    font-size: 36px;
+    color: #9a1fff;
+    font-weight: bold;
+  }
+
+  .contact-us .special-offer h6 {
+    font-size: 14px;
+    color: #777;
+  }
+
+  .contact-us .special-offer a {
+    color: #9a1fff;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  /* Button Scroll to Top */
+  .scroll-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #9a1fff;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 50%;
+    display: none;
+    cursor: pointer;
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+  }
+
+  .scroll-to-top:hover {
+    background-color: #5d0171;
+  }
+
+  .title-article1 {
+    background-color: #9a1fff;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+
+  /* Mengatur tata letak kartu Ketua */
+  .profile-container {
+    text-align: center;
+  }
+
+  .profile-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+
+  .card-body {
+    padding: 20px;
+    background: linear-gradient(135deg, #9a1fff, #6a00cc);
+    color: #fff; /* Agar teks terlihat jelas di atas background */
+    border-radius: 8px; /* Tambahkan sudut melengkung */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Tambahkan efek bayangan */
+    font-family: 'Arial', sans-serif; /* Gunakan font yang bersih */
+}
+
+  .card-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+  }
+
+  .card-text {
+    font-size: 14px;
+    color: #ffffff;
+  }
+   .profile-card {
+    background-color: #fff; /* Warna putih */
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Bayangan halus */
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%; /* Untuk memastikan kartu memiliki tinggi sama */
+  }
+
+  .profile-image {
+    width: 100%;
+    height: 150px; /* Tinggi tetap */
+    overflow: hidden;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+
+  .profile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Gambar menyesuaikan container */
+  }
+
+  .profile-card-body {
+    margin-top: 10px;
+  }
+
+  .profile-role {
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 5px;
+  }
+
+  .profile-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 10px;
+  }
+
+  .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+  }
+
+  .social-icon {
+    color: #6c757d;
+    font-size: 20px;
+    transition: color 0.3s ease;
+  }
+
+  .social-icon:hover {
+    color: #9a1fff;
+  }
+  .row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Memberikan jarak antar kolom dan baris */
+  justify-content: center; /* Untuk merapikan isi secara horizontal */
+}
+@media (max-width: 768px) {
+  .profile-image {
+    height: 120px; /* Sesuaikan tinggi untuk perangkat kecil */
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-image {
+    height: 100px; /* Sesuaikan lebih kecil untuk layar ponsel */
+  }
+}
+
+.scroll-box {
+    max-height: 700px; /* Tinggi maksimal box */
+    overflow-y: auto; /* Tambahkan scrollbar vertikal */
+    padding: 20px; /* Padding di dalam box */
+    border: 1px solid #ddd; /* Border untuk pembatas */
+    border-radius: 10px; /* Sudut membulat */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bayangan untuk tampilan lebih menarik */
+    background-color: #fff; /* Latar belakang putih */
+    margin-bottom: 30px; /* Margin bawah */
+  }
+
+</style>
+
+  </style>
 </head>
 
 <body>
-    <div class="container-xxl bg-white p-0">
-        <!-- Spinner Start -->
-        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div>
-        <!-- Spinner End -->
-
-
-        <!-- Navbar Start -->
-        <div class="container-fluid nav-bar bg-transparent">
-            <nav class="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
-                <a href="index.html" class="navbar-brand d-flex align-items-center text-center">
-                    <div>
-                        <img class="img-fluid" src="{{ asset ('template/img/logo.png') }}" alt="Icon" style="width: 45px; height: 45px;">
-                    </div>
-                    <h1 class="m-0 text-basic">&nbsp; SATGAS PPKS POLTEKGO</h1>
-                </a>
-                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <div class="navbar-nav ms-auto">
-                        <a href="{{ route('dashboard') }}" class="nav-item  nav-link ">Beranda</a>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Profile</a>
-                            <div class="dropdown-menu rounded-0 m-0">
-                                <a href="property-agent.html" class="dropdown-item">Pengantar</a>
-                                <a href="property-type.html" class="dropdown-item">Visi Dan Misi</a>
-                                <a href="{{ route('struktur') }}" class="dropdown-item ">Struktrur Organisasi</a>
-                            </div>
-                        </div>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Kekerasan Seksual</a>
-                            <div class="dropdown-menu rounded-0 m-0">
-                                <a href="testimonial.html" class="dropdown-item">Pencegahan</a>
-                                <a href="404.html" class="dropdown-item">Penanganan</a>
-                            </div>
-                        </div>
-                        <a href="about.html" class="nav-item nav-link active">Artikel</a>
-                    </div>
-                    <a href="{{ route('login') }}" class="btn btn-dark px-3 d-none d-lg-flex"><b>Masuk</b></a> <!-- Perhatikan href di sini -->
-                </div>
-            </nav>
-        </div>
-        <!-- Navbar End -->
-
-    <div class="container mt-5">
-        <h2 class="text-center">Struktur Organisasi SATGAS PPKS Poltekgo</h2>
-
-        <div class="row justify-content-center">
-            <!-- Ketua (Baris pertama) -->
-            <div class="col-md-4">
-                <div class="card">
-                    @if (is_string($ketua))
-                    <div class="col-lg-12">
-                        <p>{{ $ketua }}</p>
-                    </div>
-                    @else
-                    <div class="profile-container">
-                        <img src="{{ asset('storage/' . $ketua->image) }}" alt="Ketua" class="profile-image">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $ketua->name }}</h5>
-                            <p class="card-text">{{ $ketua->status }}</p>
-                        </div>
-                    </div>
-                    @endif
-                </div>
-            </div>
-        </div>
-
-        <div class="row justify-content-center">
-            <!-- Bendahara dan Sekretaris (Baris kedua) -->
-            <div class="col-md-6 col-lg-4">
-                <div class="card">
-                    <div class="profile-container">
-                        <img src="https://via.placeholder.com/100" alt="Bendahara" class="profile-image">
-                        <div class="card-body">
-                            <h5 class="card-title">Bendahara</h5>
-                            <p class="card-text">Mahasiswa FP</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-                <div class="card">
-                    @if (is_string($sekretaris))
-                    <div class="col-lg-12">
-                        <p>{{ $sekretaris }}</p>
-                    </div>
-                    @else
-                    <div class="profile-container">
-                        <img src="{{ asset('storage/' . $sekretaris->image) }}" alt="Sekretaris" class="profile-image">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $sekretaris->name }}</h5>
-                            <p class="card-text">{{ $sekretaris->status }}</p>
-                        </div>
-                    </div>
-                    @endif
-                </div>
-            </div>
-        </div>
-
-        <div class="row justify-content-center">
-            <!-- Anggota (Baris ketiga) -->
-            @foreach ($anggota as $item)
-            <div class="col-md-4 col-lg-3">
-                <div class="card">
-                    <div class="profile-container">
-                        <img src="{{ asset('storage/' . $item->image) }}" alt="Anggota" class="profile-image">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $item->name }}</h5>
-                            <p class="card-text">{{ $item->status }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-
+  <!-- Preloader Start -->
+  <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </div>
+  </div>
+  <!-- Preloader End -->
 
-     <!-- Footer Start -->
-     <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="text-white mb-4">Get In Touch</h5>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>G4F6+H8R, Desa Panggulo, Jl. Muchlis Rahim, West Panggulo, Botupingge, Bone Bolango Regency, Gorontalo 96112</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>(0435) 8702646</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@poligon.ac.id </p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="text-white mb-4">Quick Links</h5>
-                    <a class="btn btn-link text-white-50" href="">About Us</a>
-                    <a class="btn btn-link text-white-50" href="">Contact Us</a>
-                    <a class="btn btn-link text-white-50" href="">Our Services</a>
-                    <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
-                    <a class="btn btn-link text-white-50" href="">Terms & Condition</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="text-white mb-4">Photo Gallery</h5>
-                    <div class="row g-2 pt-2">
-                        <div class="col-4">
-                            <img class="img-fluid rounded bg-light p-1" src="img/property-1.jpg" alt="">
-                        </div>
-                        <div class="col-4">
-                            <img class="img-fluid rounded bg-light p-1" src="img/property-2.jpg" alt="">
-                        </div>x
-                        <div class="col-4">
-                            <img class="img-fluid rounded bg-light p-1" src="img/property-3.jpg" alt="">
-                        </div>
-                        <div class="col-4">
-                            <img class="img-fluid rounded bg-light p-1" src="img/property-4.jpg" alt="">
-                        </div>
-                        <div class="col-4">
-                            <img class="img-fluid rounded bg-light p-1" src="img/property-5.jpg" alt="">
-                        </div>
-                        <div class="col-4">
-                            <img class="img-fluid rounded bg-light p-1" src="img/property-6.jpg" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="text-white mb-4">Newsletter</h5>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div>
-                </div>
+  <!-- Header Area Start -->
+  <header class="header-area header-sticky">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <!-- Logo -->
+              <a href="index.html" class="logo" style="display: flex; align-items: center;">
+                <img src="{{ asset('templatemo/assets/images/logo4.png') }}" style="height: 50px; width: auto;">
+              </a>
+              <div class="search-input">
+                <form id="search" action="#" style="margin: 0;">
+                  <h1 style="font-size: 16px; color: white; margin: 0;">Pelayanan & Penanganan Kekerasan Seksual</h1>
+                </form>
+              </div>
             </div>
+            <ul class="nav">
+              <li class="scroll-to-section"><a href="{{ route('dashboard') }}" class="active">Home</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle">Profile</a>
+                <ul class="dropdown-menu">
+                  <li><a href="{{ route('artikel') }}">Artikel</a></li>
+                  <li><a href="{{ route('struktur') }}">Struktur</a></li>
+                  <li><a href="#visimisi">VisiMisi</a></li>
+                </ul>
+              </li>
+              <li class="scroll-to-section"><a href="#services">Services</a></li>
+              <li class="scroll-to-section"><a href="#courses">Courses</a></li>
+              <li class="scroll-to-section"><a href="#team">Team</a></li>
+              <li class="scroll-to-section"><a href="#team">Galeri</a></li>
+              <li class="scroll-to-section"><a href="#events">Events</a></li>
+              <li class="scroll-to-section"><a href="#contact">Register Now!</a></li>
+            </ul>
+            <a class="menu-trigger"><span>Menu</span></a>
+          </nav>
         </div>
-        <div class="container">
-            <div class="copyright">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a class="border-bottom" href="http://poligon.ac.id/ ">PPKS Poltekgo</a>, All Right Reserved.
-
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
-    <!-- Footer End -->
+  </header>
+  <!-- Header Area End -->
+
+  <!-- STUKTUR Section -->
+ <!-- STUKTUR Section -->
+<section class="container">
+    <h2 class="title-article1">Struktur Organisasi</h2>
+
+    <div class="scroll-box">
+      <!-- Ketua Section -->
+      <div class="row justify-content-center mb-4">
+        <div class="col-md-6 text-center">
+          <div class="card shadow">
+            <div class="card-body">
+              <div class="profile-image mb-3">
+                @if($ketua->image)
+                  <img src="{{ asset('storage/' . $ketua->image) }}" alt="Foto Ketua" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                @else
+                  <img src="https://via.placeholder.com/150" alt="Foto Ketua" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                @endif
+              </div>
+              <h3 class="profile-name">{{ $ketua->name }}</h3>
+              <span class="badge bg-primary">{{ $ketua->jabatan }}</span>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sekretaris Section -->
+      <div class="row justify-content-center mb-4">
+        <div class="col-md-6 text-center">
+          <div class="card shadow">
+            <div class="card-body">
+              <div class="profile-image mb-3">
+                @if($sekretaris->image)
+                  <img src="{{ asset('storage/' . $sekretaris->image) }}" alt="Foto Sekretaris" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                @else
+                  <img src="https://via.placeholder.com/150" alt="Foto Sekretaris" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                @endif
+              </div>
+              <h3 class="profile-name">{{ $sekretaris->name }}</h3>
+              <span class="badge bg-secondary">{{ $sekretaris->jabatan }}</span>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Anggota Section -->
+      <div class="row">
+        @foreach($anggota as $item)
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+          <div class="card shadow">
+            <div class="card-body text-center">
+              <div class="profile-image mb-3">
+                @if($item->image)
+                  <img src="{{ asset('storage/' . $item->image) }}" alt="Foto Anggota" class="img-fluid rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
+                @else
+                  <img src="https://via.placeholder.com/100" alt="Foto Anggota" class="img-fluid rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
+                @endif
+              </div>
+              <h5 class="profile-name">{{ $item->name }}</h5>
+              <span class="badge bg-success">{{ $item->jabatan }}</span>
+
+            </div>
+          </div>
+        </div>
+        @endforeach
+      </div>
+    </div>
+  </section>
 
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-</div>
 
-<!-- JavaScript Libraries -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="{{ asset('template/lib/wow/wow.min.js') }}"></script>
-<script src="{{ asset('template/lib/easing/easing.min.js') }}"></script>
-<script src="{{ asset('template/lib/waypoints/waypoints.min.js') }}"></script>
-<script src="{{ asset('template/lib/owlcarousel/owl.carousel.min.js') }}"></script>
 
-<!-- Template Javascript -->
-<script src="{{ asset('template/js/main.js') }}"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+
+
+
+  <!-- Footer Start -->
+  <footer>
+    <div class="container">
+      <div class="col-lg-12">
+        <p>Copyright © 2036 Scholar Organization. All rights reserved. &nbsp;&nbsp;&nbsp; Design: <a href="https://templatemo.com" rel="nofollow" target="_blank">TemplateMo</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" id="scrollToTopBtn" onclick="scrollToTop()">↑</button>
+
+  <!-- Scripts -->
+  <script src="{{ asset('templatemo/vendor/jquery/jquery.min.js')}}"></script>
+  <script src="{{ asset('templatemo/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+  <script src="{{ asset('templatemo/assets/js/isotope.min.js')}}"></script>
+  <script src="{{ asset('templatemo/assets/js/owl-carousel.js')}}"></script>
+  <script src="{{ asset('templatemo/assets/js/counter.js')}}"></script>
+  <script src="{{ asset('templatemo/assets/js/custom.js')}}"></script>
+
+  <!-- JavaScript for Scroll to Top Button -->
+  <script>
+    // Get the button
+    var mybutton = document.getElementById("scrollToTopBtn");
+
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function() {
+      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        mybutton.style.display = "block";
+      } else {
+        mybutton.style.display = "none";
+      }
+    };
+
+    // When the user clicks on the button, scroll to the top of the document
+    function scrollToTop() {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    }
+  </script>
 </body>
 
 </html>

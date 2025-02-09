@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Artikel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\Auth;
 class ArticleController extends Controller
 {
     /**
@@ -13,7 +13,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $artikels = Artikel::all();
+        $artikels = Artikel::with('user')->get();
         return view('pages.artikel.index', compact('artikels'));
     }
 
@@ -41,6 +41,11 @@ class ArticleController extends Controller
             if ($request->hasFile('image')) {
                 $data['image'] = $request->file('image')->store('articles', 'public');
             }
+
+              // Tambahkan user_id dari pengguna yang sedang login
+                $data['user_id'] = Auth::id();
+
+
 
             Artikel::create($data);
             return redirect()->route('article.index')->with('success', 'Artikel created successfully.');
@@ -88,6 +93,8 @@ class ArticleController extends Controller
             $data['image'] = $artikel->image;
         }
 
+         // Tambahkan user_id dari pengguna yang sedang login
+         $data['user_id'] = Auth::id();
         $artikel->update($data);
 
         return redirect()->route('article.index')->with('success', 'Artikel berhasil diperbarui.');
@@ -96,9 +103,17 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Artikel $artikel)
+    public function destroy($id)
     {
+        $artikel = Artikel::findOrFail($id);
+
+        // Hapus file gambar jika ada
+        if ($artikel->image && Storage::disk('public')->exists($artikel->image)) {
+            Storage::disk('public')->delete($artikel->image);
+        }
+
         $artikel->delete();
-        return redirect()->route('article.index')->with('success', 'Artikel deleted successfully.');
+
+        return redirect()->route('article.index')->with('success', 'Artikel berhasil dihapus.');
     }
 }

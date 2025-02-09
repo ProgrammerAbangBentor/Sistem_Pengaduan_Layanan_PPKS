@@ -13,16 +13,26 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KeanggotaanController;
 
 Route::get('/', function () {
-    return view('pages.dasboard.index');
+    return view('pages.dasboard.landing');
 })->name('dashboard');
 
 Route::get('/login', [HomeController::class,'login'])->name('login');
 Route::get('/struktur', [HomeController::class,'struktur'])->name('struktur');
 Route::get('/artikel', [HomeController::class,'artikel'])->name('artikel');
+Route::get('/print', [HomeController::class, 'print'])->name('print');
 
 //Route untuk register
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('register', [RegisterController::class, 'register']);
+Route::get('/register-success', [RegisterController::class, 'registrationSuccess'])->name('register.success');
+
+// Menambahkan route untuk mengambil email berdasarkan no_identitas
+Route::get('/get-email-by-no-identitas', [UserController::class, 'getEmailByNoIdentitas']);
+
+Route::get('/activate-account/{token}', [RegisterController::class, 'showActivationForm'])->name('user.activate.form');
+
+// Route untuk memproses aktivasi akun
+Route::post('/activate-account/{token}', [RegisterController::class, 'activateAccount'])->name('user.activate');
 
 
 // Route untuk halaman login
@@ -48,11 +58,12 @@ Route::middleware(['auth', 'active'])->group(function () {
     });
 
     // Route manajemen pengaduan, bisa diakses oleh admin dan anggota
-    Route::middleware(['role:anggota|admin'])->group(function () {
+    Route::middleware(['web','role:anggota|admin'])->group(function () {
         Route::resource('anggota',KeanggotaanController::class);
         Route::resource('article', ArticleController::class);
         Route::resource('pengaduan', PengaduanController::class);
-        Route::post('/pengaduan/{id}/update-status', [PengaduanController::class, 'updateStatus'])->name('pengaduan.updateStatus');
+
+
 
      });
 

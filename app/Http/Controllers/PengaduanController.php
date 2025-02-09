@@ -3,122 +3,104 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengaduan;
-use App\Models\Category;
+use App\Models\Kategori_pengaduan;
+use App\Models\Keanggotaan;
 use Illuminate\Http\Request;
+use App\Models\Timeline;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class PengaduanController extends Controller
 {
     // Menampilkan daftar pengaduan
     public function index(Request $request)
     {
-        $categories = Category::all();
-        $pengaduans = Pengaduan::query()
-            ->join('users', 'pengaduans.user_id', '=', 'users.id')
-            ->join('categories', 'pengaduans.category_id', '=', 'categories.id')
-            ->select('pengaduans.*', 'users.email as user_email', 'categories.name as category_name')
-            ->when($request->input('name'), function ($query, $name) {
-                $query->where('pengaduans.name', 'like', '%' . $name . '%')
-                      ->orWhere('pengaduans.laporan', 'like', '%' . $name . '%');
+        $kategori = Kategori_pengaduan::all();
+
+        $pengaduan = Pengaduan::with('kategori_pengaduan')
+            ->when($request->input('no_identitas'), function ($query, $no_identitas) {
+                $query->where('no_identitas', 'like', '%' . $no_identitas . '%');
             })
-            ->when($request->input('category_id'), function ($query, $categoryId) {
-                $query->where('pengaduans.category_id', $categoryId);
+            ->when($request->input('tanggal_peristiwa'), function ($query, $tanggal_peristiwa) {
+                $query->whereDate('tanggal_peristiwa', $tanggal_peristiwa);
+            })
+            ->when($request->input('kategori_id'), function ($query, $kategori_id) {
+                $query->where('kategori_pengaduan_id', $kategori_id);
             })
             ->orderByRaw("CASE
-                WHEN status = 'pending' THEN 1
-                WHEN status = 'proses' THEN 2
-                WHEN status = 'selesai' THEN 3
-                ELSE 4
-            END")
-            ->paginate(10);
+                WHEN status = 'Laporan Diterima' THEN 1
+                WHEN status = 'Sedang diverifikasi' THEN 2
+                WHEN status = 'Sedang Diselidiki' THEN 3
+                WHEN status = 'Dalam Proses Hukum' THEN 4
+                WHEN status = 'Kasus Selesai' THEN 5
+                ELSE 6
+                END")
+                ->paginate(10);
 
-        return view('pages.pengaduan.index', compact('pengaduans', 'categories'));
+        return view('pages.pengaduan.index', compact('pengaduan','kategori'));
     }
-
-    // Menampilkan form untuk membuat pengaduan
     public function create()
     {
         return view('pages.pengaduan.create');
     }
 
-    // Menyimpan pengaduan baru ke database
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'user' => 'required|in:Mahasiswa,Dosen,anonim',
-            'laporan' => 'required|string',
-            'file' => 'nullable|mimes:jpeg,png,jpg,gif,mp3,mp4,avi,pdf,doc,docx|max:100240', // Validasi berbagai jenis file
-        ]);
-
-        $userId = auth()->id();
-        if (!$userId) {
-            return redirect()->back()->with('error', 'Anda harus login untuk membuat pengaduan.');
-        }
-
-        $filePath = null;
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $filePath = 'assets/files/pengaduan/' . $fileName;
-
-            // Simpan file di folder 'public/assets/files/pengaduan'
-            $file->move(public_path('assets/files/pengaduan'), $fileName);
-        }
-
-        Pengaduan::create([
-            'name' => $request->name,
-            'user' => $request->user,
-            'laporan' => $request->laporan,
-            'file' => $filePath,
-            'user_id' => $userId,
-        ]);
-
-        return redirect()->route('pengaduan.index')->with('success', 'Pengaduan created successfully');
-    }
-
     public function show($id)
     {
-        $pengaduan = Pengaduan::findOrFail($id);
-        return view('pages.pengaduan.detail', compact('pengaduan'));
+        $satgasList = Keanggotaan::where('jabatan', 'anggota')->get();
+
+        $pengaduan = Pengaduan::with(['timelines' => function ($query) use ($id) {
+            $pengaduanStatus = Pengaduan::findOrFail($id)->status;
+            $query->where('status', $pengaduanStatus);
+        },'keanggotaan'])->findOrFail($id);
+
+        return view('pages.pengaduan.detail', compact('pengaduan','satgasList'));
     }
-
-    // Mengupdate pengaduan di database
     public function update(Request $request, $id)
-    {
-        $request->validate([
-            'name' => 'required',
-            'laporan' => 'required',
-            'status' => 'required|in:pending,proses,selesai',
-            'file' => 'nullable|mimes:jpeg,png,jpg,gif,mp3,mp4,avi,pdf,doc,docx|max:10240', // Validasi berbagai jenis file
-        ]);
+{
+    $request->validate([
+        'status' => 'required|in:Laporan Diterima,Sedang diverifikasi,Sedang Diselidiki,Dalam Proses Hukum,Kasus Selesai',
+        'catatan' => 'nullable|string|max:255',
+        'satgas_id' => 'nullable|exists:keanggotaans,id',
+    ]);
 
-        $pengaduan = Pengaduan::find($id);
-        $pengaduan->name = $request->name;
-        $pengaduan->laporan = $request->laporan;
-        $pengaduan->user = $request->user;
+    $pengaduan = Pengaduan::findOrFail($id);
+
+    // Debugging: Cek apakah request mengandung satgas_id
+    Log::info("Request Data: " . json_encode($request->all()));
+
+    $statusBerubah = $pengaduan->status != $request->status;
+    $satgasBerubah = $request->filled('satgas_id') && $pengaduan->satgas_id != $request->satgas_id;
+
+    if ($statusBerubah || $satgasBerubah) {
         $pengaduan->status = $request->status;
 
-        if ($request->hasFile('file')) {
-            if ($pengaduan->file) {
-                $oldFilePath = public_path($pengaduan->file);
-                if (file_exists($oldFilePath)) {
-                    unlink($oldFilePath);
-                }
-            }
-
-            $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('assets/files/pengaduan'), $fileName);
-            $pengaduan->file = 'assets/files/pengaduan/' . $fileName;
+        if ($request->filled('satgas_id')) {
+            $pengaduan->satgas_id = $request->satgas_id;
         }
 
         $pengaduan->save();
 
-        return redirect()->route('pengaduan.index')->with('success', 'Pengaduan updated successfully');
+        if ($request->has('catatan')) {
+            $deletedRows = Timeline::where('pengaduan_id', $pengaduan->id)->delete();
+            Log::info("Timeline deleted: $deletedRows rows");
+
+            $timeline = Timeline::create([
+                'pengaduan_id' => $pengaduan->id,
+                'status' => $pengaduan->status,
+                'catatan' => $request->catatan,
+                'satgas_id' => $request->satgas_id ?? $pengaduan->satgas_id,
+                'created_at' => now()->toDateTimeString(),
+            ]);
+            Log::info("Timeline baru dibuat: " . json_encode($timeline));
+        }
+
+        return redirect()->back()->with('success', 'Status dan catatan berhasil diperbarui.');
     }
 
-    // Menghapus pengaduan
+    return redirect()->back()->with('info', 'Tidak ada perubahan status atau satgas_id.');
+}
+
+
     public function destroy($id)
     {
         $pengaduan = Pengaduan::findOrFail($id);
@@ -134,16 +116,5 @@ class PengaduanController extends Controller
         return redirect()->route('pengaduan.index')->with('success', 'Pengaduan deleted successfully');
     }
 
-    public function updateStatus(Request $request, $id)
-    {
-        $request->validate([
-            'status' => 'required|string|in:pending,proses,selesai',
-        ]);
 
-        $pengaduan = Pengaduan::findOrFail($id);
-        $pengaduan->status = $request->status;
-        $pengaduan->save();
-
-        return response()->json(['success' => true, 'message' => 'Status pengaduan berhasil diperbarui.']);
-    }
 }
