@@ -301,7 +301,7 @@ select.form-control:not([size]):not([multiple]) {
 
 .custom-radio .custom-control-input:checked ~ .custom-control-label::before,
 .custom-control-input:checked ~ .custom-control-label::before {
-  background-color: #800080 !important;
+  background-color: rgb(128, 2, 98) !important;
 }
 
 .custom-file-label {

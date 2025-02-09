@@ -13,18 +13,17 @@ return new class extends Migration
     {
         Schema::create('pengaduan', function (Blueprint $table) {
             $table->id();
+            $table->string('user_id');
             $table->string('nomor_pengaduan')->unique();
-            $table->enum('pelapor',['Mahasiswa','Dosen','Anonim'])->default('Anonim');
-            $table->enum('jenis_identitas',['KTM','NIDN']);
+            $table->enum('pelapor',['Mahasiswa','Dosen','Staff Kampus','Anonim'])->default('Anonim');
+            $table->enum('jenis_identitas',['KTM','NIDN','KTP']);
             $table->string('no_identitas');
+            $table->string('bukti_identitas')->nullable();
             $table->date('tanggal_peristiwa');
             $table->text('kronologi_peristiwa');
             //untuk penyimpanan titik maps
-            $table->decimal('latitude', 10, 8)->nullable();
-            $table->decimal('longitude', 11, 8)->nullable();
-            // (latitude dan longitude)
+            $table->string('lokasi_kejadian')->nullable();
             $table->string('file_bukti')->nullable();
-            $table->enum('status_pelapor',['Mahasiswa','Dosen','Staff Kampus']);
             $table->enum('kategori_pelapor',['Korban','Pelapor/Saksi']);
             $table->string('nama_tersangka');
             $table->enum('status_tersangka',['Mahasiswa','Dosen','Staff Kampus','Masyarakat Umum','Mahasiswa Kampus Lain']);
@@ -32,6 +31,7 @@ return new class extends Migration
             $table->foreignId('kategori_pengaduan_id')->constrained('kategori_pengaduan')->onDelete('cascade');
             $table->enum('status', ['Laporan Diterima', 'Sedang Diselidiki', 'Dalam Proses Hukum', 'Kasus Selesai'])->default('Laporan Diterima');
             $table->foreignId('satgas_id')->nullable()->constrained('keanggotaans')->onDelete('set null');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

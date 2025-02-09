@@ -67,7 +67,7 @@ class PengaduanUserController extends Controller
             'file_bukti' => 'nullable|file|mimes:jpg,png,pdf',
             'kategori_pelapor' => 'required|in:Korban,Pelapor/Saksi',
             'nama_tersangka' => 'nullable|string',
-            'status_tersangka' => 'nullable|in:Mahasiswa,Dosen,Staff Kampus,Masyarakat Umum,Masyarakat Kampus Lain',
+            'status_tersangka' => 'nullable|in:Mahasiswa,Dosen,Staff Kampus,Masyarakat Umum,Mahasiswa Kampus Lain',
             'no_telfon_tersangka' => 'nullable|string',
         ]);
 

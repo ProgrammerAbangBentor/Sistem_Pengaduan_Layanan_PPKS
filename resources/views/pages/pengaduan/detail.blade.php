@@ -26,7 +26,7 @@
                                 <table class="table table-striped table-hover table-bordered table-info">
                                     <thead class="thead-light">
                                         <tr>
-                                            <th>Nama</th>
+                                            <th>Pelapor</th>
                                             <td>{{ $pengaduan->pelapor == 'Anonim' ? 'Anonim' : $pengaduan->pelapor }}</p></td>
                                         </tr>
                                         <tr>
@@ -44,6 +44,35 @@
                                         <tr>
                                             <th>Ketegori Pelapor</th>
                                             <td>{{ $pengaduan->kategori_pelapor }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Bukti Identitas</th>
+                                            <td>
+                                                @if($pengaduan->bukti_identitas)
+                                                    @php
+                                                        $extension = pathinfo($pengaduan->bukti_identitas, PATHINFO_EXTENSION);
+                                                        $fileName = basename($pengaduan->bukti_identitas);
+                                                    @endphp
+
+                                                    @if(in_array($extension, ['jpg', 'jpeg', 'png', 'gif']))
+                                                        <img src="{{ asset('storage/' . $pengaduan->bukti_identitas) }}" alt="Gambar Pengaduan" class="img-fluid mb-3" style="max-width: 100%; height: auto; object-fit: contain;">
+                                                    @elseif(in_array($extension, ['pdf', 'doc', 'docx', 'xls', 'xlsx']))
+                                                        <a href="{{ asset('storage/' . $pengaduan->bukti_identitas) }}" target="_blank" class="btn btn-primary">Unduh File</a>
+                                                    @elseif(in_array($extension, ['mp3', 'wav']))
+                                                        <audio controls>
+                                                            <source src="{{ asset('storage/' . $pengaduan->bukti_identitas) }}" type="audio/{{ $extension }}">
+                                                            Your browser does not support the audio tag.
+                                                        </audio>
+                                                    @elseif(in_array($extension, ['mp4', 'avi', 'mov', 'mkv', 'flv']))
+                                                        <video controls class="img-fluid mb-3" style="max-width: 100%; height: auto; object-fit: contain;">
+                                                            <source src="{{ asset('storage/' . $pengaduan->bukti_identitas) }}" type="video/{{ $extension }}">
+                                                            Your browser does not support the video tag.
+                                                        </video>
+                                                    @endif
+                                                @else
+                                                    <p>No file submitted.</p>
+                                                @endif
+                                            </td>
                                         </tr>
                                     </thead>
                                 </table>
@@ -79,35 +108,35 @@
                                         </tr>
                                         <tr>
                                             <th>Lokasi Peristiwa</th>
-                                            <td>{{ $pengaduan->lokasi_peristiwa }}</td>
+                                            <td>{{ $pengaduan->lokasi_kejadian }}</td>
                                         </tr>
+                                        <!-- filepath: /d:/Tugas-tugas/Semster 5/Proyek Akhir/Proyek/Sistem_Pengaduan_Layanan_PPKS/resources/views/pages/pengaduan/detail.blade.php -->
                                         <tr>
                                             <th>Bukti File Peristiwa</th>
                                             <td>
-                                                @if($pengaduan->file)
-                                                @php
-                                                    $extension = pathinfo($pengaduan->file, PATHINFO_EXTENSION);
-                                                @endphp
+                                                @if($pengaduan->file_bukti)
+                                                    @php
+                                                        $extension = pathinfo($pengaduan->file_bukti, PATHINFO_EXTENSION);
+                                                        $fileName = basename($pengaduan->file_bukti);
+                                                    @endphp
 
-                                                @if(in_array($extension, ['jpg', 'jpeg', 'png', 'gif']))
-                                                    <img src="{{ asset($pengaduan->file) }}" alt="Gambar Pengaduan" class="img-fluid mb-3" style="max-width: 100%; height: auto; object-fit: contain;">
-                                                @elseif(in_array($extension, ['pdf', 'doc', 'docx', 'xls', 'xlsx']))
-                                                    <a href="{{ asset($pengaduan->file) }}" target="_blank" class="btn btn-primary">Unduh File</a>
-                                                @elseif(in_array($extension, ['mp3', 'wav']))
-                                                    <audio controls>
-                                                        <source src="{{ asset($pengaduan->file) }}" type="audio/{{ $extension }}">
-                                                        Your browser does not support the audio tag.
-                                                    </audio>
-                                                @elseif(in_array($extension, ['mp4', 'avi', 'mov']))
-                                                    <video controls style="max-width: 100%; max-height: 300px;">
-                                                        <source src="{{ asset($pengaduan->file) }}" type="video/{{ $extension }}">
-                                                        Your browser does not support the video tag.
-                                                    </video>
+                                                    @if(in_array($extension, ['jpg', 'jpeg', 'png', 'gif']))
+                                                        <img src="{{ asset('storage/' . $pengaduan->file_bukti) }}" alt="Gambar Pengaduan" class="img-fluid mb-3" style="max-width: 100%; height: auto; object-fit: contain;">
+                                                    @elseif(in_array($extension, ['pdf', 'doc', 'docx', 'xls', 'xlsx']))
+                                                        <a href="{{ asset('storage/' . $pengaduan->file_bukti) }}" target="_blank" class="btn btn-primary">Unduh File</a>
+                                                    @elseif(in_array($extension, ['mp3', 'wav']))
+                                                        <audio controls>
+                                                            <source src="{{ asset('storage/' . $pengaduan->file_bukti) }}" type="audio/{{ $extension }}">
+                                                            Your browser does not support the audio tag.
+                                                        </audio>
+                                                    @elseif(in_array($extension, ['mp4', 'avi', 'mov', 'mkv', 'flv']))
+                                                        <video controls class="img-fluid mb-3" style="max-width: 100%; height: auto; object-fit: contain;">
+                                                            <source src="{{ asset('storage/' . $pengaduan->file_bukti) }}" type="video/{{ $extension }}">
+                                                            Your browser does not support the video tag.
+                                                        </video>
+                                                    @endif
                                                 @else
-                                                    <p>File ini tidak dapat ditampilkan.</p>
-                                                @endif
-                                                @else
-                                                <p>Tidak ada file yang diunggah.</p>
+                                                    <p>No file submitted.</p>
                                                 @endif
                                             </td>
                                         </tr>
@@ -133,48 +162,72 @@
                                                         @endforelse
                                                     </td>
                                                 </tr>
+                                                @if($pengaduan->status === 'Sedang Diselidiki')
+                                                    <tr>
+                                                        <th>Satgas yang Menangani</th>
+                                                        <td>
+                                                            {{ $pengaduan->keanggotaan->name ?? 'Belum ada Satgas yang ditugaskan' }}
+                                                        </td>
+                                                    </tr>
+                                                @endif
                                             </thead>
                                         </table>
                                     </div>
-                            </div>
+                                </div>
                                     <hr style="border: 0; height: 2px; background-color: gray;">
                                     <form action="{{ route('pengaduan.update', $pengaduan) }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-hover table-bordered table-white">
-                                            <thead class="thead-light">
-                                                <tr>
-                                                    <th>Update Status Baru</th>
-                                                    <td>
-                                                        <select name="status" id="status" class="form-control">
-                                                            <option value="" disabled selected>-- Pilih Status Baru --</option>
-                                                            @if($pengaduan->status == 'Laporan Diterima')
-                                                                <option value="Sedang diverifikasi" {{ old('status', $pengaduan->status) == 'Sedang diverifikasi' ? 'selected' : '' }}>Sedang Diverifikasi</option>
-                                                            @elseif($pengaduan->status == 'Sedang diverifikasi')
-                                                                <option value="Sedang Diselidiki" {{ old('status', $pengaduan->status) == 'Sedang Diselidiki' ? 'selected' : '' }}>Sedang Diselidiki</option>
-                                                            @elseif($pengaduan->status == 'Sedang Diselidiki')
-                                                                <option value="Dalam Proses Hukum" {{ old('status', $pengaduan->status) == 'Dalam Proses Hukum' ? 'selected' : '' }}>Dalam Proses Hukum</option>
-                                                            @elseif($pengaduan->status == 'Dalam Proses Hukum')
-                                                                <option value="Kasus Selesai" {{ old('status', $pengaduan->status) == 'Kasus Selesai' ? 'selected' : '' }}>Kasus Selesai</option>
-                                                            @endif
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Tambah Catatan Baru</th>
-                                                    <td>
-                                                        <textarea name="catatan" id="catatan" class="form-control" rows="3" placeholder="Tambahkan catatan terkait pengaduan">{{ old('catatan') }}</textarea>
-                                                    </td>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-hover table-bordered table-white">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th>Update Status Baru</th>
+                                                        <td>
+                                                            <select name="status" id="status" class="form-control">
+                                                                <option value="" disabled selected>-- Pilih Status Baru --</option>
+                                                                @if($pengaduan->status == 'Laporan Diterima')
+                                                                    <option value="Sedang diverifikasi" {{ old('status', $pengaduan->status) == 'Sedang diverifikasi' ? 'selected' : '' }}>Sedang Diverifikasi</option>
+                                                                @elseif($pengaduan->status == 'Sedang diverifikasi')
+                                                                    <option value="Sedang Diselidiki" {{ old('status', $pengaduan->status) == 'Sedang Diselidiki' ? 'selected' : '' }}>Sedang Diselidiki</option>
+                                                                @elseif($pengaduan->status == 'Sedang Diselidiki')
+                                                                    <option value="Dalam Proses Hukum" {{ old('status', $pengaduan->status) == 'Dalam Proses Hukum' ? 'selected' : '' }}>Dalam Proses Hukum</option>
+                                                                @elseif($pengaduan->status == 'Dalam Proses Hukum')
+                                                                    <option value="Kasus Selesai" {{ old('status', $pengaduan->status) == 'Kasus Selesai' ? 'selected' : '' }}>Kasus Selesai</option>
+                                                                @endif
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Tambah Catatan Baru</th>
+                                                        <td>
+                                                            <textarea name="catatan" id="catatan" class="form-control" rows="3" placeholder="Tambahkan catatan terkait pengaduan">{{ old('catatan') }}</textarea>
+                                                        </td>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                        @if($pengaduan->status === 'Sedang diverifikasi')
+                                            <div class="mt-4">
+                                                <h5>Penugasan Petugas Satgas</h5>
+                                                <div class="form-group">
+                                                    <label for="satgas_id">Pilih Satgas yang Menangani</label>
+                                                    <select name="satgas_id" id="satgas_id" class="form-control" required>
+                                                        <option value="" disabled selected>-- Pilih Satgas --</option>
+                                                        @foreach($satgasList as $satgas)
+                                                            <option value="{{ $satgas->id }}" {{ old('satgas_id') == $satgas->id ? 'selected' : '' }}>
+                                                                {{ $satgas->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        @endif
 
-                                    <div class="d-flex justify-content-between mt-3">
-                                        <button type="submit" class="btn btn-danger">Simpan Updatean Status Laporan</button>
-                                    </div>
-                                </form>
+                                        <div class="d-flex justify-content-between mt-3">
+                                            <button type="submit" class="btn btn-danger">Simpan Updatean Status Laporan</button>
+                                        </div>
+                                    </form>
                                 <br>
 
                                 <hr style="border: 0; height: 2px; background-color: gray;">

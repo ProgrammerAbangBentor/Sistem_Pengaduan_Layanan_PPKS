@@ -84,29 +84,34 @@
                                             <th>Status Laporan</th>
                                             <th>Action</th>
                                         </tr>
-                                        @foreach ($pengaduan as $pengaduan)
+                                        @foreach ($pengaduan as $p)
                                             <tr>
                                                 <th>{{ $loop->iteration }}</th>
-                                                <td>{{ $pengaduan->nomor_pengaduan }}</td>
-                                                <td>{{ $pengaduan->pelapor }}</td>
-                                                <td>{{ $pengaduan->jenis_identitas }}</td>
-                                                <td>{{ $pengaduan->no_identitas }}</td>
-                                                <td>{{ $pengaduan->tanggal_peristiwa }}</td>
-                                                <td>{{ $pengaduan->kategori_pengaduan->name }}</td>
-                                                <td>{{ $pengaduan->status }}</td>
+                                                <td>{{ $p->nomor_pengaduan }}</td>
+                                                <td>{{ $p->pelapor }}</td>
+                                                <td>{{ $p->jenis_identitas }}</td>
+                                                <td>{{ $p->no_identitas }}</td>
+                                                <td>{{ $p->tanggal_peristiwa }}</td>
+                                                <td>{{ $p->kategori_pengaduan->name }}</td>
+                                                <td>{{ $p->status }}</td>
 
                                                 <td>
                                                     <div class="d-flex justify-content-center">
-                                                        <a href='{{ route('pengaduan.show', $pengaduan->id) }}' class="btn btn-sm btn-success btn-icon" style="margin-right: 10px;">
+                                                        <a href="{{ route('pengaduan.show', $p->id) }}" class="btn btn-sm btn-icon
+                                                            @if ($p->status == 'Sedang diverifikasi')
+                                                                btn-info
+                                                            @elseif($p->status == 'Sedang Diselidiki')
+                                                                btn-warning
+                                                            @elseif($p->status == 'Dalam Proses Hukum')
+                                                                btn-danger
+                                                            @elseif($p->status == 'Kasus Selesai')
+                                                                btn-success
+                                                            @else
+                                                                btn-secondary
+                                                            @endif
+                                                            " style="margin-right: 10px;">
                                                             <i class="fas fa-eye"></i> Detail Pengaduan
                                                         </a>
-                                                        {{-- <form action="{{ route('pengaduan.destroy', $pengaduan->id) }}" method="POST" class="ml-2">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button class="btn btn-sm btn-danger btn-icon confirm-delete ">
-                                                                <i class="fas fa-times"></i> Delete
-                                                            </button>
-                                                        </form> --}}
                                                     </div>
                                                 </td>
                                             </tr>

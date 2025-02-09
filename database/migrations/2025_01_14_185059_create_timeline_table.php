@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreign('pengaduan_id')->references('id')->on('pengaduan')->onDelete('cascade');
             $table->enum('status', ['Laporan Diterima', 'Sedang Diselidiki', 'Dalam Proses Hukum', 'Kasus Selesai']);
             $table->text('catatan')->nullable();
+            $table->unsignedBigInteger('satgas_id')->nullable();
+            $table->foreign('satgas_id')->references('id')->on('keanggotaans')->onDelete('set null');
             $table->timestamps();
         });
     }

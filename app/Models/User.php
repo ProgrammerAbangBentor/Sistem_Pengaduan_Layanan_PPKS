@@ -74,6 +74,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Pengaduan::class, 'no_identitas', 'no_identitas');
     }
+    public function user()
+    {
+        return $this->hasMany(Pengaduan::class, 'user_id', 'id');
+    }
 
     /**
      * Cek apakah pengguna aktif.

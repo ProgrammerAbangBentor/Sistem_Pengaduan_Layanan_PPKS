@@ -11,10 +11,15 @@ class Timeline extends Model
 
     protected $table = 'timeline';
 
-    protected $fillable = ['status', 'catatan', 'pengaduan_id'];
+    protected $fillable = ['status', 'catatan', 'pengaduan_id','satgas_id'];
 
     public function pengaduan()
     {
         return $this->belongsTo(Pengaduan::class, 'pengaduan_id');
+    }
+
+    public function satgas()
+    {
+        return $this->belongsTo(Keanggotaan::class, 'satgas_id');
     }
 }

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Pengaduan;
 use App\Models\Kategori_pengaduan;
+use App\Models\Keanggotaan;
 use Illuminate\Http\Request;
 use App\Models\Timeline;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class PengaduanController extends Controller
 {
@@ -26,15 +28,16 @@ class PengaduanController extends Controller
                 $query->where('kategori_pengaduan_id', $kategori_id);
             })
             ->orderByRaw("CASE
-                WHEN status = 'pending' THEN 1
-                WHEN status = 'proses' THEN 2
-                WHEN status = 'selesai' THEN 3
-                ELSE 4
-            END")
-            ->paginate(10);
-            $pengaduan->withQueryString();
+                WHEN status = 'Laporan Diterima' THEN 1
+                WHEN status = 'Sedang diverifikasi' THEN 2
+                WHEN status = 'Sedang Diselidiki' THEN 3
+                WHEN status = 'Dalam Proses Hukum' THEN 4
+                WHEN status = 'Kasus Selesai' THEN 5
+                ELSE 6
+                END")
+                ->paginate(10);
 
-        return view('pages.pengaduan.index', compact('pengaduan', 'kategori'));
+        return view('pages.pengaduan.index', compact('pengaduan','kategori'));
     }
     public function create()
     {
@@ -43,42 +46,61 @@ class PengaduanController extends Controller
 
     public function show($id)
     {
+        $satgasList = Keanggotaan::where('jabatan', 'anggota')->get();
+
         $pengaduan = Pengaduan::with(['timelines' => function ($query) use ($id) {
             $pengaduanStatus = Pengaduan::findOrFail($id)->status;
             $query->where('status', $pengaduanStatus);
-        }])->findOrFail($id);
-        return view('pages.pengaduan.detail', compact('pengaduan'));
+        },'keanggotaan'])->findOrFail($id);
+
+        return view('pages.pengaduan.detail', compact('pengaduan','satgasList'));
     }
-
     public function update(Request $request, $id)
-    {
-        $request->validate([
-            'status' => 'required|in:Laporan Diterima,Sedang diverifikasi,Sedang Diselidiki,Dalam Proses Hukum,Kasus Selesai',
-            'catatan' => 'nullable|string|max:255',
-        ]);
-        $pengaduan = Pengaduan::findOrFail($id);
+{
+    $request->validate([
+        'status' => 'required|in:Laporan Diterima,Sedang diverifikasi,Sedang Diselidiki,Dalam Proses Hukum,Kasus Selesai',
+        'catatan' => 'nullable|string|max:255',
+        'satgas_id' => 'nullable|exists:keanggotaans,id',
+    ]);
 
+    $pengaduan = Pengaduan::findOrFail($id);
 
+    // Debugging: Cek apakah request mengandung satgas_id
+    Log::info("Request Data: " . json_encode($request->all()));
 
-        if ($pengaduan->status != $request->status) {
-            $pengaduan->status = $request->status;
-            $pengaduan->save();
+    $statusBerubah = $pengaduan->status != $request->status;
+    $satgasBerubah = $request->filled('satgas_id') && $pengaduan->satgas_id != $request->satgas_id;
 
-            if ($request->has('catatan')) {
-                Timeline::create([
-                    'pengaduan_id' => $pengaduan->id,
-                    'status' => $pengaduan->status,
-                    'catatan' => $request->catatan,
-                    'created_at' => now(),
-                ]);
-            }
+    if ($statusBerubah || $satgasBerubah) {
+        $pengaduan->status = $request->status;
 
-            return redirect()->route('pengaduan.index')->with('success', 'Status dan catatan berhasil diperbarui.');
+        if ($request->filled('satgas_id')) {
+            $pengaduan->satgas_id = $request->satgas_id;
         }
 
-        return redirect()->back()->with('error', 'Tidak ada perubahan status.');
+        $pengaduan->save();
+
+        if ($request->has('catatan')) {
+            $deletedRows = Timeline::where('pengaduan_id', $pengaduan->id)->delete();
+            Log::info("Timeline deleted: $deletedRows rows");
+
+            $timeline = Timeline::create([
+                'pengaduan_id' => $pengaduan->id,
+                'status' => $pengaduan->status,
+                'catatan' => $request->catatan,
+                'satgas_id' => $request->satgas_id ?? $pengaduan->satgas_id,
+                'created_at' => now()->toDateTimeString(),
+            ]);
+            Log::info("Timeline baru dibuat: " . json_encode($timeline));
+        }
+
+        return redirect()->back()->with('success', 'Status dan catatan berhasil diperbarui.');
     }
-    // Menghapus pengaduan
+
+    return redirect()->back()->with('info', 'Tidak ada perubahan status atau satgas_id.');
+}
+
+
     public function destroy($id)
     {
         $pengaduan = Pengaduan::findOrFail($id);

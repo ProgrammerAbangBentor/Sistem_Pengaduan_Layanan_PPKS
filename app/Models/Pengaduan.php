@@ -12,14 +12,14 @@ class Pengaduan extends Model
     protected $table = 'pengaduan';
     protected $fillable = [
         'nomor_pengaduan',
+        'user_id',
         'pelapor',
         'jenis_identitas',
         'no_identitas',
         'kategori_pengaduan_id',
         'tanggal_peristiwa',
         'kronologi_peristiwa',
-        'latitude',
-        'longitude',
+        'lokasi_kejadian',
         'file_bukti',
         'kategori_pelapor',
         'nama_tersangka',
@@ -35,7 +35,7 @@ class Pengaduan extends Model
         return $this->belongsTo(Kategori_pengaduan::class, 'kategori_pengaduan_id');
     }
 
-    public function satgas()
+    public function keanggotaan()
     {
         return $this->belongsTo(Keanggotaan::class, 'satgas_id');
     }
@@ -43,6 +43,11 @@ class Pengaduan extends Model
     public function no_identitas()
     {
         return $this->belongsTo(User::class, 'no_identitas','no_identitas');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function timelines()
