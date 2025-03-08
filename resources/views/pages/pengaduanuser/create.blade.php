@@ -10,11 +10,6 @@
             </div>
             @include('layouts.alert')
             <div class="section-body">
-                <div class="nav nav-fill my-3">
-                    <label class="nav-link shadow-sm step0 border ml-2">Step One</label>
-                    <label class="nav-link shadow-sm step1 border ml-2">Step Two</label>
-                    <label class="nav-link shadow-sm step2 border ml-2">Step Three</label>
-                </div>
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('pengaduanuser.store') }}" method="POST" enctype="multipart/form-data">
@@ -34,9 +29,29 @@
                                         <span class="selectgroup-button">Dosen</span>
                                     </label>
                                     <label class="selectgroup-item">
+                                        <input type="radio" name="pelapor" value="Staff Kampus" class="selectgroup-input"
+                                            checked="">
+                                        <span class="selectgroup-button">Staff Kampus</span>
+                                    </label>
+                                    <label class="selectgroup-item">
                                         <input type="radio" name="pelapor" value="Anonim" class="selectgroup-input"
                                             checked="">
                                         <span class="selectgroup-button">Anonim</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Kategori Pelapor</label>
+                                <div class="selectgroup w-100">
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="kategori_pelapor" value="Korban" class="selectgroup-input"
+                                            checked="">
+                                        <span class="selectgroup-button">Korban</span>
+                                    </label>
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="kategori_pelapor" value="Pelapor/Saksi" class="selectgroup-input">
+                                        <span class="selectgroup-button">Pelapor/Saksi</span>
                                     </label>
                                 </div>
                             </div>
@@ -47,18 +62,30 @@
                                     <label class="selectgroup-item">
                                         <input type="radio" name="jenis_identitas" value="KTM" class="selectgroup-input"
                                             checked="">
-                                        <span class="selectgroup-button">KTM</span>
+                                        <span class="selectgroup-button">Kartu Tanda Mahasiswa (KTM)</span>
                                     </label>
                                     <label class="selectgroup-item">
                                         <input type="radio" name="jenis_identitas" value="NIDN" class="selectgroup-input">
-                                        <span class="selectgroup-button">NIDN</span>
+                                        <span class="selectgroup-button">Nomor Induk Dosen Nasional (NIDN)</span>
+                                    </label>
+                                    <label class="selectgroup-item">
+                                        <input type="radio" name="jenis_identitas" value="KTP" class="selectgroup-input">
+                                        <span class="selectgroup-button">Kartu Tanda Kependudukan (KTP)</span>
                                     </label>
                                 </div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="no_identitas" class="form-label">No Identitas (KTM / NIDN)</label>
+                                <label for="no_identitas" class="form-label">Nomor Identitas</label>
                                 <input type="text" name="no_identitas" id="no_identitas" class="form-control" value="{{ old('no_identitas') }}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="bukti_identitas" class="form-label">Unggah File Bukti Identitas Anda</label>
+                                <input type="file" name="bukti_identitas" id="bukti_identitas" class="form-control">
+                                @error('bukti_identitas')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="mb-3">
@@ -92,43 +119,20 @@
                                 @enderror
                             </div>
 
-                            {{-- <div class="mb-3">
-                                <label for="latitude" class="form-label">Latitude</label>
-                                <input type="number" name="latitude" id="latitude" class="form-control" step="any" value="{{ old('latitude') }}" required>
-                                @error('latitude')
+                            <div class="mb-3">
+                                <label for="lokasi_peristiwa" class="form-label">Lokasi Peristiwa</label>
+                                <input type="text" name="lokasi_peristiwa" id="lokasi_peristiwa" class="form-control" value="{{ old('lokasi_peristiwa') }}" required>
+                                @error('lokasi_peristiwa')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label for="longitude" class="form-label">Longitude</label>
-                                <input type="number" name="longitude" id="longitude" class="form-control" step="any" value="{{ old('longitude') }}" required>
-                                @error('longitude')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div> --}}
-
-                            <div class="mb-3">
-                                <label for="file_bukti" class="form-label">File Bukti</label>
+                                <label for="file_bukti" class="form-label">Unggah File Bukti Kekerasan Seksual</label>
                                 <input type="file" name="file_bukti" id="file_bukti" class="form-control">
                                 @error('file_bukti')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Kategori Pelapor</label>
-                                <div class="selectgroup w-100">
-                                    <label class="selectgroup-item">
-                                        <input type="radio" name="kategori_pelapor" value="Korban" class="selectgroup-input"
-                                            checked="">
-                                        <span class="selectgroup-button">Korban</span>
-                                    </label>
-                                    <label class="selectgroup-item">
-                                        <input type="radio" name="kategori_pelapor" value="Pelapor/Saksi" class="selectgroup-input">
-                                        <span class="selectgroup-button">Pelapor/Saksi</span>
-                                    </label>
-                                </div>
                             </div>
 
                             <div class="mb-3">
@@ -137,7 +141,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">Sttatus Tersangka</label>
+                                <label class="form-label">Status Tersangka</label>
                                 <div class="selectgroup w-100">
                                     <label class="selectgroup-item">
                                         <input type="radio" name="status_tersangka" value="Mahasiswa" class="selectgroup-input"

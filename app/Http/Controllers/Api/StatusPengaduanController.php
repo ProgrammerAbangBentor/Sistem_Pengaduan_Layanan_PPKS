@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Timeline;
 use App\Models\Pengaduan;
 use Illuminate\Support\Facades\DB;
+
 
 class StatusPengaduanController extends Controller
 {
