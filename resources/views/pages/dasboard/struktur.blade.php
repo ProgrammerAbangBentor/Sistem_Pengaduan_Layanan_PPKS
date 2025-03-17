@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
+  <link href="{{ asset ('template/img/logo.png') }}" rel="icon">
   <title>Layanan Pengaduan Dan Penanganan Kekerasan seksual</title>
 
   <!-- Bootstrap core CSS -->
@@ -385,23 +385,29 @@
                 </form>
               </div>
             </div>
-            <ul class="nav">
-              <li class="scroll-to-section"><a href="{{ route('dashboard') }}" class="active">Home</a></li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle">Profile</a>
-                <ul class="dropdown-menu">
-                  <li><a href="{{ route('artikel') }}">Artikel</a></li>
-                  <li><a href="{{ route('struktur') }}">Struktur</a></li>
-                  <li><a href="#visimisi">VisiMisi</a></li>
-                </ul>
-              </li>
-              <li class="scroll-to-section"><a href="#services">Services</a></li>
-              <li class="scroll-to-section"><a href="#courses">Courses</a></li>
-              <li class="scroll-to-section"><a href="#team">Team</a></li>
-              <li class="scroll-to-section"><a href="#team">Galeri</a></li>
-              <li class="scroll-to-section"><a href="#events">Events</a></li>
-              <li class="scroll-to-section"><a href="#contact">Register Now!</a></li>
-            </ul>
+              <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                      <li class="scroll-to-section"><a href="{{ route('dashboard') }}" class="active">Home</a></li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle">Profile</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ route('artikel') }}">Artikel</a></li>
+                            <li><a href="{{ route('struktur') }}">Stuktur</a></li>
+                            <li><a href="{{ route('dashboard') }}#visimisi">VisiMisi</a></li>
+
+                        </ul>
+                    </li>
+
+                      <li class="scroll-to-section"><a href="{{ route('dashboard') }}#services">Services</a></li>
+                      
+                      <li class="scroll-to-section"><a href="{{ route('dashboard') }}#team">Team</a></li>
+                    
+                      <li class="scroll-to-section"><a href="{{ route('dashboard') }}#contact">Register Now!</a></li>
+                  </ul>
+                    <a class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
+                    <!-- ***** Menu End ***** -->
             <a class="menu-trigger"><span>Menu</span></a>
           </nav>
         </div>
@@ -436,47 +442,57 @@
         </div>
       </div>
 
-      <!-- Sekretaris Section -->
-      <div class="row justify-content-center mb-4">
-        <div class="col-md-6 text-center">
-          <div class="card shadow">
-            <div class="card-body">
-              <div class="profile-image mb-3">
-                @if($sekretaris->image)
-                  <img src="{{ asset('storage/' . $sekretaris->image) }}" alt="Foto Sekretaris" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
-                @else
-                  <img src="https://via.placeholder.com/150" alt="Foto Sekretaris" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
-                @endif
-              </div>
-              <h3 class="profile-name">{{ $sekretaris->name }}</h3>
-              <span class="badge bg-secondary">{{ $sekretaris->jabatan }}</span>
-
+    <!-- Sekretaris Section -->
+<!-- Sekretaris Section -->
+<div class="row justify-content-center mb-4">
+    <div class="col-md-6 col-sm-12">
+        <div class="card shadow w-100">
+            <div class="card-body text-center d-flex flex-column align-items-center">
+                <div class="profile-image mb-3">
+                    @if($sekretaris->image)
+                        <img src="{{ asset('storage/' . $sekretaris->image) }}" alt="Foto Sekretaris" 
+                            class="img-fluid rounded-circle" 
+                            style="width: 150px; height: 150px; object-fit: cover;">
+                    @else
+                        <img src="https://via.placeholder.com/150" alt="Foto Sekretaris" 
+                            class="img-fluid rounded-circle" 
+                            style="width: 150px; height: 150px; object-fit: cover;">
+                    @endif
+                </div>
+                <h3 class="profile-name mb-2">{{ $sekretaris->name }}</h3>
+                <span class="badge bg-secondary">{{ $sekretaris->jabatan }}</span>
             </div>
-          </div>
         </div>
-      </div>
+    </div>
+</div>
+
 
       <!-- Anggota Section -->
-      <div class="row">
-        @foreach($anggota as $item)
-        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-          <div class="card shadow">
-            <div class="card-body text-center">
-              <div class="profile-image mb-3">
-                @if($item->image)
-                  <img src="{{ asset('storage/' . $item->image) }}" alt="Foto Anggota" class="img-fluid rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
-                @else
-                  <img src="https://via.placeholder.com/100" alt="Foto Anggota" class="img-fluid rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
-                @endif
-              </div>
-              <h5 class="profile-name">{{ $item->name }}</h5>
-              <span class="badge bg-success">{{ $item->jabatan }}</span>
-
+      <div class="row justify-content-center">
+    @foreach($anggota as $item)
+        <div class="col-lg-4 col-md-6 col-sm-12 d-flex align-items-stretch">
+            <div class="card shadow w-100">
+                <div class="card-body text-center d-flex flex-column">
+                    <div class="profile-image mb-3">
+                        @if($item->image)
+                            <img src="{{ asset('storage/' . $item->image) }}" alt="Foto Anggota" 
+                                class="img-fluid rounded-circle mx-auto" 
+                                style="width: 100px; height: 100px; object-fit: cover;">
+                        @else
+                            <img src="https://via.placeholder.com/100" alt="Foto Anggota" 
+                                class="img-fluid rounded-circle mx-auto" 
+                                style="width: 100px; height: 100px; object-fit: cover;">
+                        @endif
+                    </div>
+                    <h5 class="profile-name mb-2">{{ $item->name }}</h5>
+                    <span class="badge bg-success">{{ $item->jabatan }}</span>
+                    <div class="mt-auto"></div> <!-- Membantu agar tinggi card tetap seragam -->
+                </div>
             </div>
-          </div>
         </div>
-        @endforeach
-      </div>
+    @endforeach
+</div>
+
     </div>
   </section>
 

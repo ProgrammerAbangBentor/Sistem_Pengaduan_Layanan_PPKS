@@ -56,49 +56,62 @@ class PengaduanController extends Controller
         return view('pages.pengaduan.detail', compact('pengaduan','satgasList'));
     }
     public function update(Request $request, $id)
-{
-    $request->validate([
-        'status' => 'required|in:Laporan Diterima,Sedang diverifikasi,Sedang Diselidiki,Dalam Proses Hukum,Kasus Selesai',
-        'catatan' => 'nullable|string|max:255',
-        'satgas_id' => 'nullable|exists:keanggotaans,id',
-    ]);
-
-    $pengaduan = Pengaduan::findOrFail($id);
-
-    // Debugging: Cek apakah request mengandung satgas_id
-    Log::info("Request Data: " . json_encode($request->all()));
-
-    $statusBerubah = $pengaduan->status != $request->status;
-    $satgasBerubah = $request->filled('satgas_id') && $pengaduan->satgas_id != $request->satgas_id;
-
-    if ($statusBerubah || $satgasBerubah) {
-        $pengaduan->status = $request->status;
-
-        if ($request->filled('satgas_id')) {
-            $pengaduan->satgas_id = $request->satgas_id;
+    {
+        // Validasi input dari request
+        $request->validate([
+            'status' => 'required|in:Laporan Diterima,Sedang diverifikasi,Sedang Diselidiki,Dalam Proses Hukum,Kasus Selesai',
+            'catatan' => 'nullable|string|max:255',
+            'satgas_id' => 'nullable|exists:keanggotaans,id',
+        ]);
+    
+        $pengaduan = Pengaduan::findOrFail($id);
+    
+        // Debugging: Cek data request yang diterima
+        Log::info("Request Data: " . json_encode($request->all()));
+    
+        // Tentukan apakah status atau satgas_id berubah
+        $statusBerubah = $pengaduan->status !== $request->status;
+        $satgasBerubah = $request->filled('satgas_id') && $pengaduan->satgas_id !== $request->satgas_id;
+    
+        // Proses jika ada perubahan pada status atau satgas_id
+        if ($statusBerubah || $satgasBerubah) {
+            // Perbarui status jika berubah
+            $pengaduan->status = $request->status;
+    
+            // Perbarui satgas_id jika ada perubahan
+            if ($request->filled('satgas_id')) {
+                $pengaduan->satgas_id = $request->satgas_id;
+            }
+    
+            // Simpan perubahan ke database
+            $pengaduan->save();
+    
+            // Jika ada catatan, buat timeline baru
+            if ($request->has('catatan')) {
+                // Hapus timeline yang lama
+                $deletedRows = Timeline::where('pengaduan_id', $pengaduan->id)->delete();
+                Log::info("Timeline deleted: $deletedRows rows");
+    
+                // Buat timeline baru
+                $timeline = Timeline::create([
+                    'pengaduan_id' => $pengaduan->id,
+                    'status' => $pengaduan->status,
+                    'catatan' => $request->catatan,
+                    'satgas_id' => $request->satgas_id ?? $pengaduan->satgas_id,
+                    'created_at' => now()->toDateTimeString(),
+                ]);
+    
+                Log::info("Timeline baru dibuat: " . json_encode($timeline));
+            }
+    
+            // Redirect dengan pesan sukses
+            return redirect()->back()->with('success', 'Status dan catatan berhasil diperbarui.');
         }
-
-        $pengaduan->save();
-
-        if ($request->has('catatan')) {
-            $deletedRows = Timeline::where('pengaduan_id', $pengaduan->id)->delete();
-            Log::info("Timeline deleted: $deletedRows rows");
-
-            $timeline = Timeline::create([
-                'pengaduan_id' => $pengaduan->id,
-                'status' => $pengaduan->status,
-                'catatan' => $request->catatan,
-                'satgas_id' => $request->satgas_id ?? $pengaduan->satgas_id,
-                'created_at' => now()->toDateTimeString(),
-            ]);
-            Log::info("Timeline baru dibuat: " . json_encode($timeline));
-        }
-
-        return redirect()->back()->with('success', 'Status dan catatan berhasil diperbarui.');
+    
+        // Jika tidak ada perubahan
+        return redirect()->back()->with('info', 'Tidak ada perubahan status atau satgas_id.');
     }
-
-    return redirect()->back()->with('info', 'Tidak ada perubahan status atau satgas_id.');
-}
+    
 
 
     public function destroy($id)

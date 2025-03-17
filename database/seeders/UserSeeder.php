@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
                 'name' => 'Admin Sabri azis ',
                 'role' => 'admin',
                 'password' => Hash::make('123456789'), // Gantilah dengan password yang sesuai
+                'email_penerima_akun' => 'admin@gmail.com',
             ]
         )->assignRole('admin');
 

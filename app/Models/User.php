@@ -29,6 +29,7 @@ class User extends Authenticatable
         'is_active',
         'activation_token',
         'activation_token_expires_at',  // Menambahkan kolom activation_token_expires_at
+        'profile_image',  // Menambahkan kolom profile_image
     ];
 
     /**

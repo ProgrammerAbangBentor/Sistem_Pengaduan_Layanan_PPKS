@@ -5,8 +5,9 @@
                 <span>×</span>
             </button>
             <p>{!! $message !!}</p>
-        
-            
+            <br>
+            <br>
+            <a href="{{ route('login') }}"  style="float: right;">Login</a>
         </div>
  </div>
 @endif

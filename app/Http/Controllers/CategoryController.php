@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Exception;
 use App\Models\Kategori_pengaduan;
 use Illuminate\Http\Request;
@@ -27,44 +28,39 @@ class CategoryController extends Controller
 
         Kategori_pengaduan::create($request->all());
 
-        return redirect()->route('categories.index')->with('success', 'Category created successfully.');
+        return redirect()->route('categories.index')->with('success', 'Kategori berhasil dibuat.');
     }
-
-
 
     public function edit(Kategori_pengaduan $category)
     {
         return view('pages.categories.edit', compact('category'));
     }
 
-     // Memperbarui kategori
-     public function update(Request $request, Kategori_pengaduan $category)
-     {
-         $request->validate([
-             'name' => 'required|max:255|unique:categories,name,' . $category->id,
-             'description' => 'nullable',
-         ]);
+    public function update(Request $request, Kategori_pengaduan $category)
+    {
+        $request->validate([
+            'name' => 'required|max:255|unique:kategori_pengaduan,name,' . $category->id,
+            'keterangan' => 'nullable|string',
+        ]);
 
-         $category->update($request->all());
+        $category->update($request->all());
 
-         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
-     }
+        return redirect()->route('categories.index')->with('success', 'Kategori berhasil diperbarui.');
+    }
 
-
-     public function destroy(Kategori_pengaduan $category, Request $request)
-     {
+    public function destroy(Kategori_pengaduan $category)
+    {
         try {
-            // Cek apakah kategori masih digunakan di relasi lain (misalnya model Pengaduan)
-            if ($category->pengaduan()->exists()) {
+            // Periksa apakah kategori masih digunakan di model Pengaduan (jika ada relasi)
+            if (method_exists($category, 'pengaduan') && $category->pengaduan()->exists()) {
                 return redirect()->back()->with('error', 'Kategori ini tidak bisa dihapus karena masih digunakan pada pengaduan.');
             }
 
-            // Jika tidak ada relasi yang menggunakan kategori, maka hapus kategori
             $category->delete();
 
             return redirect()->back()->with('success', 'Kategori berhasil dihapus.');
         } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan Karena Categori Masih di pakai:' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 }

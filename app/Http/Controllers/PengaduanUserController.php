@@ -3,17 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengaduan;
+use App\Models\Timeline;
 use App\Models\Kategori_pengaduan;
 use Illuminate\Http\Request;
 
+
 class PengaduanUserController extends Controller
 {
-    // Menampilkan daftar pengaduan
     public function index(Request $request)
     {
+        $user_id = auth()->id();
+
         $kategori = Kategori_pengaduan::all();
 
-        $pengaduan = Pengaduan::with('kategori_pengaduan')
+        $pengaduan = Pengaduan::where('user_id', $user_id)
+            ->with('kategori_pengaduan')
             ->when($request->input('no_identitas'), function ($query, $no_identitas) {
                 $query->where('no_identitas', 'like', '%' . $no_identitas . '%');
             })
@@ -30,21 +34,22 @@ class PengaduanUserController extends Controller
                 ELSE 4
             END")
             ->paginate(10);
-            $pengaduan->withQueryString();
+
+        $pengaduan->withQueryString();
 
         return view('pages.pengaduanuser.index', compact('pengaduan', 'kategori'));
     }
 
     public function show($id)
     {
-        $pengaduan = Pengaduan::findorfail($id);
-        // $pengaduan = Pengaduan::where('user_id', auth()->id())
-        //     ->where('id', $id)
-        //     ->with('updatedBy') // Memuat relasi updatedBy
-        //     ->firstOrFail(); // Menghasilkan 404 jika tidak ditemukan
+        $pengaduan = Pengaduan::where('user_id', auth()->id())
+            ->where('id', $id)
+            ->with(['timelines', 'user'])
+            ->firstOrFail();
 
         return view('pages.pengaduanUser.detail', compact('pengaduan'));
     }
+
 
 
     public function create()
@@ -56,31 +61,42 @@ class PengaduanUserController extends Controller
     public function store(Request $request)
     {
         $validate = $request->validate([
-            'pelapor' => 'required|in:Mahasiswa,Dosen,Anonim',
-            'jenis_identitas' => 'required|in:KTM,NIDN',
-            'no_identitas' => 'required|string|exists:users,no_identitas',
+            'pelapor' => 'required',
+            'kategori_pelapor' => 'required',
+            'jenis_identitas' => 'nullable',
+            'no_identitas' => 'nullable|string',
             'kategori_pengaduan_id' => 'required|exists:kategori_pengaduan,id',
             'tanggal_peristiwa' => 'required|date',
             'kronologi_peristiwa' => 'required|string',
-            // 'latitude' => 'required|numeric',
-            // 'longitude' => 'required|numeric',
-            'file_bukti' => 'nullable|file|mimes:jpg,png,pdf',
-            'kategori_pelapor' => 'required|in:Korban,Pelapor/Saksi',
+            'lokasi_kejadian' => 'nullable|string',
             'nama_tersangka' => 'nullable|string',
-            'status_tersangka' => 'nullable|in:Mahasiswa,Dosen,Staff Kampus,Masyarakat Umum,Mahasiswa Kampus Lain',
+            'status_tersangka' => 'nullable|string',
             'no_telfon_tersangka' => 'nullable|string',
+            'bukti_identitas' => 'nullable|file|mimes:jpeg,png,pdf',
+            'file_bukti' => 'nullable|file|mimes:jpeg,png,pdf',
         ]);
 
+            $pengaduan = new Pengaduan($validate);
+            $pengaduan->user_id = auth()->id();
+            $pengaduan->nomor_pengaduan = Pengaduan::generateNomorPengaduan();
 
-        $pengaduan = new Pengaduan($validate);
-        $pengaduan->nomor_pengaduan = Pengaduan::generateNomorPengaduan();
+            if ($request->hasFile('file_bukti')) {
+                $pengaduan->file_bukti = $request->file('file_bukti')->store('bukti', 'public');
+            }
 
-        if ($request->hasFile('file_bukti')) {
-            $pengaduan->file_bukti = $request->file('file_bukti')->store('bukti', 'public');
-        }
+            if ($request->hasFile('bukti_identitas')) {
+                $pengaduan->bukti_identitas = $request->file('bukti_identitas')->store('identitas', 'public');
+            }
 
-        $pengaduan->save();
+            $pengaduan->save();
+
+            Timeline::create([
+                'pengaduan_id' => $pengaduan->id,
+                'status' => 'Laporan Diterima',
+                'catatan' => null,
+                'satgas_id' => null,
+                'created_at' => now(),
+            ]);
         return redirect()->route('pengaduanuser.index')->with('success', 'Pengaduan berhasil dibuat.');
     }
-
 }

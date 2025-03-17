@@ -12,9 +12,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KeanggotaanController;
 
-Route::get('/', function () {
-    return view('pages.dasboard.landing');
-})->name('dashboard');
+Route::get('/', [HomeController::class, 'index'])->name('dashboard');
 
 Route::get('/login', [HomeController::class,'login'])->name('login');
 Route::get('/struktur', [HomeController::class,'struktur'])->name('struktur');

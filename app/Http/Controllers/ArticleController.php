@@ -6,6 +6,7 @@ use App\Models\Artikel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+
 class ArticleController extends Controller
 {
     /**
@@ -13,7 +14,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $artikels = Artikel::with('user')->get();
+        $artikels = Artikel::with('user')->latest()->get();
         return view('pages.artikel.index', compact('artikels'));
     }
 
@@ -30,33 +31,33 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-            $request->validate([
-                'title' => 'required|string|max:255',
-                'content' => 'required',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            ]);
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
 
-            $data = $request->all();
+        $data = $request->only(['title', 'content']);
 
-            if ($request->hasFile('image')) {
-                $data['image'] = $request->file('image')->store('articles', 'public');
-            }
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('articles', 'public');
+        }
 
-              // Tambahkan user_id dari pengguna yang sedang login
-                $data['user_id'] = Auth::id();
+        // Tambahkan user_id dari pengguna yang sedang login
+        $data['user_id'] = Auth::id();
 
+        Artikel::create($data);
 
-
-            Artikel::create($data);
-            return redirect()->route('article.index')->with('success', 'Artikel created successfully.');
+        return redirect()->route('article.index')->with('success', 'Artikel berhasil dibuat.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $artikel = Artikel::with('user')->findOrFail($id);
+        return view('pages.artikel.show', compact('artikel'));
     }
 
     /**
@@ -80,7 +81,7 @@ class ArticleController extends Controller
         ]);
 
         $artikel = Artikel::findOrFail($id);
-        $data = $request->except('image');
+        $data = $request->only(['title', 'content']);
 
         if ($request->hasFile('image')) {
             // Hapus gambar lama jika ada
@@ -88,13 +89,11 @@ class ArticleController extends Controller
                 Storage::disk('public')->delete($artikel->image);
             }
             $data['image'] = $request->file('image')->store('articles', 'public');
-        } else {
-            // Gunakan gambar lama jika tidak ada gambar baru yang diunggah
-            $data['image'] = $artikel->image;
         }
 
-         // Tambahkan user_id dari pengguna yang sedang login
-         $data['user_id'] = Auth::id();
+        // Tambahkan user_id dari pengguna yang sedang login
+        $data['user_id'] = Auth::id();
+
         $artikel->update($data);
 
         return redirect()->route('article.index')->with('success', 'Artikel berhasil diperbarui.');

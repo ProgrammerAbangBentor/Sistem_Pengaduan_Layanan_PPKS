@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
+  <link href="{{ asset ('template/img/logo.png') }}" rel="icon">
   <title>Layanan Pengaduan Dan Penanganan Kekerasan seksual</title>
 
   <!-- Bootstrap core CSS -->
@@ -262,23 +262,29 @@
                 </form>
               </div>
             </div>
-            <ul class="nav">
-              <li class="scroll-to-section"><a href="{{ route('dashboard') }}" class="active">Home</a></li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle">Profile</a>
-                <ul class="dropdown-menu">
-                  <li><a href="{{ route('artikel') }}">Artikel</a></li>
-                  <li><a href="{{ route('struktur') }}">Struktur</a></li>
-                  <li><a href="#visimisi">VisiMisi</a></li>
-                </ul>
-              </li>
-              <li class="scroll-to-section"><a href="#services">Services</a></li>
-              <li class="scroll-to-section"><a href="#courses">Courses</a></li>
-              <li class="scroll-to-section"><a href="#team">Team</a></li>
-              <li class="scroll-to-section"><a href="#team">Galeri</a></li>
-              <li class="scroll-to-section"><a href="#events">Events</a></li>
-              <li class="scroll-to-section"><a href="#contact">Register Now!</a></li>
-            </ul>
+             <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                      <li class="scroll-to-section"><a href="{{ route('dashboard') }}" class="active">Home</a></li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle">Profile</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ route('artikel') }}">Artikel</a></li>
+                            <li><a href="{{ route('struktur') }}">Stuktur</a></li>
+                            <li><a href="{{ route('dashboard') }}#visimisi">VisiMisi</a></li>
+
+                        </ul>
+                    </li>
+
+                      <li class="scroll-to-section"><a href="{{ route('dashboard') }}#services">Services</a></li>
+                      
+                      <li class="scroll-to-section"><a href="{{ route('dashboard') }}#team">Team</a></li>
+                    
+                      <li class="scroll-to-section"><a href="{{ route('dashboard') }}#contact">Register Now!</a></li>
+                  </ul>
+                    <a class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
+                    <!-- ***** Menu End ***** -->
             <a class="menu-trigger"><span>Menu</span></a>
           </nav>
         </div>
@@ -305,6 +311,7 @@
             </div>
             <div class="article-content">
                 <div class="article-title">{{ $art->title }}</div>
+                <div class="article-description">{{ $art->content }}</div>
                 <div class="article-meta">
                     ARTIKEL | {{ $art->created_at->format('d M Y') }} | Dibuat Oleh: {{ $art->user->name ?? 'Tidak Diketahui' }}
                 </div>

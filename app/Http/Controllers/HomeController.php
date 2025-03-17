@@ -6,13 +6,42 @@ use App\Models\Artikel;
 use App\Models\Pengaduan;
 use App\Models\Keanggotaan;
 use App\Models\Kategori_pengaduan;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        return view('pages.dasboard.index');
+        $totalUser = User::count();
+        $totalPengaduan = Pengaduan::count();
+        $KasusSelesai = Pengaduan::where('status', 'Kasus Selesai')->count();
+        $jumlahanggotasatgas = Keanggotaan::count();
+
+        $ketua = Keanggotaan::where('jabatan', 'Ketua')->first() ?? (object) [
+            'name' => 'Data Ketua belum diisi',
+            'jabatan' => 'Ketua',
+            'image' => null,
+
+        ];
+
+        $sekretaris = Keanggotaan::where('jabatan', 'Sekretaris')->first() ?? (object) [
+            'name' => 'Data Sekretaris belum diisi',
+            'jabatan' => 'Sekretaris',
+            'image' => null,
+
+        ];
+
+        $anggota = Keanggotaan::where('jabatan', 'Anggota')->get();
+        if ($anggota->isEmpty()) {
+            $anggota = collect([(object) [
+                'name' => 'Data Anggota belum diisi',
+                'jabatan' => 'Anggota',
+                'image' => null,
+
+            ]]);
+        }
+        return view('pages.dasboard.landing',  compact('ketua', 'sekretaris', 'anggota', 'totalUser','totalPengaduan','KasusSelesai','jumlahanggotasatgas'));
     }
 
     public function print(Request $request)

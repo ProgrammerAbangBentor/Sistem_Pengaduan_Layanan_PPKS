@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role; // Pastikan ini diimpor
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -61,39 +62,60 @@ class UserController extends Controller
          return redirect()->route('user.index')->with('success', 'User created successfully.');
     }
 
+  
+    
     public function profil($id)
     {
         $user = User::findOrFail($id);
-
         return view('pages.users.profile', compact('user'));
     }
-
+    
     public function updateProfile(Request $request, $id)
     {
         // Validasi input data
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required',
+            'email' => 'required|email|max:255',
+            'password' => 'nullable|string|min:6|confirmed', // Validasi password jika diisi
+            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi gambar
         ]);
-
+    
         // Cari user berdasarkan ID
         $user = User::findOrFail($id);
-
+    
         // Perbarui data jika ada perubahan
         $user->name = $request->input('name');
         $user->email = $request->input('email');
-
+    
         // Jika password diisi, hash dan update password
-        if ($request->filled('password')) { // Mengecek apakah password diisi
+        if ($request->filled('password')) {
             $user->password = Hash::make($request->input('password'));
         }
-
+    
+        // Proses upload gambar profil jika ada file
+        if ($request->hasFile('profile_image')) {
+            // Hapus gambar profil lama jika ada
+            if ($user->profile_image && Storage::exists('public/images/profile/' . $user->profile_image)) {
+                Storage::delete('public/images/profile/' . $user->profile_image); // Hapus file lama
+            }
+    
+            // Simpan gambar baru
+            $image = $request->file('profile_image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension(); // Menghasilkan nama unik untuk file gambar
+            $image->storeAs('public/images/profile', $imageName); // Simpan gambar ke storage
+    
+            // Simpan nama file gambar ke database
+            $user->profile_image = $imageName;
+        }
+    
         // Simpan perubahan ke database
         $user->save();
-
+    
         // Redirect ke profil dengan pesan sukses
         return redirect()->route('user.profil', $id)->with('success', 'Profile updated successfully');
-   }
+    }
+    
+    
 
 
     public function edit($id)
@@ -107,21 +129,27 @@ class UserController extends Controller
         //update
         public function update(Request $request, $id)
         {
-        $data = $request->all();
-        $user = User::findOrFail($id);
-
-        //check if password is not empty
-        if ($request->input('password')) {
-            $data['password'] = Hash::make($request->input('password'));
-        } else {
-            //if password is empty, then use the old password
-            $data['password'] = $user->password;
+            $data = $request->all();
+            $user = User::findOrFail($id);
+        
+            // Cek apakah password diisi atau tidak
+            if ($request->input('password')) {
+                $data['password'] = Hash::make($request->input('password'));
+            } else {
+                // Jika password tidak diisi, gunakan password lama
+                $data['password'] = $user->password;
+            }
+        
+            // Update data user
+            $user->update($data);
+        
+            // Hapus semua role sebelumnya dan tambahkan role baru
+            $user->roles()->detach();
+            $user->assignRole($request->role);
+        
+            return redirect()->route('user.index')->with('success', 'User updated successfully');
         }
-        $user->update($data);
-        $user->assignRole($request->role);
-        return redirect()->route('user.index') ->with('success', 'User updated successfully');
-
-        }
+        
 
     public function destroy($id)
     {

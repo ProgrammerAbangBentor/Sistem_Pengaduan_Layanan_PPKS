@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('pengaduan', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id');
             $table->string('nomor_pengaduan')->unique();
             $table->enum('pelapor',['Mahasiswa','Dosen','Staff Kampus','Anonim'])->default('Anonim');
             $table->enum('jenis_identitas',['KTM','NIDN','KTP']);

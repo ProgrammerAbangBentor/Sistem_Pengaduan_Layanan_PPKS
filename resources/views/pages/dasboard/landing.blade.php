@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
+   <link href="{{ asset ('template/img/logo.png') }}" rel="icon">
     <title>Layanan Pengaduan Dan Penanganan Kekerasan seksual</title>
 
     <!-- Bootstrap core CSS -->
@@ -28,6 +28,17 @@ https://templatemo.com/tm-586-scholar
 -->
   </head>
 <style>
+
+.team-img {
+    width: 100%; /* Menyesuaikan dengan kontainer */
+    max-width: 200px; /* Maksimum 200px */
+    height: auto; /* Menjaga aspek rasio */
+    aspect-ratio: 1 / 1; /* Memastikan tetap berbentuk lingkaran */
+    object-fit: cover; /* Memastikan gambar tetap proporsional */
+    border-radius: 50%; /* Membuat gambar lingkaran */
+}
+
+
     /* Menghilangkan list bullet dan padding default */
 ul {
     list-style: none;
@@ -123,10 +134,9 @@ ul {
                     </li>
 
                       <li class="scroll-to-section"><a href="#services">Services</a></li>
-                      <li class="scroll-to-section"><a href="#courses">Courses</a></li>
+                      
                       <li class="scroll-to-section"><a href="#team">Team</a></li>
-                      <li class="scroll-to-section"><a href="#team">Galeri</a></li>
-                      <li class="scroll-to-section"><a href="#events">Events</a></li>
+                    
                       <li class="scroll-to-section"><a href="#contact">Register Now!</a></li>
                   </ul>
                     <a class='menu-trigger'>
@@ -140,6 +150,7 @@ ul {
   </header>
   <!-- ***** Header Area End ***** -->
 
+<!--Home -->
   <div class="main-banner" id="top">
     <div class="container">
       <div class="row">
@@ -169,7 +180,7 @@ ul {
                         <p>Sexual violence treatment service websites are usually platforms designed to provide support, information and services to victims of sexual violence.</p>
                          <div class="buttons">
                             <div class="main-button" >
-                                <a href="{{ route('login') }}">Daftar Akun</a>
+                                <a href="{{ route('login') }}">Masuk</a>
                             </div>
 
                         </div>
@@ -208,14 +219,13 @@ ul {
                     </div>
                 </div>
             </div>
-
-
           </div>
         </div>
       </div>
     </div>
   </div>
 
+<!-- Service -->
   <div class="services section" id="services">
     <div class="container">
       <div class="row">
@@ -266,182 +276,9 @@ ul {
     </div>
   </div>
 
-  {{-- <div class="section about-us">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6 offset-lg-1">
-          <div class="accordion" id="accordionExample">
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                  Where shall we begin?
-                </button>
-              </h2>
-              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                  Dolor <strong>almesit amet</strong>, consectetur adipiscing elit, sed doesn't eiusmod tempor incididunt ut labore consectetur <code>adipiscing</code> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.
-                </div>
-              </div>
-            </div>
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="headingTwo">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                  How do we work together?
-                </button>
-              </h2>
-              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                  Dolor <strong>almesit amet</strong>, consectetur adipiscing elit, sed doesn't eiusmod tempor incididunt ut labore consectetur <code>adipiscing</code> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.
-                </div>
-              </div>
-            </div>
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="headingThree">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                  Why SCHOLAR is the best?
-                </button>
-              </h2>
-              <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                  There are more than one hundred responsive HTML templates to choose from <strong>Template</strong>Mo website. You can browse by different tags or categories.
-                </div>
-              </div>
-            </div>
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="headingFour">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                  Do we get the best support?
-                </button>
-              </h2>
-              <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                  You can also search on Google with specific keywords such as <code>templatemo business templates, templatemo gallery templates, admin dashboard templatemo, 3-column templatemo, etc.</code>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-5 align-self-center">
-          <div class="section-heading">
-            <h6>About Us</h6>
-            <h2>What make us the best academy online?</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravid risus commodo.</p>
-            <div class="main-button">
-              <a href="#">Discover More</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> --}}
 
-  {{-- <section class="section courses" id="courses" >
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12 text-center">
-          <div class="section-heading">
-            <h6>Latest Courses</h6>
-            <h2>Latest Courses</h2>
-          </div>
-        </div>
-      </div>
-      <ul class="event_filter">
-        <li>
-          <a class="is_active" href="#!" data-filter="*">Show All</a>
-        </li>
-        <li>
-          <a href="#!" data-filter=".design">Webdesign</a>
-        </li>
-        <li>
-          <a href="#!" data-filter=".development">Development</a>
-        </li>
-        <li>
-          <a href="#!" data-filter=".wordpress">Wordpress</a>
-        </li>
-      </ul>
-      <div class="row event_box">
-        <div class="col-lg-4 col-md-6 align-self-center mb-30 event_outer col-md-6 design">
-          <div class="events_item">
-            <div class="thumb">
-              <a href="#"><img src="assets/images/course-01.jpg" alt=""></a>
-              <span class="category">Webdesign</span>
-              <span class="price"><h6><em>$</em>160</h6></span>
-            </div>
-            <div class="down-content">
-              <span class="author">Stella Blair</span>
-              <h4>Learn Web Design</h4>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6 align-self-center mb-30 event_outer col-md-6  development">
-          <div class="events_item">
-            <div class="thumb">
-              <a href="#"><img src="assets/images/course-02.jpg" alt=""></a>
-              <span class="category">Development</span>
-              <span class="price"><h6><em>$</em>340</h6></span>
-            </div>
-            <div class="down-content">
-              <span class="author">Cindy Walker</span>
-              <h4>Web Development Tips</h4>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6 align-self-center mb-30 event_outer col-md-6 design wordpress">
-          <div class="events_item">
-            <div class="thumb">
-              <a href="#"><img src="assets/images/course-03.jpg" alt=""></a>
-              <span class="category">Wordpress</span>
-              <span class="price"><h6><em>$</em>640</h6></span>
-            </div>
-            <div class="down-content">
-              <span class="author">David Hutson</span>
-              <h4>Latest Web Trends</h4>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6 align-self-center mb-30 event_outer col-md-6 development">
-          <div class="events_item">
-            <div class="thumb">
-              <a href="#"><img src="assets/images/course-04.jpg" alt=""></a>
-              <span class="category">Development</span>
-              <span class="price"><h6><em>$</em>450</h6></span>
-            </div>
-            <div class="down-content">
-              <span class="author">Stella Blair</span>
-              <h4>Online Learning Steps</h4>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6 align-self-center mb-30 event_outer col-md-6 wordpress development">
-          <div class="events_item">
-            <div class="thumb">
-              <a href="#"><img src="assets/images/course-05.jpg" alt=""></a>
-              <span class="category">Wordpress</span>
-              <span class="price"><h6><em>$</em>320</h6></span>
-            </div>
-            <div class="down-content">
-              <span class="author">Sophia Rose</span>
-              <h4>Be a WordPress Master</h4>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6 align-self-center mb-30 event_outer col-md-6 wordpress design">
-          <div class="events_item">
-            <div class="thumb">
-              <a href="#"><img src="assets/images/course-06.jpg" alt=""></a>
-              <span class="category">Webdesign</span>
-              <span class="price"><h6><em>$</em>240</h6></span>
-            </div>
-            <div class="down-content">
-              <span class="author">David Hutson</span>
-              <h4>Full Stack Developer</h4>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section> --}}
-
+ 
+<!-- Daftar -->
   <div class="section fun-facts">
     <div class="container">
       <div class="row">
@@ -449,27 +286,28 @@ ul {
           <div class="wrapper">
             <div class="row">
               <div class="col-lg-3 col-md-6">
-                <div class="counter">
-                  <h2 class="timer count-title count-number" data-to="150" data-speed="1000"></h2>
-                   <p class="count-text ">Users Website</p>
-                </div>
+              <div class="counter">
+                  <h2 class="timer count-title count-number" data-to="{{ $totalUser }}" data-speed="1000"></h2>
+                  <p class="count-text">Users Website</p>
+              </div>
+
               </div>
               <div class="col-lg-3 col-md-6">
                 <div class="counter">
-                  <h2 class="timer count-title count-number" data-to="804" data-speed="1000"></h2>
+                  <h2 class="timer count-title count-number" data-to="{{ $totalPengaduan }}" data-speed="1000"></h2>
                   <p class="count-text ">Pelaporan</p>
                 </div>
               </div>
               <div class="col-lg-3 col-md-6">
                 <div class="counter">
-                  <h2 class="timer count-title count-number" data-to="50" data-speed="1000"></h2>
-                  <p class="count-text ">Pengunjung Website</p>
+                  <h2 class="timer count-title count-number" data-to="{{$jumlahanggotasatgas}}" data-speed="1000"></h2>
+                  <p class="count-text ">Jumlah Anggota Satgas</p>
                 </div>
               </div>
               <div class="col-lg-3 col-md-6">
                 <div class="counter end">
-                  <h2 class="timer count-title count-number" data-to="15" data-speed="1000"></h2>
-                  <p class="count-text ">Laporan Berhasil Ditangani</p>
+                 <h2 class="timer count-title count-number" data-to="{{ $KasusSelesai }}" data-speed="1000"></h2>
+                  <p class="count-text ">Kasus Selesai</p>
                 </div>
               </div>
             </div>
@@ -481,67 +319,39 @@ ul {
 
   <div class="team section" id="team">
     <div class="container">
-      <div class="row">
-        <div class="col-lg-3 col-md-6">
-          <div class="team-member">
-            <div class="main-content">
-              <img src="{{asset('templatemo/assets/images/member-04.jpg')}}" alt="">
-              <span class="category">Ketua Satgas</span>
-              <h4>Nursetia Wati,S.SI., M.Kom</h4>
-              <ul class="social-icons">
-                <li><a href="#"><i class="fab fa-facebook"></i></a></li>
-                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <div class="team-member">
-            <div class="main-content">
-              <img src="{{asset('templatemo/assets/images/member-02.jpg')}}" alt="">
-              <span class="category">Sekretaris</span>
-              <h4>Nurhafnita, S.Kom., M.Kom</h4>
-              <ul class="social-icons">
-                <li><a href="#"><i class="fab fa-facebook"></i></a></li>
-                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <div class="team-member">
-            <div class="main-content">
-              <img src="{{asset('templatemo/assets/images/member-03.jpg')}}" alt="">
-              <span class="category">Anggota</span>
-              <h4>Fajar Hermawanto, S.T.,M.om</h4>
-              <ul class="social-icons">
-                <li><a href="#"><i class="fab fa-facebook"></i></a></li>
-                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <div class="team-member">
-            <div class="main-content">
-              <img src="{{asset('templatemo/assets/images/member-01.jpg')}}" alt="">
-              <span class="category">Anggota</span>
-              <h4>Nur Syamsi Ibrahim,S.TP., M.Sc</h4>
-              <ul class="social-icons">
-                <li><a href="#"><i class="fab fa-facebook"></i></a></li>
-                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+        <div class="row">
+            @php
+                $team = [
+                    ['role' => 'Ketua Satgas', 'name' => 'Nursetia Wati, S.SI., M.Kom', 'image' => $ketua->image ?? null],
+                    ['role' => 'Sekretaris', 'name' => 'Nurhafnita, S.Kom., M.Kom', 'image' => $sekretaris->image ?? null],
+                    ['role' => 'Anggota', 'name' => 'Fajar Hermawanto, S.T., M.OM', 'image' => $anggota[0]->image ?? null],
+                    ['role' => 'Anggota', 'name' => 'Nur Syamsi Ibrahim, S.TP., M.Sc', 'image' => $anggota[1]->image ?? null],
+                ];
+            @endphp
 
+            @foreach($team as $member)
+                <div class="col-lg-3 col-md-6">
+                    <div class="team-member text-center">
+                        <div class="main-content">
+                            <img src="{{ $member['image'] ? asset('storage/' . $member['image']) : 'https://via.placeholder.com/150' }}" 
+                                 alt="Foto {{ $member['role'] }}" 
+                                 class="img-fluid rounded-circle team-img">
+                            <span class="category">{{ $member['role'] }}</span>
+                            <h4>{{ $member['name'] }}</h4>
+                            <ul class="social-icons">
+                                <li><a href="#"><i class="fab fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</div>
+
+<!-- visi dan misi -->
   <div class="section testimonials" id="visimisi">
     <div class="container">
       <div class="row">
@@ -579,159 +389,86 @@ ul {
     </div>
   </div>
 
-  {{-- <div class="section events" id="events">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12 text-center">
-          <div class="section-heading">
-            <h6>Schedule</h6>
-            <h2>Upcoming Events</h2>
-          </div>
-        </div>
-        <div class="col-lg-12 col-md-6">
-          <div class="item">
-            <div class="row">
-              <div class="col-lg-3">
-                <div class="image">
-                  <img src="assets/images/event-01.jpg" alt="">
-                </div>
-              </div>
-              <div class="col-lg-9">
-                <ul>
-                  <li>
-                    <span class="category">Web Design</span>
-                    <h4>UI Best Practices</h4>
-                  </li>
-                  <li>
-                    <span>Date:</span>
-                    <h6>16 Feb 2036</h6>
-                  </li>
-                  <li>
-                    <span>Duration:</span>
-                    <h6>22 Hours</h6>
-                  </li>
-                  <li>
-                    <span>Price:</span>
-                    <h6>$120</h6>
-                  </li>
-                </ul>
-                <a href="#"><i class="fa fa-angle-right"></i></a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-12 col-md-6">
-          <div class="item">
-            <div class="row">
-              <div class="col-lg-3">
-                <div class="image">
-                  <img src="assets/images/event-02.jpg" alt="">
-                </div>
-              </div>
-              <div class="col-lg-9">
-                <ul>
-                  <li>
-                    <span class="category">Front End</span>
-                    <h4>New Design Trend</h4>
-                  </li>
-                  <li>
-                    <span>Date:</span>
-                    <h6>24 Feb 2036</h6>
-                  </li>
-                  <li>
-                    <span>Duration:</span>
-                    <h6>30 Hours</h6>
-                  </li>
-                  <li>
-                    <span>Price:</span>
-                    <h6>$320</h6>
-                  </li>
-                </ul>
-                <a href="#"><i class="fa fa-angle-right"></i></a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-12 col-md-6">
-          <div class="item">
-            <div class="row">
-              <div class="col-lg-3">
-                <div class="image">
-                  <img src="assets/images/event-03.jpg" alt="">
-                </div>
-              </div>
-              <div class="col-lg-9">
-                <ul>
-                  <li>
-                    <span class="category">Full Stack</span>
-                    <h4>Web Programming</h4>
-                  </li>
-                  <li>
-                    <span>Date:</span>
-                    <h6>12 Mar 2036</h6>
-                  </li>
-                  <li>
-                    <span>Duration:</span>
-                    <h6>48 Hours</h6>
-                  </li>
-                  <li>
-                    <span>Price:</span>
-                    <h6>$440</h6>
-                  </li>
-                </ul>
-                <a href="#"><i class="fa fa-angle-right"></i></a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> --}}
-
+ 
+<!-- Register -->
   <div class="contact-us section" id="contact">
     <div class="container">
       <div class="row">
-        <div class="col-lg-6  align-self-center">
-          <div class="section-heading">
-            <h6>Contact Us</h6>
-            <h2>Feel free to contact us anytime</h2>
-            <p>Thank you for choosing our templates. We provide you best CSS templates at absolutely 100% free of charge. You may support us by sharing our website to your friends.</p>
-            <div class="special-offer">
-              <span class="offer">off<br><em>50%</em></span>
-              <h6>Valide: <em>24 April 2036</em></h6>
-              <h4>Special Offer <em>50%</em> OFF!</h4>
-              <a href="#"><i class="fa fa-angle-right"></i></a>
+      <div class="col-lg-6 col-md-12 align-self-center">
+        <div class="section-heading text-center text-lg-start">
+            <h6>Hubungi Satgas</h6>
+            <h2>Kami Siap Membantu Anda</h2>
+            <p>Satgas Politeknik Gorontalo siap menerima laporan, pengaduan, dan memberikan solusi terbaik untuk keamanan dan kenyamanan bersama.</p>
+            <p class="mt-3 fw-bold">
+                Masukkan <span class="text-primary">NIM/NIDN</span> Anda di samping untuk melakukan pengaktivan akun dan pembuatan laporan.
+                <i class="bi bi-arrow-right fs-4 text-primary"></i>
+            </p>
+          </div>
+        </div>
+
+        
+       <div class="col-lg-6">
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+        
+
+        <div class="section-body">
+            <div class="row">
+                <div class="col-12">
+                    @include('layouts.alert1')
+                </div>
             </div>
-          </div>
         </div>
-        <div class="col-lg-6">
-          <div class="contact-us-content">
-            <form id="contact-form" action="" method="post">
-              <div class="row">
-                <div class="col-lg-12">
-                  <fieldset>
-                    <input type="name" name="name" id="name" placeholder="Your Name..." autocomplete="on" required>
-                  </fieldset>
+    <div class="contact-us-content">
+
+        <form id="contact-form" action="{{ route('register') }}" method="post">
+            @csrf
+            <div class="row">
+                <!-- Input for No Identitas -->
+                <div class="form-group">
+                    <label for="no_identitas">No Identitas</label>
+                    <input id="no_identitas" type="text"
+                        class="form-control @error('no_identitas') is-invalid @enderror"
+                        name="no_identitas" placeholder="Masukan NIM atau NIDN Anda" 
+                        value="{{ old('no_identitas') }}" required autofocus>
+                    @error('no_identitas')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
-                <div class="col-lg-12">
-                  <fieldset>
-                    <input type="text" name="email" id="email" pattern="[^ @]*@[^ @]*" placeholder="Your E-mail..." required="">
-                  </fieldset>
+
+                <!-- Input for Email -->
+                <div class="form-group">
+                    <label for="email_penerima_akun">Email Penerima Akun Aktif</label>
+                    <input id="email_penerima_akun" type="email"
+                        class="form-control @error('email_penerima_akun') is-invalid @enderror"
+                        name="email_penerima_akun"
+                        value="{{ old('email_penerima_akun') }}" required readonly>
+                    @error('email_penerima_akun')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
-                <div class="col-lg-12">
-                  <fieldset>
-                    <textarea name="message" id="message" placeholder="Your Message"></textarea>
-                  </fieldset>
+
+                <!-- Submit Button -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-purple btn-lg btn-block">
+                        Buat Akun
+                    </button>
                 </div>
-                <div class="col-lg-12">
-                  <fieldset>
-                    <button type="submit" id="form-submit" class="orange-button">Send Message Now</button>
-                  </fieldset>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
+            </div>
+        </form>
+    </div>
+</div>
       </div>
     </div>
   </div>
@@ -752,6 +489,43 @@ ul {
   <script src="{{ asset ('templatemo/assets/js/owl-carousel.js')}}"></script>
   <script src="{{ asset ('templatemo/assets/js/counter.js')}}"></script>
   <script src="{{ asset ('templatemo/assets/js/custom.js')}}"></script>
+
+   <!-- Custom Script to Auto-fill Email Penerima Akun -->
+    <script>
+       $(document).ready(function () {
+    // Ketika No Identitas diubah
+    $('#no_identitas').on('input', function () {
+        var noIdentitas = $(this).val();
+
+        // Jika no_identitas ada, lakukan request ke server untuk mengambil email
+        if (noIdentitas) {
+            $.ajax({
+                url: '/get-email-by-no-identitas',  // Endpoint untuk mengambil email berdasarkan no_identitas
+                method: 'GET',
+                data: { no_identitas: noIdentitas },
+                success: function(response) {
+                    // Jika email ditemukan, isi email_penerima_akun
+                    if (response.email_penerima_akun) {
+                        $('#email_penerima_akun').val(response.email_penerima_akun).prop('readonly', true);
+                    } else {
+                        // Jika email tidak ditemukan, biarkan field kosong dan aktifkan agar bisa diubah
+                        $('#email_penerima_akun').val('').prop('readonly', false);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log("Error:", error);
+                    alert("Terjadi kesalahan. Silakan coba lagi.");
+                    $('#email_penerima_akun').val('').prop('readonly', false); // Reset jika terjadi error
+                }
+            });
+        } else {
+            // Jika no_identitas kosong, kosongkan email_penerima_akun dan buat editable
+            $('#email_penerima_akun').val('').prop('readonly', false);
+        }
+    });
+});
+
+    </script>
 
   </body>
 </html>
