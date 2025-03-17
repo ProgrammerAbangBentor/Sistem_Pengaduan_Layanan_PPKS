@@ -61,23 +61,23 @@ class PengaduanUserController extends Controller
     public function store(Request $request)
     {
         $validate = $request->validate([
-            'pelapor' => 'required|in:Mahasiswa,Dosen,Anonim,Staff Kampus',
-            'jenis_identitas' => 'required|in:KTM,NIDN,KTP',
-            'no_identitas' => 'required|string|exists:users,no_identitas',
-            'bukti_identitas' => 'nullable|file|mimes:jpg,png,jpeg',
+            'pelapor' => 'required',
+            'kategori_pelapor' => 'required',
+            'jenis_identitas' => 'nullable',
+            'no_identitas' => 'nullable|string',
             'kategori_pengaduan_id' => 'required|exists:kategori_pengaduan,id',
             'tanggal_peristiwa' => 'required|date',
             'kronologi_peristiwa' => 'required|string',
             'lokasi_kejadian' => 'nullable|string',
-            'file_bukti' => 'nullable|file|mimes:mp3,wav,mov,mp4,avi,mkv,flv,jpg,png,pdf|max:30480',
-            'kategori_pelapor' => 'required|in:Korban,Pelapor/Saksi',
             'nama_tersangka' => 'nullable|string',
-            'status_tersangka' => 'nullable|in:Mahasiswa,Dosen,Staff Kampus,Masyarakat Umum,Mahasiswa Kampus Lain',
+            'status_tersangka' => 'nullable|string',
             'no_telfon_tersangka' => 'nullable|string',
-            'user_id' => 'required|exists:users,id',
+            'bukti_identitas' => 'nullable|file|mimes:jpeg,png,pdf',
+            'file_bukti' => 'nullable|file|mimes:jpeg,png,pdf',
         ]);
 
             $pengaduan = new Pengaduan($validate);
+            $pengaduan->user_id = auth()->id();
             $pengaduan->nomor_pengaduan = Pengaduan::generateNomorPengaduan();
 
             if ($request->hasFile('file_bukti')) {

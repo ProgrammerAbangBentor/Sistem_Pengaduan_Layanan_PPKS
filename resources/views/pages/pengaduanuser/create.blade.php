@@ -120,9 +120,9 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="lokasi_peristiwa" class="form-label">Lokasi Peristiwa</label>
-                                <input type="text" name="lokasi_peristiwa" id="lokasi_peristiwa" class="form-control" value="{{ old('lokasi_peristiwa') }}" required>
-                                @error('lokasi_peristiwa')
+                                <label for="lokasi_kejadian" class="form-label">Lokasi Peristiwa</label>
+                                <input type="text" name="lokasi_kejadian" id="lokasi_kejadian" class="form-control" value="{{ old('lokasi_kejadian') }}" required>
+                                @error('lokasi_kejadian')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
